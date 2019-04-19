@@ -1,6 +1,6 @@
 package gameobjects;
 
-public class ExplosionCross {
+public class ExplosionCross extends GameObject {
 
     ExplosionCross(int power) {
         // power * sprite length * 2 for vertical and horizontal sprite
