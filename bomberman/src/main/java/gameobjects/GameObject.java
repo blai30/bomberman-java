@@ -1,6 +1,6 @@
 package gameobjects;
 
-public abstract class GameObject implements CollisionHandling {
+public abstract class GameObject {
 
 
 
@@ -8,8 +8,8 @@ public abstract class GameObject implements CollisionHandling {
 
 interface CollisionHandling {
 
-//    void collides(GameObject collidingObj);
-//    void handleCollision();
+    void collides(GameObject collidingObj);
+    void handleCollision();
 
 }
 
