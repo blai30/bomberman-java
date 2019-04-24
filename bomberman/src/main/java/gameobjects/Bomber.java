@@ -2,9 +2,9 @@ package gameobjects;
 
 import java.awt.image.BufferedImage;
 
-public class Bomberman extends Player implements Observable {
+public class Bomber extends Player implements Observable {
 
-    public Bomberman(float xPos, float yPos, float rotation, BufferedImage sprite) {
+    public Bomber(float xPos, float yPos, float rotation, BufferedImage sprite) {
         super(xPos, yPos, rotation, sprite);
     }
 
@@ -14,7 +14,12 @@ public class Bomberman extends Player implements Observable {
     }
 
     @Override
-    public void handleCollision(Bomberman collidingObj) {
+    public void handleCollision(Bomber collidingObj) {
+
+    }
+
+    @Override
+    public void handleCollision(Explosion collidingObj) {
 
     }
 

@@ -16,7 +16,7 @@ class GameWindow extends JFrame {
 
     static final int SCREEN_WIDTH = 1280;
     static final int SCREEN_HEIGHT = 960;
-    static final String TITLE = "Bomberman by Brian Lai";
+    static final String TITLE = "Bomber by Brian Lai";
 
     GameWindow() {
         this.setTitle(TITLE);

@@ -80,7 +80,8 @@ public abstract class GameObject implements CollisionHandling {
 interface CollisionHandling {
 
     void collides(GameObject collidingObj);
-    void handleCollision(Bomberman collidingObj);
+    void handleCollision(Bomber collidingObj);
+    void handleCollision(Explosion collidingObj);
 
 }
 
