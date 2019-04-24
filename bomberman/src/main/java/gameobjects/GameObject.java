@@ -19,6 +19,9 @@ public abstract class GameObject implements CollisionHandling {
 
     private boolean destroyed;
 
+    // Should not be used
+    GameObject() {}
+
     // Use super() in constructors of subclasses
     protected GameObject(float xPos, float yPos, float rotation, BufferedImage sprite) {
         this(sprite);
@@ -77,7 +80,7 @@ public abstract class GameObject implements CollisionHandling {
 interface CollisionHandling {
 
     void collides(GameObject collidingObj);
-    void handleCollision();
+    void handleCollision(Bomberman collidingObj);
 
 }
 
