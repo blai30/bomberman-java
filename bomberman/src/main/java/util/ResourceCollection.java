@@ -29,10 +29,10 @@ public class ResourceCollection {
         try {
             System.out.println(System.getProperty("user.dir"));
             Images.ICON.image = ImageIO.read(ResourceCollection.class.getResource("/resources/icon.png"));
-            Images.BACKGROUND.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bg.jpg"));
-            Images.HARD_WALLS.image = ImageIO.read(ResourceCollection.class.getResource("/resources/hardWalls.jpg"));
-            Images.BOMBER.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomber.jpg"));
-            Images.BOMB.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomb.jpg"));
+            Images.BACKGROUND.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bg.png"));
+            Images.HARD_WALLS.image = ImageIO.read(ResourceCollection.class.getResource("/resources/hardWalls.png"));
+            Images.BOMBER.image = ImageIO.read(ResourceCollection.class.getResource("/resources/player_down.png"));
+            Images.BOMB.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomb.png"));
             Images.EXPLOSION.image = ImageIO.read(ResourceCollection.class.getResource("/resources/explosion.jpg"));
         } catch (IOException e) {
             System.err.println(e + ": Cannot read image file");

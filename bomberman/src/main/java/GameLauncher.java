@@ -5,9 +5,16 @@ import java.awt.*;
 
 public class GameLauncher {
 
+    protected static GameWindow window;
+
     public static void main(String[] args) {
         ResourceCollection.init();
-        new GameWindow();
+        GamePanel game = new GamePanel();
+        game.init();
+        window = new GameWindow();
+        window.add(game, BorderLayout.CENTER);
+
+        System.gc();
     }
 
 }
