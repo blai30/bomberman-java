@@ -17,8 +17,10 @@ public class GameLauncher {
             game = new GamePanel(null);
         }
         game.init();
+        game.setPreferredSize(new Dimension(GameWindow.SCREEN_WIDTH,GameWindow.SCREEN_HEIGHT));
         window = new GameWindow();
         window.add(game, BorderLayout.CENTER);
+        window.pack();
 
         window.setVisible(true);
 
