@@ -21,6 +21,8 @@ public class GamePanel extends JPanel implements Runnable {
     private Graphics2D buffer;
     private BufferedImage bg;
 
+    private int mapWidth;
+    private int mapHeight;
     private String mapFile;
     private ArrayList<ArrayList<String>> mapLayout;
     private BufferedReader bufferedReader;
@@ -70,15 +72,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void generateMap() {
         // Map dimensions
-        int mapWidth = mapLayout.get(0).size();
-        int mapHeight = mapLayout.size();
+        this.mapWidth = mapLayout.get(0).size();
+        this.mapHeight = mapLayout.size();
 
-        this.world = new BufferedImage(mapWidth * 32, mapHeight * 32, BufferedImage.TYPE_INT_RGB);
+        this.world = new BufferedImage(this.mapWidth * 32, this.mapHeight * 32, BufferedImage.TYPE_INT_RGB);
 //        this.gameHUD = new GameHUD(this.world);
 
         // Generate entire map
-        for (int y = 0; y < mapHeight; y++) {
-            for (int x = 0; x < mapWidth; x++) {
+        for (int y = 0; y < this.mapHeight; y++) {
+            for (int x = 0; x < this.mapWidth; x++) {
                 switch (mapLayout.get(y).get(x)) {
                     case ("S"):
                         BufferedImage sprSoftWall = ResourceCollection.Images.SOFT_WALL.getImage();
@@ -92,13 +94,13 @@ public class GamePanel extends JPanel implements Runnable {
                         if (y > 0 && mapLayout.get(y - 1).get(x).equals("H")) {
                             code += 1;  // North
                         }
-                        if (y < mapHeight - 1 && mapLayout.get(y + 1).get(x).equals("H")) {
+                        if (y < this.mapHeight - 1 && mapLayout.get(y + 1).get(x).equals("H")) {
                             code += 4;  // South
                         }
                         if (x > 0 && mapLayout.get(y).get(x - 1).equals("H")) {
                             code += 8;  // West
                         }
-                        if (x < mapWidth - 1 && mapLayout.get(y).get(x + 1).equals("H")) {
+                        if (x < this.mapWidth - 1 && mapLayout.get(y).get(x + 1).equals("H")) {
                             code += 2;  // East
                         }
                         BufferedImage sprHardWall = ResourceCollection.getHardWallTile(code);
@@ -201,7 +203,7 @@ public class GamePanel extends JPanel implements Runnable {
             obj.drawImage(this.buffer);
         }
 
-        g2.drawImage(this.world, 16, 48, null);
+        g2.drawImage(this.world, ((GameWindow.SCREEN_WIDTH - 16) / 2) - (((this.mapWidth * 32) - 16) / 2), 24 + ((GameWindow.SCREEN_HEIGHT - 48) / 2) - (((this.mapHeight * 32) - 48) / 2), null);
 
         g2.dispose();
         this.buffer.dispose();

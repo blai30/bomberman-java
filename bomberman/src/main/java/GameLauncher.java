@@ -31,8 +31,8 @@ public class GameLauncher {
 
 class GameWindow extends JFrame {
 
-    static final int SCREEN_WIDTH = 960;
-    static final int SCREEN_HEIGHT = 720;
+    static final int SCREEN_WIDTH = 480;
+    static final int SCREEN_HEIGHT = 464;
     static final String TITLE = "Bomberman by Brian Lai";
 
     GameWindow() {
