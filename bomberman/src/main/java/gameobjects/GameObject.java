@@ -22,6 +22,11 @@ public abstract class GameObject implements CollisionHandling {
     // Should not be used
     GameObject() {}
 
+    protected GameObject(float xPos, float yPos) {
+        this.position = new Vector2D(xPos, yPos);
+        this.rotation = 0;
+    }
+
     // Use super() in constructors of subclasses
     protected GameObject(float xPos, float yPos, BufferedImage sprite) {
         this(sprite);

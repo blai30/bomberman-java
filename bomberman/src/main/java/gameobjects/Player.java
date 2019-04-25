@@ -1,7 +1,5 @@
 package gameobjects;
 
-import java.awt.image.BufferedImage;
-
 public abstract class Player extends GameObject {
 
     protected boolean UpPressed = false;
@@ -10,8 +8,8 @@ public abstract class Player extends GameObject {
     protected boolean RightPressed = false;
     protected boolean ActionPressed = false;
 
-    public Player(float xPos, float yPos, BufferedImage sprite) {
-        super(xPos, yPos, sprite);
+    public Player(float xPos, float yPos) {
+        super(xPos, yPos);
     }
 
     public void toggleUpPressed() {

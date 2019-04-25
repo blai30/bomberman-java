@@ -1,3 +1,4 @@
+import gameobjects.Bomber;
 import gameobjects.GameObject;
 import gameobjects.GameObjectCollection;
 import gameobjects.Wall;
@@ -23,7 +24,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     private int mapWidth;
     private int mapHeight;
-    private String mapFile;
     private ArrayList<ArrayList<String>> mapLayout;
     private BufferedReader bufferedReader;
 
@@ -42,7 +42,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void loadMapFile(String mapFile) {
-        this.mapFile = mapFile;
 
         // Loading map file
         try {
@@ -106,6 +105,12 @@ public class GamePanel extends JPanel implements Runnable {
                         BufferedImage sprHardWall = ResourceCollection.getHardWallTile(code);
                         Wall hardWall = new Wall(x * 32, y * 32, sprHardWall, false);
                         GameObjectCollection.wallObjects.add(hardWall);
+                        break;
+
+                    case ("1"):
+                        BufferedImage sprMapP1 = ResourceCollection.Images.PLAYER_1.getImage();
+                        Bomber player1 = new Bomber(x * 32, y * 32, sprMapP1);
+                        GameObjectCollection.bomberObjects.add(player1);
                         break;
 
                     default:
