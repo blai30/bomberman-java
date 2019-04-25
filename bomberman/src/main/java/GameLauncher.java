@@ -9,7 +9,13 @@ public class GameLauncher {
 
     public static void main(String[] args) {
         ResourceCollection.init();
-        GamePanel game = new GamePanel(args[0]);
+        GamePanel game;
+        try {
+            game = new GamePanel(args[0]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println(e + ": Program args not given");
+            game = new GamePanel(null);
+        }
         game.init();
         window = new GameWindow();
         window.add(game, BorderLayout.CENTER);
@@ -21,9 +27,9 @@ public class GameLauncher {
 
 class GameWindow extends JFrame {
 
-    static final int SCREEN_WIDTH = 1280;
+    static final int SCREEN_WIDTH = 1216;
     static final int SCREEN_HEIGHT = 960;
-    static final String TITLE = "Bomber by Brian Lai";
+    static final String TITLE = "Bomberman by Brian Lai";
 
     GameWindow() {
         this.setTitle(TITLE);

@@ -1,4 +1,6 @@
+import gameobjects.GameObject;
 import gameobjects.GameObjectCollection;
+import gameobjects.Wall;
 import util.ResourceCollection;
 
 import javax.swing.*;
@@ -47,8 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
         } catch (IOException | NullPointerException e) {
             // Load default map when map file could not be loaded
             System.err.println(e + ": Cannot load map file, loading default map");
-            InputStreamReader defaultMap = new InputStreamReader(this.getClass().getResourceAsStream("/resources/defaultmap.csv"));
-            this.bufferedReader = new BufferedReader(defaultMap);
+            this.bufferedReader = new BufferedReader(ResourceCollection.Files.DEFAULT_MAP.getFile());
         }
 
         // Parsing map data from file
@@ -80,8 +81,32 @@ public class GamePanel extends JPanel implements Runnable {
         for (int y = 0; y < mapHeight; y++) {
             for (int x = 0; x < mapWidth; x++) {
                 switch (mapLayout.get(y).get(x)) {
-                    case (""):
+                    case ("S"):
+                        BufferedImage sprSoftWall = ResourceCollection.Images.SOFT_WALL.getImage();
+                        Wall softWall = new Wall(x * 64, y * 64, sprSoftWall, true);
+                        GameObjectCollection.wallObjects.add(softWall);
                         break;
+
+                    case ("H"):
+                        // Code used to choose tile based on adjacent tiles
+                        int code = 0;
+                        if (y > 0 && mapLayout.get(y - 1).get(x).equals("H")) {
+                            code += 1;  // North
+                        }
+                        if (y < mapHeight - 1 && mapLayout.get(y + 1).get(x).equals("H")) {
+                            code += 4;  // South
+                        }
+                        if (x > 0 && mapLayout.get(y).get(x - 1).equals("H")) {
+                            code += 8;  // West
+                        }
+                        if (x < mapWidth - 1 && mapLayout.get(y).get(x + 1).equals("H")) {
+                            code += 2;  // East
+                        }
+                        BufferedImage sprHardWall = ResourceCollection.getHardWallTile(code);
+                        Wall hardWall = new Wall(x * 64, y * 64, sprHardWall, false);
+                        GameObjectCollection.wallObjects.add(hardWall);
+                        break;
+
                     default:
                         break;
                 }
@@ -159,7 +184,25 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        g2.drawImage(this.world, 0, 0, null);
+        // Draw game objects
+        for (int i = 0; i < GameObjectCollection.wallObjects.size(); i++) {
+            GameObject obj = GameObjectCollection.wallObjects.get(i);
+            obj.drawImage(this.buffer);
+        }
+        for (int i = 0; i < GameObjectCollection.bombObjects.size(); i++) {
+            GameObject obj = GameObjectCollection.bombObjects.get(i);
+            obj.drawImage(this.buffer);
+        }
+        for (int i = 0; i < GameObjectCollection.explosionObjects.size(); i++) {
+            GameObject obj = GameObjectCollection.explosionObjects.get(i);
+            obj.drawImage(this.buffer);
+        }
+        for (int i = 0; i < GameObjectCollection.bomberObjects.size(); i++) {
+            GameObject obj = GameObjectCollection.bomberObjects.get(i);
+            obj.drawImage(this.buffer);
+        }
+
+        g2.drawImage(this.world, 0, 96, null);
 
         g2.dispose();
         this.buffer.dispose();
