@@ -25,6 +25,11 @@ public class Explosion extends GameObject implements Observable {
     }
 
     @Override
+    public void handleCollision(Wall collidingObj) {
+
+    }
+
+    @Override
     public void handleCollision(Explosion collidingObj) {
 
     }

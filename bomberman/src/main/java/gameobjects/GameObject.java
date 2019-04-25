@@ -11,7 +11,8 @@ import java.awt.image.BufferedImage;
 public abstract class GameObject implements CollisionHandling {
 
     BufferedImage sprite;
-    Transform transform;
+    Vector2D position;
+    float rotation;
     float width;
     float height;
     Vector2D originOffset;
@@ -23,9 +24,10 @@ public abstract class GameObject implements CollisionHandling {
     GameObject() {}
 
     // Use super() in constructors of subclasses
-    protected GameObject(float xPos, float yPos, float rotation, BufferedImage sprite) {
+    protected GameObject(float xPos, float yPos, BufferedImage sprite) {
         this(sprite);
-        this.transform = new Transform(xPos, yPos, rotation);
+        this.position = new Vector2D(xPos, yPos);
+        this.rotation = 0;
         this.collider = new Rectangle2D.Double(xPos, yPos, this.width, this.height);
     }
 
@@ -36,12 +38,12 @@ public abstract class GameObject implements CollisionHandling {
         this.originOffset = new Vector2D(this.width / 2, this.height / 2);
     }
 
-    protected void instantiate(GameObject spawnObj, Transform spawnTransform) {
-        float x = spawnTransform.getPositionX() - spawnObj.originOffset.getX();
-        float y = spawnTransform.getPositionY() - spawnObj.originOffset.getY();
+    protected void instantiate(GameObject spawnObj, Vector2D spawnLocation, float rotation) {
+        float x = spawnLocation.getX() - spawnObj.originOffset.getX();
+        float y = spawnLocation.getY() - spawnObj.originOffset.getY();
         Vector2D spawnPoint = new Vector2D(x, y);
-        spawnObj.transform.setPosition(spawnPoint);
-        spawnObj.transform.setRotation(spawnTransform.getRotation());
+        spawnObj.position.set(spawnPoint);
+        spawnObj.rotation = rotation;
         spawnObj.collider.setRect(x, y, spawnObj.width, spawnObj.height);
         // TODO: spawn the object
     }
@@ -60,8 +62,8 @@ public abstract class GameObject implements CollisionHandling {
      * @param g Graphics object that is passed in for the game object to draw to
      */
     public void drawImage(Graphics g) {
-        AffineTransform rotation = AffineTransform.getTranslateInstance(this.transform.getPositionX(), this.transform.getPositionY());
-        rotation.rotate(Math.toRadians(this.transform.getRotation()), this.sprite.getWidth() / 2.0, this.sprite.getHeight() / 2.0);
+        AffineTransform rotation = AffineTransform.getTranslateInstance(this.position.getX(), this.position.getY());
+        rotation.rotate(Math.toRadians(this.rotation), this.sprite.getWidth() / 2.0, this.sprite.getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(this.sprite, rotation, null);
     }
@@ -81,6 +83,7 @@ interface CollisionHandling {
 
     void collides(GameObject collidingObj);
     void handleCollision(Bomber collidingObj);
+    void handleCollision(Wall collidingObj);
     void handleCollision(Explosion collidingObj);
 
 }

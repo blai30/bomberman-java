@@ -2,9 +2,9 @@ package gameobjects;
 
 import java.awt.image.BufferedImage;
 
-public class Bomber extends Player implements Observable {
+public class Wall extends GameObject {
 
-    public Bomber(float xPos, float yPos, BufferedImage sprite) {
+    public Wall(float xPos, float yPos, BufferedImage sprite) {
         super(xPos, yPos, sprite);
     }
 
@@ -25,11 +25,6 @@ public class Bomber extends Player implements Observable {
 
     @Override
     public void handleCollision(Explosion collidingObj) {
-
-    }
-
-    @Override
-    public void update() {
 
     }
 
