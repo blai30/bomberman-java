@@ -18,7 +18,9 @@ public class GameLauncher {
         }
         game.init();
         window = new GameWindow();
-        window.setContentPane(game);
+        window.add(game, BorderLayout.CENTER);
+
+        window.setVisible(true);
 
         System.gc();
     }
@@ -39,8 +41,6 @@ class GameWindow extends JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        this.setVisible(true);
     }
 
 }
