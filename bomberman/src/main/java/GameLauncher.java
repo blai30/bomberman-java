@@ -18,7 +18,7 @@ public class GameLauncher {
         }
         game.init();
         window = new GameWindow();
-        window.add(game, BorderLayout.CENTER);
+        window.setContentPane(game);
 
         System.gc();
     }
@@ -27,8 +27,8 @@ public class GameLauncher {
 
 class GameWindow extends JFrame {
 
-    static final int SCREEN_WIDTH = 1216;
-    static final int SCREEN_HEIGHT = 960;
+    static final int SCREEN_WIDTH = 960;
+    static final int SCREEN_HEIGHT = 720;
     static final String TITLE = "Bomberman by Brian Lai";
 
     GameWindow() {

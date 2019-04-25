@@ -58,7 +58,7 @@ public class ResourceCollection {
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 4; j++) {
                     assert Images.HARD_WALLS.image != null;
-                    tiles[i][j] = Images.HARD_WALLS.image.getSubimage(i * 64, j * 64, 64, 64);
+                    tiles[i][j] = Images.HARD_WALLS.image.getSubimage(i * 32, j * 32, 32, 32);
                 }
             }
             loadTiles(tiles);

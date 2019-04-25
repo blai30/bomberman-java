@@ -74,7 +74,7 @@ public class GamePanel extends JPanel implements Runnable {
         int mapWidth = mapLayout.get(0).size();
         int mapHeight = mapLayout.size();
 
-        this.world = new BufferedImage(mapWidth * 64, mapHeight * 64, BufferedImage.TYPE_INT_RGB);
+        this.world = new BufferedImage(mapWidth * 32, mapHeight * 32, BufferedImage.TYPE_INT_RGB);
 //        this.gameHUD = new GameHUD(this.world);
 
         // Generate entire map
@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
                 switch (mapLayout.get(y).get(x)) {
                     case ("S"):
                         BufferedImage sprSoftWall = ResourceCollection.Images.SOFT_WALL.getImage();
-                        Wall softWall = new Wall(x * 64, y * 64, sprSoftWall, true);
+                        Wall softWall = new Wall(x * 32, y * 32, sprSoftWall, true);
                         GameObjectCollection.wallObjects.add(softWall);
                         break;
 
@@ -103,7 +103,7 @@ public class GamePanel extends JPanel implements Runnable {
                             code += 2;  // East
                         }
                         BufferedImage sprHardWall = ResourceCollection.getHardWallTile(code);
-                        Wall hardWall = new Wall(x * 64, y * 64, sprHardWall, false);
+                        Wall hardWall = new Wall(x * 32, y * 32, sprHardWall, false);
                         GameObjectCollection.wallObjects.add(hardWall);
                         break;
 
@@ -202,7 +202,7 @@ public class GamePanel extends JPanel implements Runnable {
             obj.drawImage(this.buffer);
         }
 
-        g2.drawImage(this.world, 0, 96, null);
+        g2.drawImage(this.world, 16, 64, null);
 
         g2.dispose();
         this.buffer.dispose();
