@@ -1,6 +1,5 @@
 package gameobjects;
 
-import util.Transform;
 import util.Vector2D;
 
 import java.awt.*;
