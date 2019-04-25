@@ -9,7 +9,7 @@ public class GameLauncher {
 
     public static void main(String[] args) {
         ResourceCollection.init();
-        GamePanel game = new GamePanel();
+        GamePanel game = new GamePanel(args[0]);
         game.init();
         window = new GameWindow();
         window.add(game, BorderLayout.CENTER);
