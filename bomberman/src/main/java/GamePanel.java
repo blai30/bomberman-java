@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -202,7 +201,7 @@ public class GamePanel extends JPanel implements Runnable {
             obj.drawImage(this.buffer);
         }
 
-        g2.drawImage(this.world, 16, 64, null);
+        g2.drawImage(this.world, 16, 48, null);
 
         g2.dispose();
         this.buffer.dispose();
