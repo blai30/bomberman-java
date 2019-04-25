@@ -56,6 +56,32 @@ public abstract class GameObject implements CollisionHandling {
         return destroyed;
     }
 
+    protected void solidCollision(GameObject obj) {
+        Rectangle2D intersection = this.collider.createIntersection(obj.collider);
+        // Vertical collision
+        if (intersection.getWidth() >= intersection.getHeight()) {
+            // From the top
+            if (intersection.getMaxY() >= this.collider.getMaxY()) {
+                this.position.addY(-(float) intersection.getHeight());
+            }
+            // From the bottom
+            if (intersection.getMaxY() >= obj.collider.getMaxY()) {
+                this.position.addY((float) intersection.getHeight());
+            }
+        }
+        // Horizontal collision
+        if (intersection.getHeight() >= intersection.getWidth()) {
+            // From the left
+            if (intersection.getMaxX() >= this.collider.getMaxX()) {
+                this.position.addX(-(float) intersection.getWidth());
+            }
+            // From the right
+            if (intersection.getMaxX() >= obj.collider.getMaxX()) {
+                this.position.addX((float) intersection.getWidth());
+            }
+        }
+    }
+
     /**
      * Draws the game object in the game world to g.
      * (ie. the buffer which will be drawn to the screen)

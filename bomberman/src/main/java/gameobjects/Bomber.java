@@ -20,7 +20,7 @@ public class Bomber extends Player implements Observable {
 
     @Override
     public void handleCollision(Wall collidingObj) {
-
+        this.solidCollision(collidingObj);
     }
 
     @Override
