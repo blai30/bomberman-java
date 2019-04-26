@@ -28,7 +28,7 @@ public class Bomber extends Player implements Observable {
         this.originOffset = new Vector2D(this.width / 2, this.height / 2);
         this.collider = new Rectangle2D.Double(xPos, yPos, this.width, this.height - 16);
 
-        this.moveSpeed = 4;
+        this.moveSpeed = 1;
     }
 
     private void moveUp() {
@@ -66,7 +66,7 @@ public class Bomber extends Player implements Observable {
 
     @Override
     public void update() {
-        this.collider.setRect(this.position.getX(), this.position.getY() + 16, this.width, this.height - 16);
+        this.collider.setRect(this.position.getX() + 2, this.position.getY() + 20, this.width - 4, this.height - 20);
 
         // Movement
         if (this.UpPressed) {
