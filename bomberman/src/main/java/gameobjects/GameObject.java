@@ -72,6 +72,16 @@ public abstract class GameObject implements CollisionHandling {
             if (intersection.getMaxY() >= obj.collider.getMaxY()) {
                 this.position.addY((float) intersection.getHeight());
             }
+
+            // Smoothing around corners
+            if (intersection.getWidth() < 12) {
+                if (intersection.getMaxX() >= this.collider.getMaxX()) {
+                    this.position.addX(-(float) 0.5);
+                }
+                if (intersection.getMaxX() >= obj.collider.getMaxX()) {
+                    this.position.addX((float) 0.5);
+                }
+            }
         }
         // Horizontal collision
         if (intersection.getHeight() >= intersection.getWidth()) {
@@ -83,12 +93,24 @@ public abstract class GameObject implements CollisionHandling {
             if (intersection.getMaxX() >= obj.collider.getMaxX()) {
                 this.position.addX((float) intersection.getWidth());
             }
+
+            // Smoothing around corners
+            if (intersection.getHeight() < 12) {
+                if (intersection.getMaxY() >= this.collider.getMaxY()) {
+                    this.position.addY(-(float) 0.5);
+                }
+                if (intersection.getMaxY() >= obj.collider.getMaxY()) {
+                    this.position.addY((float) 0.5);
+                }
+            }
         }
     }
 
     public Rectangle2D getCollider() {
         return this.collider;
     }
+
+    public abstract void update();
 
     /**
      * Draws the game object in the game world to g.
@@ -119,11 +141,5 @@ interface CollisionHandling {
     void handleCollision(Bomber collidingObj);
     void handleCollision(Wall collidingObj);
     void handleCollision(Explosion collidingObj);
-
-}
-
-interface Observable {
-
-    void update();
 
 }

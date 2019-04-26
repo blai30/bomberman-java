@@ -2,7 +2,7 @@ package gameobjects;
 
 import java.awt.image.BufferedImage;
 
-public class Explosion extends GameObject implements Observable {
+public class Explosion extends GameObject {
 
     private int firepower;
 
@@ -12,6 +12,11 @@ public class Explosion extends GameObject implements Observable {
         // center sprite
         super(xPos, yPos, sprite);
         this.firepower = firepower;
+    }
+
+    @Override
+    public void update() {
+
     }
 
     @Override
@@ -31,11 +36,6 @@ public class Explosion extends GameObject implements Observable {
 
     @Override
     public void handleCollision(Explosion collidingObj) {
-
-    }
-
-    @Override
-    public void update() {
 
     }
 

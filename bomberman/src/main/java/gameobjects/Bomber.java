@@ -5,7 +5,7 @@ import util.Vector2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-public class Bomber extends Player implements Observable {
+public class Bomber extends Player {
 
     private BufferedImage[][] sprites;
 
@@ -26,7 +26,7 @@ public class Bomber extends Player implements Observable {
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
         this.originOffset = new Vector2D(this.width / 2, this.height / 2);
-        this.collider = new Rectangle2D.Double(this.position.getX() + 2, this.position.getY() + 20, this.width - 4, this.height - 20);
+        this.collider = new Rectangle2D.Double(this.position.getX() + 4, this.position.getY() + 22, this.width - 8, this.height - 22);
 
         this.moveSpeed = 1;
     }
@@ -42,6 +42,25 @@ public class Bomber extends Player implements Observable {
     }
     private void moveRight() {
         this.position.addX(this.moveSpeed);
+    }
+
+    @Override
+    public void update() {
+        this.collider.setRect(this.position.getX() + 4, this.position.getY() + 24, this.width - 8, this.height - 24);
+
+        // Movement
+        if (this.UpPressed) {
+            this.moveUp();
+        }
+        if (this.DownPressed) {
+            this.moveDown();
+        }
+        if (this.LeftPressed) {
+            this.moveLeft();
+        }
+        if (this.RightPressed) {
+            this.moveRight();
+        }
     }
 
     @Override
@@ -62,25 +81,6 @@ public class Bomber extends Player implements Observable {
     @Override
     public void handleCollision(Explosion collidingObj) {
 
-    }
-
-    @Override
-    public void update() {
-        this.collider.setRect(this.position.getX() + 2, this.position.getY() + 20, this.width - 4, this.height - 20);
-
-        // Movement
-        if (this.UpPressed) {
-            this.moveUp();
-        }
-        if (this.DownPressed) {
-            this.moveDown();
-        }
-        if (this.LeftPressed) {
-            this.moveLeft();
-        }
-        if (this.RightPressed) {
-            this.moveRight();
-        }
     }
 
 }

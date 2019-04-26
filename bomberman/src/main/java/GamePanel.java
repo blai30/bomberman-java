@@ -204,26 +204,31 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void update() {
         try {
-            for (int i = 0; i < GameObjectCollection.bomberObjects.size(); ) {
-                Bomber obj = GameObjectCollection.bomberObjects.get(i);
-                obj.update();
-                if (obj.isDestroyed()) {
-                    // Destroy and remove game objects that were marked for deletion
-                    GameObjectCollection.bomberObjects.remove(obj);
-                } else {
-                    for (int j = 0; j < GameObjectCollection.bomberObjects.size(); j++) {
-                        GameObject collidingObj = GameObjectCollection.bomberObjects.get(j);
-                        // Skip detecting collision on the same object as itself
-                        if (obj == collidingObj) {
-                            continue;
-                        }
+            for (int list = 0; list < GameObjectCollection.gameObjects.size(); list++) {
+                for (int objIndex = 0; objIndex < GameObjectCollection.gameObjects.get(list).size(); ) {
+                    GameObject obj = GameObjectCollection.gameObjects.get(list).get(objIndex);
+                    obj.update();
+                    if (obj.isDestroyed()) {
+                        // Destroy and remove game objects that were marked for deletion
+                        GameObjectCollection.gameObjects.get(list).remove(obj);
+                    } else {
+                        for (int list2 = 0; list2 < GameObjectCollection.gameObjects.size(); list2++) {
+                            for (int objIndex2 = 0; objIndex2 < GameObjectCollection.gameObjects.get(list2).size(); objIndex2++) {
+                                GameObject collidingObj = GameObjectCollection.gameObjects.get(list2).get(objIndex2);
+                                // Skip detecting collision on the same object as itself
+                                if (obj == collidingObj) {
+                                    continue;
+                                }
 
-                        // Visitor pattern collision handling
-                        if (obj.getCollider().intersects(collidingObj.getCollider())) {
-                            obj.collides(collidingObj);
+                                // Visitor pattern collision handling
+                                if (obj.getCollider().intersects(collidingObj.getCollider())) {
+                                    collidingObj.collides(obj);
+//                                    obj.collides(collidingObj);
+                                }
+                            }
                         }
+                        objIndex++;
                     }
-                    i++;
                 }
             }
             Thread.sleep(1000 / 144);
