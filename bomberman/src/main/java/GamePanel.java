@@ -231,6 +231,7 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
+            GameObjectCollection.sortByY();
             Thread.sleep(1000 / 144);
         } catch (InterruptedException ignored) {
 
@@ -291,25 +292,12 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         // Draw game objects
-        for (int i = 0; i < GameObjectCollection.wallObjects.size(); i++) {
-            GameObject obj = GameObjectCollection.wallObjects.get(i);
-            obj.drawImage(this.buffer);
-            obj.drawCollider(this.buffer);
-        }
-        for (int i = 0; i < GameObjectCollection.bombObjects.size(); i++) {
-            GameObject obj = GameObjectCollection.bombObjects.get(i);
-            obj.drawImage(this.buffer);
-            obj.drawCollider(this.buffer);
-        }
-        for (int i = 0; i < GameObjectCollection.explosionObjects.size(); i++) {
-            GameObject obj = GameObjectCollection.explosionObjects.get(i);
-            obj.drawImage(this.buffer);
-            obj.drawCollider(this.buffer);
-        }
-        for (int i = 0; i < GameObjectCollection.bomberObjects.size(); i++) {
-            GameObject obj = GameObjectCollection.bomberObjects.get(i);
-            obj.drawImage(this.buffer);
-            obj.drawCollider(this.buffer);
+        for (int i = 0; i < GameObjectCollection.gameObjects.size(); i++) {
+            for (int j = 0; j < GameObjectCollection.gameObjects.get(i).size(); j++) {
+                GameObject obj = GameObjectCollection.gameObjects.get(i).get(j);
+                obj.drawImage(this.buffer);
+                obj.drawCollider(this.buffer);
+            }
         }
 
         g2.drawImage(this.world, ((GameWindow.SCREEN_WIDTH - 16) / 2) - (((this.mapWidth * 32) - 16) / 2), 24 + ((GameWindow.SCREEN_HEIGHT - 48) / 2) - (((this.mapHeight * 32) - 48) / 2), null);

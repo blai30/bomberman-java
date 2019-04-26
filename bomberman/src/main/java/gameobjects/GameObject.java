@@ -7,7 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-public abstract class GameObject implements CollisionHandling {
+public abstract class GameObject implements CollisionHandling, Comparable<GameObject> {
 
     BufferedImage sprite;
     Vector2D position;
@@ -83,6 +83,7 @@ public abstract class GameObject implements CollisionHandling {
                 }
             }
         }
+
         // Horizontal collision
         if (intersection.getHeight() >= intersection.getWidth()) {
             // From the left
@@ -110,6 +111,10 @@ public abstract class GameObject implements CollisionHandling {
         return this.collider;
     }
 
+    public float getPositionY() {
+        return this.position.getY();
+    }
+
     public abstract void update();
 
     /**
@@ -131,6 +136,11 @@ public abstract class GameObject implements CollisionHandling {
     public void drawCollider(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.draw(this.collider);
+    }
+
+    @Override
+    public int compareTo(GameObject o) {
+        return Float.compare(this.getPositionY(), o.getPositionY());
     }
 
 }
