@@ -86,6 +86,10 @@ public abstract class GameObject implements CollisionHandling {
         }
     }
 
+    public Rectangle2D getCollider() {
+        return this.collider;
+    }
+
     /**
      * Draws the game object in the game world to g.
      * (ie. the buffer which will be drawn to the screen)

@@ -2,7 +2,7 @@ package gameobjects;
 
 import java.awt.image.BufferedImage;
 
-public class Bomb extends GameObject {
+public class Bomb extends GameObject implements Observable {
 
     private int firepower;
 
@@ -28,6 +28,11 @@ public class Bomb extends GameObject {
 
     @Override
     public void handleCollision(Explosion collidingObj) {
+
+    }
+
+    @Override
+    public void update() {
 
     }
 

@@ -9,6 +9,8 @@ public class Bomber extends Player implements Observable {
 
     private BufferedImage[][] sprites;
 
+    private int moveSpeed;
+
     public Bomber(float xPos, float yPos, BufferedImage spriteMap) {
         super(xPos, yPos - 16);
 
@@ -24,7 +26,22 @@ public class Bomber extends Player implements Observable {
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
         this.originOffset = new Vector2D(this.width / 2, this.height / 2);
-        this.collider = new Rectangle2D.Double(xPos, yPos + 16, this.width, this.height - 16);
+        this.collider = new Rectangle2D.Double(xPos, yPos, this.width, this.height - 16);
+
+        this.moveSpeed = 4;
+    }
+
+    private void moveUp() {
+        this.position.addY(-this.moveSpeed);
+    }
+    private void moveDown() {
+        this.position.addY(this.moveSpeed);
+    }
+    private void moveLeft() {
+        this.position.addX(-this.moveSpeed);
+    }
+    private void moveRight() {
+        this.position.addX(this.moveSpeed);
     }
 
     @Override
@@ -49,7 +66,21 @@ public class Bomber extends Player implements Observable {
 
     @Override
     public void update() {
+        this.collider.setRect(this.position.getX(), this.position.getY() + 16, this.width, this.height - 16);
 
+        // Movement
+        if (this.UpPressed) {
+            this.moveUp();
+        }
+        if (this.DownPressed) {
+            this.moveDown();
+        }
+        if (this.LeftPressed) {
+            this.moveLeft();
+        }
+        if (this.RightPressed) {
+            this.moveRight();
+        }
     }
 
 }

@@ -2,16 +2,19 @@ import gameobjects.Bomber;
 import gameobjects.GameObject;
 import gameobjects.GameObjectCollection;
 import gameobjects.Wall;
+import util.Key;
 import util.ResourceCollection;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -27,9 +30,15 @@ public class GamePanel extends JPanel implements Runnable {
     private ArrayList<ArrayList<String>> mapLayout;
     private BufferedReader bufferedReader;
 
+    private HashMap<Integer, Key> controls1;
+    private HashMap<Integer, Key> controls2;
+    private HashMap<Integer, Key> controls3;
+    private HashMap<Integer, Key> controls4;
+
     public GamePanel(String filename) {
         this.setFocusable(true);
         this.requestFocus();
+        this.setControls();
         this.bg = ResourceCollection.Images.BACKGROUND.getImage();
         this.loadMapFile(filename);
     }
@@ -110,7 +119,33 @@ public class GamePanel extends JPanel implements Runnable {
                     case ("1"):
                         BufferedImage sprMapP1 = ResourceCollection.Images.PLAYER_1.getImage();
                         Bomber player1 = new Bomber(x * 32, y * 32, sprMapP1);
+                        PlayerController playerController1 = new PlayerController(player1, this.controls1);
+                        this.addKeyListener(playerController1);
                         GameObjectCollection.bomberObjects.add(player1);
+                        break;
+
+                    case ("2"):
+                        BufferedImage sprMapP2 = ResourceCollection.Images.PLAYER_2.getImage();
+                        Bomber player2 = new Bomber(x * 32, y * 32, sprMapP2);
+                        PlayerController playerController2 = new PlayerController(player2, this.controls2);
+                        this.addKeyListener(playerController2);
+                        GameObjectCollection.bomberObjects.add(player2);
+                        break;
+
+                    case ("3"):
+                        BufferedImage sprMapP3 = ResourceCollection.Images.PLAYER_3.getImage();
+                        Bomber player3 = new Bomber(x * 32, y * 32, sprMapP3);
+                        PlayerController playerController3 = new PlayerController(player3, this.controls3);
+                        this.addKeyListener(playerController3);
+                        GameObjectCollection.bomberObjects.add(player3);
+                        break;
+
+                    case ("4"):
+                        BufferedImage sprMapP4 = ResourceCollection.Images.PLAYER_4.getImage();
+                        Bomber player4 = new Bomber(x * 32, y * 32, sprMapP4);
+                        PlayerController playerController4 = new PlayerController(player4, this.controls4);
+                        this.addKeyListener(playerController4);
+                        GameObjectCollection.bomberObjects.add(player4);
                         break;
 
                     default:
@@ -118,6 +153,44 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         }
+    }
+
+    /**
+     * Initialize default key bindings for all players.
+     */
+    private void setControls() {
+        this.controls1 = new HashMap<>();
+        this.controls2 = new HashMap<>();
+        this.controls3 = new HashMap<>();
+        this.controls4 = new HashMap<>();
+
+        // Set Player 1 controls
+        this.controls1.put(KeyEvent.VK_UP, Key.up);
+        this.controls1.put(KeyEvent.VK_DOWN, Key.down);
+        this.controls1.put(KeyEvent.VK_LEFT, Key.left);
+        this.controls1.put(KeyEvent.VK_RIGHT, Key.right);
+        this.controls1.put(KeyEvent.VK_SLASH, Key.action);
+
+        // Set Player 2 controls
+        this.controls2.put(KeyEvent.VK_W, Key.up);
+        this.controls2.put(KeyEvent.VK_S, Key.down);
+        this.controls2.put(KeyEvent.VK_A, Key.left);
+        this.controls2.put(KeyEvent.VK_D, Key.right);
+        this.controls2.put(KeyEvent.VK_E, Key.action);
+
+        // Set Player 3 controls
+        this.controls3.put(KeyEvent.VK_T, Key.up);
+        this.controls3.put(KeyEvent.VK_G, Key.down);
+        this.controls3.put(KeyEvent.VK_F, Key.left);
+        this.controls3.put(KeyEvent.VK_H, Key.right);
+        this.controls3.put(KeyEvent.VK_Y, Key.action);
+
+        // Set Player 4 controls
+        this.controls4.put(KeyEvent.VK_I, Key.up);
+        this.controls4.put(KeyEvent.VK_K, Key.down);
+        this.controls4.put(KeyEvent.VK_J, Key.left);
+        this.controls4.put(KeyEvent.VK_L, Key.right);
+        this.controls4.put(KeyEvent.VK_O, Key.action);
     }
 
     public void addNotify() {
@@ -131,6 +204,28 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void update() {
         try {
+            for (int i = 0; i < GameObjectCollection.bomberObjects.size(); ) {
+                Bomber obj = GameObjectCollection.bomberObjects.get(i);
+                obj.update();
+                if (obj.isDestroyed()) {
+                    // Destroy and remove game objects that were marked for deletion
+                    GameObjectCollection.bomberObjects.remove(obj);
+                } else {
+                    for (int j = 0; j < GameObjectCollection.bomberObjects.size(); j++) {
+                        GameObject collidingObj = GameObjectCollection.bomberObjects.get(j);
+                        // Skip detecting collision on the same object as itself
+                        if (obj == collidingObj) {
+                            continue;
+                        }
+
+                        // Visitor pattern collision handling
+                        if (obj.getCollider().intersects(collidingObj.getCollider())) {
+                            obj.collides(collidingObj);
+                        }
+                    }
+                    i++;
+                }
+            }
             Thread.sleep(1000 / 144);
         } catch (InterruptedException ignored) {
 
@@ -194,18 +289,22 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < GameObjectCollection.wallObjects.size(); i++) {
             GameObject obj = GameObjectCollection.wallObjects.get(i);
             obj.drawImage(this.buffer);
+            obj.drawCollider(this.buffer);
         }
         for (int i = 0; i < GameObjectCollection.bombObjects.size(); i++) {
             GameObject obj = GameObjectCollection.bombObjects.get(i);
             obj.drawImage(this.buffer);
+            obj.drawCollider(this.buffer);
         }
         for (int i = 0; i < GameObjectCollection.explosionObjects.size(); i++) {
             GameObject obj = GameObjectCollection.explosionObjects.get(i);
             obj.drawImage(this.buffer);
+            obj.drawCollider(this.buffer);
         }
         for (int i = 0; i < GameObjectCollection.bomberObjects.size(); i++) {
             GameObject obj = GameObjectCollection.bomberObjects.get(i);
             obj.drawImage(this.buffer);
+            obj.drawCollider(this.buffer);
         }
 
         g2.drawImage(this.world, ((GameWindow.SCREEN_WIDTH - 16) / 2) - (((this.mapWidth * 32) - 16) / 2), 24 + ((GameWindow.SCREEN_HEIGHT - 48) / 2) - (((this.mapHeight * 32) - 48) / 2), null);
