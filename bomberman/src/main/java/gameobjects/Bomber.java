@@ -26,7 +26,7 @@ public class Bomber extends Player implements Observable {
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
         this.originOffset = new Vector2D(this.width / 2, this.height / 2);
-        this.collider = new Rectangle2D.Double(xPos, yPos, this.width, this.height - 16);
+        this.collider = new Rectangle2D.Double(this.position.getX() + 2, this.position.getY() + 20, this.width - 4, this.height - 20);
 
         this.moveSpeed = 1;
     }
