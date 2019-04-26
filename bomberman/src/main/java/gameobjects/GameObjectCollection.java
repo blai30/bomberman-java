@@ -1,7 +1,6 @@
 package gameobjects;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class GameObjectCollection {
@@ -25,13 +24,6 @@ public class GameObjectCollection {
         gameObjects.add(bombObjects);
         gameObjects.add(bomberObjects);
         gameObjects.add(explosionObjects);
-    }
-
-    public static void sortByY() {
-        wallObjects.sort(Comparator.comparing(GameObject::getPositionY));
-        bombObjects.sort(Comparator.comparing(GameObject::getPositionY));
-        bomberObjects.sort(Comparator.comparing(GameObject::getPositionY));
-        explosionObjects.sort(Comparator.comparing(GameObject::getPositionY));
     }
 
 }

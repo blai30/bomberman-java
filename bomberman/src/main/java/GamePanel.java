@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -203,6 +204,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void update() {
+        GameObjectCollection.bomberObjects.sort(Comparator.comparing(GameObject::getPositionY));
         try {
             for (int list = 0; list < GameObjectCollection.gameObjects.size(); list++) {
                 for (int objIndex = 0; objIndex < GameObjectCollection.gameObjects.get(list).size(); ) {
@@ -231,7 +233,6 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
-            GameObjectCollection.sortByY();
             Thread.sleep(1000 / 144);
         } catch (InterruptedException ignored) {
 
