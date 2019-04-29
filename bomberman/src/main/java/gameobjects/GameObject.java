@@ -74,7 +74,7 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
             }
 
             // Smoothing around corners
-            if (intersection.getWidth() < 12) {
+            if (intersection.getWidth() < 16) {
                 if (intersection.getMaxX() >= this.collider.getMaxX()) {
                     this.position.addX(-(float) 0.5);
                 }
@@ -96,7 +96,7 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
             }
 
             // Smoothing around corners
-            if (intersection.getHeight() < 12) {
+            if (intersection.getHeight() < 16) {
                 if (intersection.getMaxY() >= this.collider.getMaxY()) {
                     this.position.addY(-(float) 0.5);
                 }

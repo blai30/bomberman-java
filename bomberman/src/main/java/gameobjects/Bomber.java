@@ -11,6 +11,10 @@ public class Bomber extends Player {
 
     private int moveSpeed;
 
+    private int direction;  // 0: up, 1: down, 2: left, 3: right
+    private int spriteIndex;
+    private int spriteTimer;
+
     public Bomber(float xPos, float yPos, BufferedImage spriteMap) {
         super(xPos, yPos - 16);
 
@@ -29,18 +33,25 @@ public class Bomber extends Player {
         this.collider = new Rectangle2D.Double(this.position.getX() + 4, this.position.getY() + 22, this.width - 8, this.height - 22);
 
         this.moveSpeed = 1;
+        this.direction = 1;
+        this.spriteIndex = 0;
+        this.spriteTimer = 0;
     }
 
     private void moveUp() {
+        this.direction = 0;
         this.position.addY(-this.moveSpeed);
     }
     private void moveDown() {
+        this.direction = 1;
         this.position.addY(this.moveSpeed);
     }
     private void moveLeft() {
+        this.direction = 2;
         this.position.addX(-this.moveSpeed);
     }
     private void moveRight() {
+        this.direction = 3;
         this.position.addX(this.moveSpeed);
     }
 
@@ -61,6 +72,15 @@ public class Bomber extends Player {
         if (this.RightPressed) {
             this.moveRight();
         }
+
+        if (this.spriteTimer++ >= 5) {
+            this.spriteIndex++;
+            this.spriteTimer = 0;
+        }
+        if ((!this.UpPressed && !this.DownPressed && !this.LeftPressed && !this.RightPressed) || (this.spriteIndex >= this.sprites[0].length)) {
+            this.spriteIndex = 0;
+        }
+        this.sprite = this.sprites[this.direction][this.spriteIndex];
     }
 
     @Override
