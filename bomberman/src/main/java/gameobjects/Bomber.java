@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 public class Bomber extends Player {
 
     private BufferedImage[][] sprites;
+    private BufferedImage baseSprite;
 
     private int moveSpeed;
 
@@ -26,7 +27,8 @@ public class Bomber extends Player {
             }
         }
 
-        this.sprite = this.sprites[1][0];
+        this.baseSprite = this.sprites[1][0];
+        this.sprite = this.baseSprite;
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
         this.originOffset = new Vector2D(this.width / 2, this.height / 2);
@@ -53,6 +55,10 @@ public class Bomber extends Player {
     private void moveRight() {
         this.direction = 3;
         this.position.addX(this.moveSpeed);
+    }
+
+    public BufferedImage getBaseSprite() {
+        return this.baseSprite;
     }
 
     @Override

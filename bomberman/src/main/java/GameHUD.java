@@ -1,4 +1,5 @@
 import gameobjects.Bomber;
+import gameobjects.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -40,6 +41,10 @@ public class GameHUD {
         return this.playerInfo[3];
     }
 
+    public void assignPlayer(Bomber player, int playerID) {
+        this.players[playerID] = player;
+    }
+
     public void drawHUD() {
         Graphics[] playerGraphics = {
                 this.playerInfo[0].createGraphics(),
@@ -60,6 +65,7 @@ public class GameHUD {
         // Iterate loop for each player
         for (int i = 0; i < playerGraphics.length; i++) {
             playerGraphics[i].drawRect(1, 1, this.playerInfo[i].getWidth() - 2, this.playerInfo[i].getHeight() - 2);
+            playerGraphics[i].drawImage(this.players[i].getBaseSprite(), 0, 0, null);
         }
     }
 

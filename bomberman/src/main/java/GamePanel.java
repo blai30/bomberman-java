@@ -124,6 +124,7 @@ public class GamePanel extends JPanel implements Runnable {
                         Bomber player1 = new Bomber(x * 32, y * 32, sprMapP1);
                         PlayerController playerController1 = new PlayerController(player1, this.controls1);
                         this.addKeyListener(playerController1);
+                        this.gameHUD.assignPlayer(player1, 0);
                         GameObjectCollection.bomberObjects.add(player1);
                         break;
 
@@ -132,6 +133,7 @@ public class GamePanel extends JPanel implements Runnable {
                         Bomber player2 = new Bomber(x * 32, y * 32, sprMapP2);
                         PlayerController playerController2 = new PlayerController(player2, this.controls2);
                         this.addKeyListener(playerController2);
+                        this.gameHUD.assignPlayer(player2, 1);
                         GameObjectCollection.bomberObjects.add(player2);
                         break;
 
@@ -140,6 +142,7 @@ public class GamePanel extends JPanel implements Runnable {
                         Bomber player3 = new Bomber(x * 32, y * 32, sprMapP3);
                         PlayerController playerController3 = new PlayerController(player3, this.controls3);
                         this.addKeyListener(playerController3);
+                        this.gameHUD.assignPlayer(player3, 2);
                         GameObjectCollection.bomberObjects.add(player3);
                         break;
 
@@ -148,6 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
                         Bomber player4 = new Bomber(x * 32, y * 32, sprMapP4);
                         PlayerController playerController4 = new PlayerController(player4, this.controls4);
                         this.addKeyListener(playerController4);
+                        this.gameHUD.assignPlayer(player4, 3);
                         GameObjectCollection.bomberObjects.add(player4);
                         break;
 
