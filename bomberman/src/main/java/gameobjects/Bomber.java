@@ -36,8 +36,8 @@ public class Bomber extends Player {
         this.sprite = this.baseSprite;
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
-        this.originOffset = new Vector2D(this.width / 2, this.height / 2);
-        this.collider = new Rectangle2D.Double(this.position.getX() + 4, this.position.getY() + 22, this.width - 8, this.height - 22);
+        this.originOffset = new Vector2D(this.width / 2, (this.height / 2) + 8);
+        this.collider = new Rectangle2D.Double(this.position.getX(), this.position.getY() + 16, this.width, this.height - 16);
 
         this.direction = 1;
         this.spriteIndex = 0;
@@ -78,7 +78,7 @@ public class Bomber extends Player {
 
     @Override
     public void update() {
-        this.collider.setRect(this.position.getX() + 4, this.position.getY() + 24, this.width - 8, this.height - 24);
+        this.collider.setRect(this.position.getX(), this.position.getY() + 16, this.width, this.height - 16);
 
         // Movement
         if (this.UpPressed) {
