@@ -25,6 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
     private BufferedImage world;
     private Graphics2D buffer;
     private BufferedImage bg;
+    private GameHUD gameHUD;
 
     private int mapWidth;
     private int mapHeight;
@@ -47,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void init() {
         GameObjectCollection.init();
         this.world = new BufferedImage(GameWindow.SCREEN_WIDTH, GameWindow.SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        this.gameHUD = new GameHUD();
         this.generateMap();
         this.running = true;
     }
@@ -281,9 +283,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.buffer.clearRect(0, 0, this.world.getWidth(), this.world.getHeight());
         super.paintComponent(g2);
 
-        // Set window background to black
-        g2.setColor(Color.BLACK);
-        g2.fillRect(0, 0, getWidth(), getHeight());
+        this.gameHUD.drawHUD();
 
         // Draw background
         for (int i = 0; i < this.world.getWidth(); i += this.bg.getWidth()) {
@@ -301,7 +301,12 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        g2.drawImage(this.world, ((GameWindow.SCREEN_WIDTH - 16) / 2) - (((this.mapWidth * 32) - 16) / 2), 24 + ((GameWindow.SCREEN_HEIGHT - 48) / 2) - (((this.mapHeight * 32) - 48) / 2), null);
+        int infoBoxWidth = GameWindow.SCREEN_WIDTH / 4;
+        g2.drawImage(this.gameHUD.getP1info(), infoBoxWidth * 0, 0, null);
+        g2.drawImage(this.gameHUD.getP2info(), infoBoxWidth * 1, 0, null);
+        g2.drawImage(this.gameHUD.getP3info(), infoBoxWidth * 2, 0, null);
+        g2.drawImage(this.gameHUD.getP4info(), infoBoxWidth * 3, 0, null);
+        g2.drawImage(this.world, ((GameWindow.SCREEN_WIDTH - 16) / 2) - (((this.mapWidth * 32) - 16) / 2), (GameWindow.HUD_HEIGHT / 2) + ((GameWindow.SCREEN_HEIGHT - GameWindow.HUD_HEIGHT) / 2) - (((this.mapHeight * 32) - GameWindow.HUD_HEIGHT) / 2), null);
 
         g2.dispose();
         this.buffer.dispose();

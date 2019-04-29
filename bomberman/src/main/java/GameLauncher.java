@@ -33,6 +33,7 @@ class GameWindow extends JFrame {
 
     static final int SCREEN_WIDTH = 480;
     static final int SCREEN_HEIGHT = 464;
+    static final int HUD_HEIGHT = 48;
     static final String TITLE = "Bomberman by Brian Lai";
 
     GameWindow() {
