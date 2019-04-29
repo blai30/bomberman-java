@@ -49,7 +49,7 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
         spawnObj.position.set(spawnPoint);
         spawnObj.rotation = rotation;
         spawnObj.collider.setRect(x, y, spawnObj.width, spawnObj.height);
-        // TODO: spawn the object
+        GameObjectCollection.spawn(spawnObj);
     }
 
     protected void destroy() {

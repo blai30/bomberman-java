@@ -26,4 +26,16 @@ public class GameObjectCollection {
         gameObjects.add(explosionObjects);
     }
 
+    public static void spawn(GameObject spawnObj) {
+        if (spawnObj instanceof Wall) {
+            wallObjects.add((Wall) spawnObj);
+        } else if (spawnObj instanceof Bomb) {
+            bombObjects.add((Bomb) spawnObj);
+        } else if (spawnObj instanceof Bomber) {
+            bomberObjects.add((Bomber) spawnObj);
+        } else if (spawnObj instanceof Explosion) {
+            explosionObjects.add((Explosion) spawnObj);
+        }
+    }
+
 }

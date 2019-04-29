@@ -1,14 +1,25 @@
 package gameobjects;
 
-import java.awt.image.BufferedImage;
+import util.ResourceCollection;
+import util.Vector2D;
+
+import java.awt.geom.Rectangle2D;
 
 public class Bomb extends GameObject {
 
-    private int firepower;
+    private Bomber bomber;
 
-    public Bomb(float xPos, float yPos, BufferedImage sprite, int firepower) {
-        super(xPos, yPos, sprite);
+    private int firepower;
+    private int timer;
+
+
+    public Bomb(int firepower, int timer, Bomber bomber) {
+        super(ResourceCollection.Images.BOMB.getImage());
+        this.position = new Vector2D();
+        this.collider = new Rectangle2D.Double(this.position.getX(), this.position.getY(), this.width, this.height);
         this.firepower = firepower;
+        this.timer = timer;
+        this.bomber = bomber;
     }
 
     @Override

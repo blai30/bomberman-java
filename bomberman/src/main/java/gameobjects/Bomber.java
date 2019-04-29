@@ -10,11 +10,16 @@ public class Bomber extends Player {
     private BufferedImage[][] sprites;
     private BufferedImage baseSprite;
 
-    private int moveSpeed;
+    private Bomb bomb;
 
     private int direction;  // 0: up, 1: down, 2: left, 3: right
     private int spriteIndex;
     private int spriteTimer;
+
+    private int moveSpeed;
+    private int firePower;
+    private int bombAmmo;
+    private int bombTimer;
 
     public Bomber(float xPos, float yPos, BufferedImage spriteMap) {
         super(xPos, yPos - 16);
@@ -34,10 +39,14 @@ public class Bomber extends Player {
         this.originOffset = new Vector2D(this.width / 2, this.height / 2);
         this.collider = new Rectangle2D.Double(this.position.getX() + 4, this.position.getY() + 22, this.width - 8, this.height - 22);
 
-        this.moveSpeed = 1;
         this.direction = 1;
         this.spriteIndex = 0;
         this.spriteTimer = 0;
+
+        this.moveSpeed = 1;
+        this.firePower = 1;
+        this.bombAmmo = 1;
+        this.bombTimer = 10;
     }
 
     private void moveUp() {
@@ -55,6 +64,12 @@ public class Bomber extends Player {
     private void moveRight() {
         this.direction = 3;
         this.position.addX(this.moveSpeed);
+    }
+
+    private void plantBomb() {
+        this.bomb = new Bomb(this.firePower, this.bombTimer, this);
+        this.instantiate(this.bomb, this.position.add(this.originOffset), this.rotation);
+        this.bombAmmo--;
     }
 
     public BufferedImage getBaseSprite() {
@@ -79,6 +94,12 @@ public class Bomber extends Player {
             this.moveRight();
         }
 
+        // Action
+        if (this.ActionPressed && this.bombAmmo > 0) {
+            this.plantBomb();
+        }
+
+        // Animate sprite
         if (this.spriteTimer++ >= 5) {
             this.spriteIndex++;
             this.spriteTimer = 0;

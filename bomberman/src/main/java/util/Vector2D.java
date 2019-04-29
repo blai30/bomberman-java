@@ -64,6 +64,13 @@ public class Vector2D {
         this.y += y;
     }
 
+    // Pseudo operator overloading
+    public Vector2D add(Vector2D vec) {
+        float x = this.x + vec.x;
+        float y = this.y + vec.y;
+        return new Vector2D(x, y);
+    }
+
     public boolean equals(Vector2D vec) {
         return this.x == vec.x && this.y == vec.y;
     }

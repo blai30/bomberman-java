@@ -212,6 +212,7 @@ public class GamePanel extends JPanel implements Runnable {
     private void update() {
         GameObjectCollection.bomberObjects.sort(Comparator.comparing(GameObject::getPositionY));
         try {
+            // Loop through every game object arraylist
             for (int list = 0; list < GameObjectCollection.gameObjects.size(); list++) {
                 for (int objIndex = 0; objIndex < GameObjectCollection.gameObjects.get(list).size(); ) {
                     GameObject obj = GameObjectCollection.gameObjects.get(list).get(objIndex);
