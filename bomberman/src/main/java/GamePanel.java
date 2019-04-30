@@ -6,8 +6,10 @@ import util.Key;
 import util.ResourceCollection;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,6 +20,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 public class GamePanel extends JPanel implements Runnable {
+
+    static int panelWidth;
+    static int panelHeight;
 
     private Thread thread;
     private boolean running;
@@ -47,14 +52,16 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void init() {
         GameObjectCollection.init();
-        this.world = new BufferedImage(GameWindow.SCREEN_WIDTH, GameWindow.SCREEN_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        System.gc();
+        this.addKeyListener(new GameController(this));
         this.gameHUD = new GameHUD();
         this.generateMap();
+        this.gameHUD.init();
+        this.setPreferredSize(new Dimension(this.mapWidth * 32, (this.mapHeight * 32) + GameWindow.HUD_HEIGHT));
         this.running = true;
     }
 
     private void loadMapFile(String mapFile) {
-
         // Loading map file
         try {
             this.bufferedReader = new BufferedReader(new FileReader(mapFile));
@@ -85,9 +92,10 @@ public class GamePanel extends JPanel implements Runnable {
         // Map dimensions
         this.mapWidth = mapLayout.get(0).size();
         this.mapHeight = mapLayout.size();
+        panelWidth = this.mapWidth * 32;
+        panelHeight = this.mapHeight * 32;
 
         this.world = new BufferedImage(this.mapWidth * 32, this.mapHeight * 32, BufferedImage.TYPE_INT_RGB);
-//        this.gameHUD = new GameHUD(this.world);
 
         // Generate entire map
         for (int y = 0; y < this.mapHeight; y++) {
@@ -202,6 +210,20 @@ public class GamePanel extends JPanel implements Runnable {
         this.controls4.put(KeyEvent.VK_O, Key.action);
     }
 
+    /**
+     * When ESC is pressed, close the game
+     */
+    public void exit() {
+        this.running = false;
+    }
+
+    /**
+     * When F5 is pressed, reset game object collection, collect garbage, reinitialize game panel, reload map
+     */
+    public void resetGame() {
+        this.init();
+    }
+
     public void addNotify() {
         super.addNotify();
 
@@ -281,6 +303,8 @@ public class GamePanel extends JPanel implements Runnable {
                 ticks = 0;
             }
         }
+
+        System.exit(0);
     }
 
     @Override
@@ -308,15 +332,85 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        int infoBoxWidth = GameWindow.SCREEN_WIDTH / 4;
+        int infoBoxWidth = panelWidth / 4;
         g2.drawImage(this.gameHUD.getP1info(), infoBoxWidth * 0, 0, null);
         g2.drawImage(this.gameHUD.getP2info(), infoBoxWidth * 1, 0, null);
         g2.drawImage(this.gameHUD.getP3info(), infoBoxWidth * 2, 0, null);
         g2.drawImage(this.gameHUD.getP4info(), infoBoxWidth * 3, 0, null);
-        g2.drawImage(this.world, ((GameWindow.SCREEN_WIDTH - 16) / 2) - (((this.mapWidth * 32) - 16) / 2), (GameWindow.HUD_HEIGHT / 2) + ((GameWindow.SCREEN_HEIGHT - GameWindow.HUD_HEIGHT) / 2) - (((this.mapHeight * 32) - GameWindow.HUD_HEIGHT) / 2), null);
+        g2.drawImage(this.world, 0, GameWindow.HUD_HEIGHT, null);
 
         g2.dispose();
         this.buffer.dispose();
+    }
+
+}
+
+/**
+ * Used to control the game
+ */
+class GameController implements KeyListener {
+
+    private GamePanel gamePanel;
+
+    public GameController(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    /**
+     * Key events for general game operations such as exit
+     * @param e Keyboard key pressed
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // Close game
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            System.out.println("Escape key pressed: Closing game");
+            this.gamePanel.exit();
+        }
+
+        // Display controls
+        if (e.getKeyCode() == KeyEvent.VK_F1) {
+            System.out.println("F1 key pressed: Displaying help");
+
+            String[] columnHeaders = { "", "Player 1", "Player 2" };
+            Object[][] controls = {
+                    {"Forward", "Up", "W"},
+                    {"Backward", "Down", "S"},
+                    {"Turn Left", "Left", "A"},
+                    {"Turn Right", "Right", "D"},
+                    {"Fire", "/", "F"},
+                    {"", "", ""},
+                    {"Help", "F1", ""},
+                    {"Reset", "F5", ""},
+                    {"Exit", "ESC", ""} };
+
+            JTable controlsTable = new JTable(controls, columnHeaders);
+            JTableHeader tableHeader = controlsTable.getTableHeader();
+
+            // Wrap JTable inside JPanel to display
+            JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout());
+            panel.add(tableHeader, BorderLayout.NORTH);
+            panel.add(controlsTable, BorderLayout.CENTER);
+
+            JOptionPane.showMessageDialog(this.gamePanel, panel, "Controls", JOptionPane.PLAIN_MESSAGE);
+        }
+
+        // Reset game
+        if (e.getKeyCode() == KeyEvent.VK_F5) {
+            System.out.println("F5 key pressed: Resetting game");
+            this.gamePanel.resetGame();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 
 }

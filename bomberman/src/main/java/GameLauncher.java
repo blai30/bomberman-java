@@ -17,12 +17,7 @@ public class GameLauncher {
             game = new GamePanel(null);
         }
         game.init();
-        game.setPreferredSize(new Dimension(GameWindow.SCREEN_WIDTH,GameWindow.SCREEN_HEIGHT));
-        window = new GameWindow();
-        window.add(game, BorderLayout.CENTER);
-        window.pack();
-
-        window.setVisible(true);
+        window = new GameWindow(game);
 
         System.gc();
     }
@@ -31,19 +26,19 @@ public class GameLauncher {
 
 class GameWindow extends JFrame {
 
-    static final int SCREEN_WIDTH = 480;
-    static final int SCREEN_HEIGHT = 464;
     static final int HUD_HEIGHT = 48;
     static final String TITLE = "Bomberman by Brian Lai";
 
-    GameWindow() {
+    GameWindow(GamePanel game) {
         this.setTitle(TITLE);
         this.setIconImage(ResourceCollection.Images.ICON.getImage());
         this.setLayout(new BorderLayout());
-        this.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        this.add(game, BorderLayout.CENTER);
         this.setResizable(false);
-        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
 }

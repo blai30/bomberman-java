@@ -14,9 +14,11 @@ public class GameHUD {
     public GameHUD() {
         this.players = new Bomber[4];
         this.playerInfo = new BufferedImage[4];
+    }
 
+    public void init() {
         this.height = GameWindow.HUD_HEIGHT;
-        this.infoWidth = GameWindow.SCREEN_WIDTH / 4;   // 4 players, 4 info boxes
+        this.infoWidth = GamePanel.panelWidth / 4;   // 4 players, 4 info boxes
 
         this.playerInfo[0] = new BufferedImage(this.infoWidth, this.height, BufferedImage.TYPE_INT_RGB);
         this.playerInfo[1] = new BufferedImage(this.infoWidth, this.height, BufferedImage.TYPE_INT_RGB);
