@@ -24,7 +24,7 @@ public class Bomber extends Player {
     public Bomber(float xPos, float yPos, BufferedImage spriteMap) {
         super(xPos, yPos - 16);
 
-        // Each sprite is 32x48. Sprite map is 6x4 sprites
+        // Each individually sliced sprite is 32x48
         this.sprites = new BufferedImage[spriteMap.getHeight() / 48][spriteMap.getWidth() / 32];
         for (int row = 0; row < spriteMap.getHeight() / 48; row++) {
             for (int column = 0; column < spriteMap.getWidth() / 32; column++) {
@@ -68,8 +68,8 @@ public class Bomber extends Player {
 
     private void plantBomb() {
         this.bomb = new Bomb(this.firePower, this.bombTimer, this);
-        float x = Math.round(this.position.getX() / 32) * 32;
-        float y = Math.round(this.position.getY() / 32) * 32;
+        float x = Math.round(this.position.getX() / 32) * 32 + this.originOffset.getX();
+        float y = Math.round((this.position.getY() + 16) / 32) * 32 + this.originOffset.getY() - 16;
         this.instantiate(this.bomb, new Vector2D(x, y), this.rotation);
         this.bombAmmo--;
     }

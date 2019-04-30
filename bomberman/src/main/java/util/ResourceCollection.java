@@ -48,14 +48,14 @@ public class ResourceCollection {
             System.out.println(System.getProperty("user.dir"));
             Images.ICON.image = ImageIO.read(ResourceCollection.class.getResource("/resources/icon.png"));
             Images.BACKGROUND.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bg.png"));
-            Images.PLAYER_1.image = ImageIO.read(ResourceCollection.class.getResource("/resources/player1.png"));
-            Images.PLAYER_2.image = ImageIO.read(ResourceCollection.class.getResource("/resources/player2.png"));
-            Images.PLAYER_3.image = ImageIO.read(ResourceCollection.class.getResource("/resources/player3.png"));
-            Images.PLAYER_4.image = ImageIO.read(ResourceCollection.class.getResource("/resources/player4.png"));
+            Images.PLAYER_1.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomber1.png"));
+            Images.PLAYER_2.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomber2.png"));
+            Images.PLAYER_3.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomber3.png"));
+            Images.PLAYER_4.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomber4.png"));
             Images.SOFT_WALL.image = ImageIO.read(ResourceCollection.class.getResource("/resources/softWall.png"));
             Images.HARD_WALLS.image = ImageIO.read(ResourceCollection.class.getResource("/resources/hardWalls.png"));
             Images.BOMB.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomb.png"));
-            Images.EXPLOSION.image = ImageIO.read(ResourceCollection.class.getResource("/resources/explosion.jpg"));
+            Images.EXPLOSION.image = ImageIO.read(ResourceCollection.class.getResource("/resources/explosion.png"));
 
             Files.DEFAULT_MAP.file = new InputStreamReader(ResourceCollection.class.getResourceAsStream("/resources/default.csv"));
 

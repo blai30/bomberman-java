@@ -56,10 +56,10 @@ public class GameHUD {
         playerGraphics[2].clearRect(0, 0, playerInfo[1].getWidth(), playerInfo[1].getHeight());
         playerGraphics[3].clearRect(0, 0, playerInfo[1].getWidth(), playerInfo[1].getHeight());
 
-        playerGraphics[0].setColor(Color.RED);      // Player 1 info box border color
-        playerGraphics[1].setColor(Color.BLUE);     // Player 2 info box border color
-        playerGraphics[2].setColor(Color.YELLOW);   // Player 3 info box border color
-        playerGraphics[3].setColor(Color.GREEN);    // Player 4 info box border color
+        playerGraphics[0].setColor(Color.WHITE);    // Player 1 info box border color
+        playerGraphics[1].setColor(Color.GRAY);     // Player 2 info box border color
+        playerGraphics[2].setColor(Color.RED);      // Player 3 info box border color
+        playerGraphics[3].setColor(Color.BLUE);     // Player 4 info box border color
 
         // Iterate loop for each player
         for (int i = 0; i < playerGraphics.length; i++) {
