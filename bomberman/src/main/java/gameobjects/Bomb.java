@@ -25,7 +25,7 @@ public class Bomb extends GameObject {
     }
 
     private void explode() {
-
+        this.bomber.restoreAmmo();
     }
 
     @Override

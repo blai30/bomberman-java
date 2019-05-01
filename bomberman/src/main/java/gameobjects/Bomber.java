@@ -4,6 +4,7 @@ import util.Vector2D;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.LinkedHashMap;
 
 public class Bomber extends Player {
 
@@ -16,10 +17,12 @@ public class Bomber extends Player {
     private int spriteIndex;
     private int spriteTimer;
 
+    private LinkedHashMap<String, Integer> statsCollection;
     private int moveSpeed;
     private int firePower;
     private int bombAmmo;
     private int bombTimer;
+    private int score;
 
     public Bomber(float xPos, float yPos, BufferedImage spriteMap) {
         super(xPos, yPos - 16);
@@ -43,10 +46,11 @@ public class Bomber extends Player {
         this.spriteIndex = 0;
         this.spriteTimer = 0;
 
+        this.statsCollection = new LinkedHashMap<>();
         this.moveSpeed = 1;
         this.firePower = 1;
         this.bombAmmo = 1;
-        this.bombTimer = 600;
+        this.bombTimer = 300;
     }
 
     private void moveUp() {
@@ -74,8 +78,22 @@ public class Bomber extends Player {
         this.bombAmmo--;
     }
 
+    public void restoreAmmo() {
+        this.bombAmmo++;
+    }
+
     public BufferedImage getBaseSprite() {
         return this.baseSprite;
+    }
+
+    public LinkedHashMap<String, Integer> getStats() {
+        this.statsCollection.put("Speed", this.moveSpeed);
+        this.statsCollection.put("Power", this.firePower);
+        this.statsCollection.put("Bombs", this.bombAmmo);
+        this.statsCollection.put("Timer", this.bombTimer);
+        this.statsCollection.put("Score", this.score);
+
+        return this.statsCollection;
     }
 
     @Override
@@ -102,7 +120,7 @@ public class Bomber extends Player {
         }
 
         // Animate sprite
-        if (this.spriteTimer++ >= 5) {
+        if (this.spriteTimer++ >= 10) {
             this.spriteIndex++;
             this.spriteTimer = 0;
         }
