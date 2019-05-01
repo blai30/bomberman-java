@@ -377,17 +377,17 @@ class GameController implements KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_F1) {
             System.out.println("F1 key pressed: Displaying help");
 
-            String[] columnHeaders = { "", "Player 1", "Player 2" };
+            String[] columnHeaders = { "", "White", "Black", "Red", "Blue" };
             Object[][] controls = {
-                    {"Forward", "Up", "W"},
-                    {"Backward", "Down", "S"},
-                    {"Turn Left", "Left", "A"},
-                    {"Turn Right", "Right", "D"},
-                    {"Fire", "/", "F"},
-                    {"", "", ""},
-                    {"Help", "F1", ""},
-                    {"Reset", "F5", ""},
-                    {"Exit", "ESC", ""} };
+                    {"Up", "Up", "W", "T", "I"},
+                    {"Down", "Down", "S", "G", "K"},
+                    {"Left", "Left", "A", "F", "J"},
+                    {"Right", "Right", "D", "H", "L"},
+                    {"Bomb", "/", "E", "Y", "O"},
+                    {"", "", "", "", ""},
+                    {"Help", "F1", "", "", ""},
+                    {"Reset", "F5", "", "", ""},
+                    {"Exit", "ESC", "", "", ""} };
 
             JTable controlsTable = new JTable(controls, columnHeaders);
             JTableHeader tableHeader = controlsTable.getTableHeader();
