@@ -38,22 +38,7 @@ public class Bomb extends GameObject {
 
     @Override
     public void collides(GameObject collidingObj) {
-
-    }
-
-    @Override
-    public void handleCollision(Bomber collidingObj) {
-
-    }
-
-    @Override
-    public void handleCollision(Wall collidingObj) {
-
-    }
-
-    @Override
-    public void handleCollision(Explosion collidingObj) {
-
+        collidingObj.collides(this);
     }
 
 }

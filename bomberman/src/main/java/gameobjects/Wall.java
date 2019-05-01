@@ -32,16 +32,6 @@ public class Wall extends GameObject {
     }
 
     @Override
-    public void handleCollision(Bomber collidingObj) {
-
-    }
-
-    @Override
-    public void handleCollision(Wall collidingObj) {
-
-    }
-
-    @Override
     public void handleCollision(Explosion collidingObj) {
         this.destroy();
     }

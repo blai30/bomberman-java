@@ -139,6 +139,26 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
     }
 
     @Override
+    public void handleCollision(Bomber collidingObj) {
+
+    }
+
+    @Override
+    public void handleCollision(Wall collidingObj) {
+
+    }
+
+    @Override
+    public void handleCollision(Explosion collidingObj) {
+
+    }
+
+    @Override
+    public void handleCollision(Bomb collidingObj) {
+
+    }
+
+    @Override
     public int compareTo(GameObject o) {
         return Float.compare(this.getPositionY(), o.getPositionY());
     }
@@ -151,5 +171,6 @@ interface CollisionHandling {
     void handleCollision(Bomber collidingObj);
     void handleCollision(Wall collidingObj);
     void handleCollision(Explosion collidingObj);
+    void handleCollision(Bomb collidingObj);
 
 }

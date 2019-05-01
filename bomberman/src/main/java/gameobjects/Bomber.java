@@ -136,18 +136,8 @@ public class Bomber extends Player {
     }
 
     @Override
-    public void handleCollision(Bomber collidingObj) {
-
-    }
-
-    @Override
     public void handleCollision(Wall collidingObj) {
         this.solidCollision(collidingObj);
-    }
-
-    @Override
-    public void handleCollision(Explosion collidingObj) {
-
     }
 
 }
