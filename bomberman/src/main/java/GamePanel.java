@@ -255,6 +255,7 @@ public class GamePanel extends JPanel implements Runnable {
 
                                 // Visitor pattern collision handling
                                 if (obj.getCollider().intersects(collidingObj.getCollider())) {
+                                    // Use one of these
                                     collidingObj.collides(obj);
 //                                    obj.collides(collidingObj);
                                 }
