@@ -11,6 +11,7 @@ public class Bomb extends GameObject {
 
     private int firepower;
     private int timer;
+    private int startTime;
 
 
     public Bomb(int firepower, int timer, Bomber bomber) {
@@ -20,11 +21,19 @@ public class Bomb extends GameObject {
         this.firepower = firepower;
         this.timer = timer;
         this.bomber = bomber;
+        this.startTime = 0;
+    }
+
+    private void explode() {
+
     }
 
     @Override
     public void update() {
-
+        if (this.startTime++ >= this.timer) {
+            this.explode();
+            this.destroy();
+        }
     }
 
     @Override

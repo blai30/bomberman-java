@@ -46,7 +46,7 @@ public class Bomber extends Player {
         this.moveSpeed = 1;
         this.firePower = 1;
         this.bombAmmo = 1;
-        this.bombTimer = 10;
+        this.bombTimer = 600;
     }
 
     private void moveUp() {
