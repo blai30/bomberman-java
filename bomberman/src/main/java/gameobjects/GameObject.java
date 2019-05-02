@@ -138,25 +138,15 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
         g2d.draw(this.collider);
     }
 
+    // Override these in subclasses as needed
     @Override
-    public void handleCollision(Bomber collidingObj) {
-
-    }
-
+    public void handleCollision(Bomber collidingObj) {}
     @Override
-    public void handleCollision(Wall collidingObj) {
-
-    }
-
+    public void handleCollision(Wall collidingObj) {}
     @Override
-    public void handleCollision(Explosion collidingObj) {
-
-    }
-
+    public void handleCollision(Explosion collidingObj) {}
     @Override
-    public void handleCollision(Bomb collidingObj) {
-
-    }
+    public void handleCollision(Bomb collidingObj) {}
 
     @Override
     public int compareTo(GameObject o) {
