@@ -3,6 +3,8 @@ package gameobjects;
 import util.ResourceCollection;
 import util.Vector2D;
 
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class Bomb extends GameObject {
@@ -25,7 +27,17 @@ public class Bomb extends GameObject {
     }
 
     private void explode() {
-        this.instantiate(new Explosion(ResourceCollection.Images.EXPLOSION_CENTER.getImage()), this.position.add(this.originOffset), 0);
+//        Line2D line1 = new Line2D.Double(this.position.getX() + this.originOffset.getX(), this.position.getY() + this.originOffset.getY(), )
+//        Point2D point1 = new Point2D.Double(this.position.getX() - (firepower * 32) + this.originOffset.getX(), this.position.getY() + this.originOffset.getY());
+//        Rectangle2D recH = new Rectangle2D.Double(this.position.getX() - (firepower * 32), this.position.getY(), ((firepower * 2) + 1) * 32, 32);
+//        Rectangle2D recV = new Rectangle2D.Double(this.position.getX(), this.position.getY() - (firepower * 32), 32, ((firepower * 2) + 1) * 32);
+//        if (recH.intersects())
+//        Rectangle2D recH = new Rectangle2D.Double(this.position.getX(), this.position.getY(), this.width, this.height);
+//        for (int i = 0; i < this.firepower; i++) {
+//            if (recH.)
+//        }
+        this.instantiate(new Explosion.Horizontal(this.firepower), this.position.add(this.originOffset), 0);
+        this.instantiate(new Explosion.Vertical(this.firepower), this.position.add(this.originOffset), 0);
         this.bomber.restoreAmmo();
     }
 

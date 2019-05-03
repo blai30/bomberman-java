@@ -1,7 +1,4 @@
-import gameobjects.Bomber;
-import gameobjects.GameObject;
-import gameobjects.GameObjectCollection;
-import gameobjects.Wall;
+import gameobjects.*;
 import util.Key;
 import util.ResourceCollection;
 
@@ -102,7 +99,7 @@ public class GamePanel extends JPanel implements Runnable {
             for (int x = 0; x < this.mapWidth; x++) {
                 switch (mapLayout.get(y).get(x)) {
                     case ("S"):
-                        if (Math.random() < 0.9) {
+                        if (Math.random() < 0.5) {
                             BufferedImage sprSoftWall = ResourceCollection.Images.SOFT_WALL.getImage();
                             Wall softWall = new Wall(x * 32, y * 32, sprSoftWall, true);
                             GameObjectCollection.wallObjects.add(softWall);
@@ -339,7 +336,9 @@ public class GamePanel extends JPanel implements Runnable {
             for (int j = 0; j < GameObjectCollection.gameObjects.get(i).size(); j++) {
                 GameObject obj = GameObjectCollection.gameObjects.get(i).get(j);
                 obj.drawImage(this.buffer);
-                obj.drawCollider(this.buffer);
+                if (obj instanceof Explosion) {
+                    obj.drawCollider(this.buffer);
+                }
             }
         }
 
