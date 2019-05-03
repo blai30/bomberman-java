@@ -11,6 +11,7 @@ public abstract class Explosion extends GameObject {
     public static class Horizontal extends Explosion {
 
         Horizontal(int firepower) {
+            this.firepower = firepower;
             this.position = new Vector2D();
             this.sprite = new BufferedImage(((firepower * 2) + 1) * 32, 32, BufferedImage.TYPE_INT_ARGB);
             this.width = this.sprite.getWidth();
@@ -23,18 +24,21 @@ public abstract class Explosion extends GameObject {
         }
 
         @Override
+        public void update() {
+            super.update();
+
+        }
+
+        @Override
         public void handleCollision(Wall collidingObj) {
             Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
-            // Horizontal collision
-            if (intersection.getHeight() >= intersection.getWidth()) {
-                // Wall on left
-                if (intersection.getMaxX() >= collidingObj.collider.getMaxX() && this.collider.x <= collidingObj.collider.getMaxX()) {
-                    this.collider.setRect(intersection.getMaxX(), this.collider.y, this.collider.getMaxX() - intersection.getMaxX(), this.collider.height);
-                }
-                // Wall on right
-                if (intersection.getMaxX() >= this.collider.getMaxX() && this.collider.getMaxX() <= collidingObj.collider.x) {
-                    this.collider.setRect(this.collider.x, this.collider.y, this.collider.width - intersection.getWidth(), this.collider.height);
-                }
+            // Wall on left
+            if (collidingObj.collider.getMaxX() > this.collider.x && collidingObj.collider.x < this.collider.x) {
+                this.collider.setRect(collidingObj.collider.getMaxX(), this.collider.y, this.collider.getMaxX() - collidingObj.collider.getMaxX(), this.collider.height);
+            }
+            // Wall on right
+            if (this.collider.getMaxX() > collidingObj.collider.x && this.collider.x < collidingObj.collider.x) {
+                this.collider.setRect(this.collider.x, this.collider.y, this.collider.width - intersection.getWidth(), this.collider.height);
             }
         }
 
@@ -43,6 +47,7 @@ public abstract class Explosion extends GameObject {
     public static class Vertical extends Explosion {
 
         Vertical(int firepower) {
+            this.firepower = firepower;
             this.position = new Vector2D();
             this.sprite = new BufferedImage(32, ((firepower * 2) + 1) * 32, BufferedImage.TYPE_INT_ARGB);
             this.width = this.sprite.getWidth();
@@ -55,18 +60,21 @@ public abstract class Explosion extends GameObject {
         }
 
         @Override
+        public void update() {
+            super.update();
+
+        }
+
+        @Override
         public void handleCollision(Wall collidingObj) {
             Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
-            // Vertical collision
-            if (intersection.getWidth() >= intersection.getHeight()) {
-                // Wall on top
-                if (intersection.getMaxY() >= collidingObj.collider.getMaxY() && this.collider.y <= collidingObj.collider.getMaxY()) {
-                    this.collider.setRect(this.collider.x, intersection.getMaxY(), this.collider.width, this.collider.getMaxY() - intersection.getMaxY());
-                }
-                // Wall on bottom
-                if (intersection.getMaxY() >= this.collider.getMaxY() && this.collider.getMaxY() <= collidingObj.collider.y) {
-                    this.collider.setRect(this.collider.x, this.collider.y, this.collider.width, this.collider.height - intersection.getHeight());
-                }
+            // Wall on top
+            if (collidingObj.collider.getMaxY() > this.collider.y && collidingObj.collider.y < this.collider.y) {
+                this.collider.setRect(this.collider.x, collidingObj.collider.getMaxY(), this.collider.width, this.collider.getMaxY() - collidingObj.collider.getMaxY());
+            }
+            // Wall on bottom
+            if (this.collider.getMaxY() > collidingObj.collider.y && this.collider.y < collidingObj.collider.y) {
+                this.collider.setRect(this.collider.x, this.collider.y, this.collider.width, this.collider.height - intersection.getHeight());
             }
         }
 
@@ -76,8 +84,7 @@ public abstract class Explosion extends GameObject {
     private int spriteIndex;
     private int spriteTimer;
 
-    public boolean a;
-    public boolean b;
+    protected int firepower;
 
     Explosion() {
 
