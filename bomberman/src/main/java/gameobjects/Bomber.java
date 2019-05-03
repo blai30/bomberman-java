@@ -74,7 +74,7 @@ public class Bomber extends Player {
         this.bomb = new Bomb(this.firePower, this.bombTimer, this);
         float x = Math.round(this.position.getX() / 32) * 32 + this.originOffset.getX();
         float y = Math.round((this.position.getY() + 16) / 32) * 32 + this.originOffset.getY() - 16;
-        this.instantiate(this.bomb, new Vector2D(x, y), this.rotation);
+        this.instantiate(this.bomb, new Vector2D(x, y), 0);
         this.bombAmmo--;
     }
 

@@ -25,6 +25,7 @@ public class Bomb extends GameObject {
     }
 
     private void explode() {
+        this.instantiate(new Explosion(ResourceCollection.Images.EXPLOSION_CENTER.getImage()), this.position.add(this.originOffset), 0);
         this.bomber.restoreAmmo();
     }
 

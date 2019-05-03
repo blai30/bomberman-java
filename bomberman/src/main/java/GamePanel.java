@@ -201,6 +201,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.controls3.put(KeyEvent.VK_F, Key.left);
         this.controls3.put(KeyEvent.VK_H, Key.right);
         this.controls3.put(KeyEvent.VK_Y, Key.action);
+        this.controls3.put(KeyEvent.VK_RIGHT, Key.up);
+        this.controls3.put(KeyEvent.VK_LEFT, Key.down);
+        this.controls3.put(KeyEvent.VK_DOWN, Key.left);
+        this.controls3.put(KeyEvent.VK_UP, Key.right);
+        this.controls3.put(KeyEvent.VK_SLASH, Key.action);
 
         // Set Player 4 controls
         this.controls4.put(KeyEvent.VK_I, Key.up);
@@ -208,6 +213,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.controls4.put(KeyEvent.VK_J, Key.left);
         this.controls4.put(KeyEvent.VK_L, Key.right);
         this.controls4.put(KeyEvent.VK_O, Key.action);
+        this.controls4.put(KeyEvent.VK_LEFT, Key.up);
+        this.controls4.put(KeyEvent.VK_RIGHT, Key.down);
+        this.controls4.put(KeyEvent.VK_UP, Key.left);
+        this.controls4.put(KeyEvent.VK_DOWN, Key.right);
+        this.controls4.put(KeyEvent.VK_SLASH, Key.action);
     }
 
     /**

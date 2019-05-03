@@ -33,7 +33,9 @@ public class Wall extends GameObject {
 
     @Override
     public void handleCollision(Explosion collidingObj) {
-        this.destroy();
+        if (this.isBreakable()) {
+            this.destroy();
+        }
     }
 
 }

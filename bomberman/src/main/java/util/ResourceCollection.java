@@ -20,7 +20,10 @@ public class ResourceCollection {
         SOFT_WALL,
         HARD_WALLS,
         BOMB,
-        EXPLOSION;
+        EXPLOSION_SPRITEMAP,
+        EXPLOSION_CENTER,
+        EXPLOSION_BETWEEN,
+        EXPLOSION_EDGE;
 
         private BufferedImage image = null;
 
@@ -55,7 +58,7 @@ public class ResourceCollection {
             Images.SOFT_WALL.image = ImageIO.read(ResourceCollection.class.getResource("/resources/softWall.png"));
             Images.HARD_WALLS.image = ImageIO.read(ResourceCollection.class.getResource("/resources/hardWalls.png"));
             Images.BOMB.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomb.png"));
-            Images.EXPLOSION.image = ImageIO.read(ResourceCollection.class.getResource("/resources/explosion.png"));
+            Images.EXPLOSION_SPRITEMAP.image = ImageIO.read(ResourceCollection.class.getResource("/resources/explosion.png"));
 
             Files.DEFAULT_MAP.file = new InputStreamReader(ResourceCollection.class.getResourceAsStream("/resources/default.csv"));
 
@@ -68,6 +71,11 @@ public class ResourceCollection {
                 }
             }
             loadTiles(tiles);
+
+            // Separate explosion sprite map into center, between, and edge
+            Images.EXPLOSION_CENTER.image = Images.EXPLOSION_SPRITEMAP.getImage().getSubimage(0, 0, Images.EXPLOSION_SPRITEMAP.getImage().getWidth(), 32);
+            Images.EXPLOSION_BETWEEN.image = Images.EXPLOSION_SPRITEMAP.getImage().getSubimage(0, 0, Images.EXPLOSION_SPRITEMAP.getImage().getWidth(), 32);
+            Images.EXPLOSION_EDGE.image = Images.EXPLOSION_SPRITEMAP.getImage().getSubimage(0, 0, Images.EXPLOSION_SPRITEMAP.getImage().getWidth(), 32);
         } catch (IOException e) {
             System.err.println(e + ": Cannot read image file");
             e.printStackTrace();
