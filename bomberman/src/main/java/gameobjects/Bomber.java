@@ -1,7 +1,6 @@
 package gameobjects;
 
-import util.Vector2D;
-
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
@@ -39,8 +38,8 @@ public class Bomber extends Player {
         this.sprite = this.baseSprite;
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
-        this.originOffset = new Vector2D(this.width / 2, (this.height / 2) + 8);
-        this.collider = new Rectangle2D.Double(this.position.getX() + 2, this.position.getY() + 16 + 2, this.width - 4, this.height - 16 - 4);
+//        this.originOffset = new Vector2D(this.width / 2, (this.height / 2) + 8);
+        this.collider = new Rectangle2D.Float(this.position.x + 2, this.position.y + 16 + 2, this.width - 4, this.height - 16 - 4);
 
         this.direction = 1;
         this.spriteIndex = 0;
@@ -55,25 +54,25 @@ public class Bomber extends Player {
 
     private void moveUp() {
         this.direction = 0;
-        this.position.addY(-this.moveSpeed);
+        this.position.setLocation(this.position.x, this.position.y - this.moveSpeed);
     }
     private void moveDown() {
         this.direction = 1;
-        this.position.addY(this.moveSpeed);
+        this.position.setLocation(this.position.x, this.position.y + this.moveSpeed);
     }
     private void moveLeft() {
         this.direction = 2;
-        this.position.addX(-this.moveSpeed);
+        this.position.setLocation(this.position.x - this.moveSpeed, this.position.y);
     }
     private void moveRight() {
         this.direction = 3;
-        this.position.addX(this.moveSpeed);
+        this.position.setLocation(this.position.x + this.moveSpeed, this.position.y);
     }
 
     private void plantBomb() {
         float x = Math.round(this.position.getX() / 32) * 32;
         float y = Math.round((this.position.getY() + 16) / 32) * 32;
-        this.bomb = new Bomb(new Vector2D(x, y), this.firePower, this.bombTimer, this);
+        this.bomb = new Bomb(new Point2D.Float(x, y), this.firePower, this.bombTimer, this);
         this.instantiate(this.bomb);
         this.bombAmmo--;
     }
@@ -98,7 +97,7 @@ public class Bomber extends Player {
 
     @Override
     public void update() {
-        this.collider.setRect(this.position.getX() + 2, this.position.getY() + 16 + 2, this.width - 4, this.height - 16 - 4);
+        this.collider.setRect(this.position.x + 2, this.position.y + 16 + 2, this.width - 4, this.height - 16 - 4);
 
         // Movement
         if (this.UpPressed) {

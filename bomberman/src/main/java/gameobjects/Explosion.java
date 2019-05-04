@@ -1,9 +1,8 @@
 package gameobjects;
 
-import util.Vector2D;
-
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -11,13 +10,13 @@ public abstract class Explosion extends GameObject {
 
     public static class Horizontal extends Explosion {
 
-        Horizontal(int firepower, Vector2D spawnLocation) {
+        Horizontal(int firepower, Point2D.Float spawnLocation) {
             super(spawnLocation);
 
             float leftX = this.checkHorizontal(this.position, firepower, -32);
             float rightX = this.checkHorizontal(this.position, firepower, 32);
 
-            Rectangle2D.Double recH = new Rectangle2D.Double(leftX, this.position.getY(), rightX - leftX + 32, 32);
+            Rectangle2D.Float recH = new Rectangle2D.Float(leftX, this.position.y, rightX - leftX + 32, 32);
             this.init(recH);
 
             Graphics2D g2 = this.sprite.createGraphics();
@@ -35,13 +34,13 @@ public abstract class Explosion extends GameObject {
 
     public static class Vertical extends Explosion {
 
-        Vertical(int firepower, Vector2D spawnLocation) {
+        Vertical(int firepower, Point2D.Float spawnLocation) {
             super(spawnLocation);
 
             float topY = this.checkVertical(this.position, firepower, -32);
             float bottomY = this.checkVertical(this.position, firepower, 32);
 
-            Rectangle2D.Double recV = new Rectangle2D.Double(this.position.getX(), topY, 32, bottomY - topY + 32);
+            Rectangle2D.Float recV = new Rectangle2D.Float(this.position.x, topY, 32, bottomY - topY + 32);
             this.init(recV);
 
             Graphics2D g2 = this.sprite.createGraphics();
@@ -63,8 +62,8 @@ public abstract class Explosion extends GameObject {
 
     protected int firepower;
 
-    Explosion(Vector2D position) {
-        this.position = new Vector2D(position);
+    Explosion(Point2D.Float position) {
+        this.position = new Point2D.Float(position.x, position.y);
     }
 
     Explosion(BufferedImage spriteMap) {
@@ -78,23 +77,21 @@ public abstract class Explosion extends GameObject {
             this.sprites[column] = spriteMap.getSubimage(column * 32, 0, 32, 32);
         }
 
-        this.position = new Vector2D();
-        this.collider = new Rectangle2D.Double(this.position.getX(), this.position.getY(), this.width, this.height);
+//        this.position = new Vector2D();
+//        this.collider = new Rectangle2D.Double(this.position.getX(), this.position.getY(), this.width, this.height);
 
         this.sprite = this.sprites[0];
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
-        this.originOffset = new Vector2D(this.width / 2, this.height / 2);
 
         this.spriteIndex = 0;
         this.spriteTimer = 0;
     }
 
-    protected void init(Rectangle2D.Double collider) {
+    protected void init(Rectangle2D.Float collider) {
         this.collider = collider;
-        this.width = (float) this.collider.width;
-        this.height = (float) this.collider.height;
-        this.originOffset = new Vector2D(this.width / 2, this.height / 2);
+        this.width = this.collider.width;
+        this.height = this.collider.height;
         this.sprite = new BufferedImage((int) this.width, (int) this.height, BufferedImage.TYPE_INT_ARGB);
     }
 
@@ -105,8 +102,8 @@ public abstract class Explosion extends GameObject {
      * @param blockWidth Size of each game object tile, negative for left, positive for right
      * @return Position of the explosion's maximum range in horizontal direction
      */
-    protected float checkHorizontal(Vector2D position, int firepower, int blockWidth) {
-        float value = position.getX();
+    protected float checkHorizontal(Point2D.Float position, int firepower, int blockWidth) {
+        float value = position.x;
         outer: for (int i = 1; i <= firepower; i++) {
             value += blockWidth;
             for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
@@ -127,11 +124,11 @@ public abstract class Explosion extends GameObject {
      * Check for walls to determine explosion range. Used for top and bottom.
      * @param position Original position of bomb prior to explosion
      * @param firepower Maximum range of explosion
-     * @param blockWidth Size of each game object tile, negative for top, positive for bottom
+     * @param blockHeight Size of each game object tile, negative for top, positive for bottom
      * @return Position of the explosion's maximum range in vertical direction
      */
-    protected float checkVertical(Vector2D position, int firepower, int blockHeight) {
-        float value = position.getY();
+    protected float checkVertical(Point2D.Float position, int firepower, int blockHeight) {
+        float value = position.y;
         outer: for (int i = 1; i <= firepower; i++) {
             value += blockHeight;
             for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {

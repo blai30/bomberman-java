@@ -1,21 +1,19 @@
 package gameobjects;
 
-import util.Vector2D;
-
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 public abstract class GameObject implements CollisionHandling, Comparable<GameObject> {
 
     BufferedImage sprite;
-    Vector2D position;
+    Point2D.Float position;
     float rotation;
     float width;
     float height;
-    Vector2D originOffset;
-    Rectangle2D.Double collider;
+    Rectangle2D.Float collider;
 
     private boolean destroyed;
 
@@ -23,25 +21,29 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
     GameObject() {}
 
     protected GameObject(float xPos, float yPos) {
-        this.position = new Vector2D(xPos, yPos);
+        this.position = new Point2D.Float(xPos, yPos);
         this.rotation = 0;
     }
 
     // Use super() in constructors of subclasses
     protected GameObject(float xPos, float yPos, BufferedImage sprite) {
         this(sprite);
-        this.position = new Vector2D(xPos, yPos);
+        this.position = new Point2D.Float(xPos, yPos);
         this.rotation = 0;
-        this.collider = new Rectangle2D.Double(xPos, yPos, this.width, this.height);
+        this.collider = new Rectangle2D.Float(xPos, yPos, this.width, this.height);
     }
 
     protected GameObject(BufferedImage sprite) {
         this.sprite = sprite;
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
-        this.originOffset = new Vector2D(this.width / 2, this.height / 2);
     }
 
+    /**
+     * This instantiation method is not needed for the bomberman game.
+     * It was useful in the tank game because the tanks spawned bullets from the center of the tank.
+     * In the bomberman game, I am initializing positions and colliders in the game objects' respective constructors.
+     */
 //    protected void instantiate(GameObject spawnObj, Vector2D spawnLocation, float rotation) {
 //        float x = spawnLocation.getX() - spawnObj.originOffset.getX();
 //        float y = spawnLocation.getY() - spawnObj.originOffset.getY();
@@ -70,20 +72,20 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
         if (intersection.getWidth() >= intersection.getHeight()) {
             // From the top
             if (intersection.getMaxY() >= this.collider.getMaxY()) {
-                this.position.addY(-(float) intersection.getHeight());
+                this.position.setLocation(this.position.x, this.position.y - intersection.getHeight());
             }
             // From the bottom
             if (intersection.getMaxY() >= obj.collider.getMaxY()) {
-                this.position.addY((float) intersection.getHeight());
+                this.position.setLocation(this.position.x, this.position.y + intersection.getHeight());
             }
 
             // Smoothing around corners
             if (intersection.getWidth() < 16) {
                 if (intersection.getMaxX() >= this.collider.getMaxX()) {
-                    this.position.addX(-(float) 0.5);
+                    this.position.setLocation(this.position.x - 0.5, this.position.y);
                 }
                 if (intersection.getMaxX() >= obj.collider.getMaxX()) {
-                    this.position.addX((float) 0.5);
+                    this.position.setLocation(this.position.x + 0.5, this.position.y);
                 }
             }
         }
@@ -92,20 +94,20 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
         if (intersection.getHeight() >= intersection.getWidth()) {
             // From the left
             if (intersection.getMaxX() >= this.collider.getMaxX()) {
-                this.position.addX(-(float) intersection.getWidth());
+                this.position.setLocation(this.position.x - intersection.getWidth(), this.position.y);
             }
             // From the right
             if (intersection.getMaxX() >= obj.collider.getMaxX()) {
-                this.position.addX((float) intersection.getWidth());
+                this.position.setLocation(this.position.x + intersection.getWidth(), this.position.y);
             }
 
             // Smoothing around corners
             if (intersection.getHeight() < 16) {
                 if (intersection.getMaxY() >= this.collider.getMaxY()) {
-                    this.position.addY(-(float) 0.5);
+                    this.position.setLocation(this.position.x, this.position.y - 0.5);
                 }
                 if (intersection.getMaxY() >= obj.collider.getMaxY()) {
-                    this.position.addY((float) 0.5);
+                    this.position.setLocation(this.position.x, this.position.y + 0.5);
                 }
             }
         }
@@ -116,7 +118,7 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
     }
 
     public float getPositionY() {
-        return this.position.getY();
+        return this.position.y;
     }
 
     public abstract void update();
