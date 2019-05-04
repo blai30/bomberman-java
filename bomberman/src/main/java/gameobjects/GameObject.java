@@ -52,6 +52,10 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
         GameObjectCollection.spawn(spawnObj);
     }
 
+    protected void instantiate(GameObject spawnObj) {
+        GameObjectCollection.spawn(spawnObj);
+    }
+
     protected void destroy() {
         this.destroyed = true;
     }

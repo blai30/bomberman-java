@@ -3,6 +3,7 @@ package gameobjects;
 import util.Vector2D;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -10,72 +11,100 @@ public abstract class Explosion extends GameObject {
 
     public static class Horizontal extends Explosion {
 
-        Horizontal(int firepower, Rectangle2D.Double collider) {
-            this.firepower = firepower;
-            this.position = new Vector2D();
-            this.sprite = new BufferedImage(((firepower * 2) + 1) * 32, 32, BufferedImage.TYPE_INT_ARGB);
-            this.width = this.sprite.getWidth();
-            this.height = this.sprite.getHeight();
-            this.collider = collider;
+        Horizontal(int firepower, Vector2D spawnLocation) {
+            this.position = new Vector2D(spawnLocation);
+
+            Point2D pointL = new Point2D.Double(this.position.getX(), this.position.getY());
+            outerloop:
+            for (int i = 1; i <= firepower; i++) {
+                pointL.setLocation(pointL.getX() - (i * 32), pointL.getY());
+                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
+                    GameObject obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(pointL)) {
+                        pointL.setLocation(pointL.getX() + 32, pointL.getY());
+                        break outerloop;
+                    }
+                }
+            }
+            Point2D pointR = new Point2D.Double(this.position.getX(), this.position.getY());
+            outerloop:
+            for (int i = 1; i <= firepower; i++) {
+                pointR.setLocation(pointR.getX() + (i * 32), pointR.getY());
+                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
+                    GameObject obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(pointR)) {
+                        pointR.setLocation(pointR.getX() - 32, pointR.getY());
+                        break outerloop;
+                    }
+                }
+            }
+
+            Rectangle2D.Double recH = new Rectangle2D.Double(pointL.getX(), this.position.getY(), pointR.getX() - pointL.getX() + 32, 32);
+            this.collider = recH;
+            this.width = (float) this.collider.width;
+            this.height = (float) this.collider.height;
             this.originOffset = new Vector2D(this.width / 2, this.height / 2);
+            this.sprite = new BufferedImage((int) this.width, (int) this.height, BufferedImage.TYPE_INT_ARGB);
+
             Graphics2D g2 = this.sprite.createGraphics();
             g2.setColor(new Color(0, 0, 0, 0));
-            g2.fillRect(0, 0, ((firepower * 2) + 1) * 32, 32);
+            g2.fillRect(0, 0, (int) this.width, (int) this.height);
         }
 
         @Override
         public void update() {
             super.update();
 
-        }
-
-        @Override
-        public void handleCollision(Wall collidingObj) {
-//            Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
-//            // Wall on left
-//            if (collidingObj.collider.getMaxX() > this.collider.x && collidingObj.collider.x < this.collider.x) {
-//                this.collider.setRect(collidingObj.collider.getMaxX(), this.collider.y, this.collider.getMaxX() - collidingObj.collider.getMaxX(), this.collider.height);
-//            }
-//            // Wall on right
-//            if (this.collider.getMaxX() > collidingObj.collider.x && this.collider.x < collidingObj.collider.x) {
-//                this.collider.setRect(this.collider.x, this.collider.y, this.collider.width - intersection.getWidth(), this.collider.height);
-//            }
         }
 
     }
 
     public static class Vertical extends Explosion {
 
-        Vertical(int firepower, Rectangle2D.Double collider) {
-            this.firepower = firepower;
-            this.position = new Vector2D();
-            this.sprite = new BufferedImage(32, ((firepower * 2) + 1) * 32, BufferedImage.TYPE_INT_ARGB);
-            this.width = this.sprite.getWidth();
-            this.height = this.sprite.getHeight();
-            this.collider = collider;
+        Vertical(int firepower, Vector2D spawnLocation) {
+            this.position = new Vector2D(spawnLocation);
+
+            Point2D pointT = new Point2D.Double(this.position.getX(), this.position.getY());
+            outerloop:
+            for (int i = 1; i <= firepower; i++) {
+                pointT.setLocation(pointT.getX(), pointT.getY() - (i * 32));
+                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
+                    GameObject obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(pointT)) {
+                        pointT.setLocation(pointT.getX(), pointT.getY() + 32);
+                        break outerloop;
+                    }
+                }
+            }
+            Point2D pointB = new Point2D.Double(this.position.getX(), this.position.getY());
+            outerloop:
+            for (int i = 1; i <= firepower; i++) {
+                pointB.setLocation(pointB.getX(), pointB.getY() + (i * 32));
+                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
+                    GameObject obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(pointB)) {
+                        pointB.setLocation(pointB.getX(), pointB.getY() - 32);
+                        break outerloop;
+                    }
+                }
+            }
+
+            Rectangle2D.Double recV = new Rectangle2D.Double(this.position.getX(), pointT.getY(), 32, pointB.getY() - pointT.getY() + 32);
+            this.collider = recV;
+            this.width = (float) this.collider.width;
+            this.height = (float) this.collider.height;
             this.originOffset = new Vector2D(this.width / 2, this.height / 2);
+            this.sprite = new BufferedImage((int) this.width, (int) this.height, BufferedImage.TYPE_INT_ARGB);
+
             Graphics2D g2 = this.sprite.createGraphics();
             g2.setColor(new Color(0, 0, 0, 0));
-            g2.fillRect(0, 0, 32, ((firepower * 2) + 1) * 32);
+            g2.fillRect(0, 0, (int) this.width, (int) this.height);
         }
 
         @Override
         public void update() {
             super.update();
 
-        }
-
-        @Override
-        public void handleCollision(Wall collidingObj) {
-//            Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
-//            // Wall on top
-//            if (collidingObj.collider.getMaxY() > this.collider.y && collidingObj.collider.y < this.collider.y) {
-//                this.collider.setRect(this.collider.x, collidingObj.collider.getMaxY(), this.collider.width, this.collider.getMaxY() - collidingObj.collider.getMaxY());
-//            }
-//            // Wall on bottom
-//            if (this.collider.getMaxY() > collidingObj.collider.y && this.collider.y < collidingObj.collider.y) {
-//                this.collider.setRect(this.collider.x, this.collider.y, this.collider.width, this.collider.height - intersection.getHeight());
-//            }
         }
 
     }
@@ -111,22 +140,6 @@ public abstract class Explosion extends GameObject {
 
         this.spriteIndex = 0;
         this.spriteTimer = 0;
-
-//
-//        this.collider = new Rectangle2D.Double(this.position.getX(), this.position.getY(), this.width, this.height);
-//
-//        this.position = new Vector2D();
-//        this.width = ((this.firepower * 2) + 1) * 32;
-//        this.height = 32;
-//        this.sprite = new BufferedImage((int) this.width, (int) this.height, BufferedImage.TYPE_INT_ARGB);
-//        Graphics2D g2 = this.sprite.createGraphics();
-//        g2.setColor(new Color(0, 0, 0, 0));
-//        g2.fillRect(0, 0, (int) this.width, (int) this.height);
-//        g2.drawImage(this.sprites[0][0], ((this.firepower / 2) * 32) + 32, 0, null);
-//        g2.drawImage(this.sprites[2][0], 0, 0, null);
-//        g2.drawImage(this.sprites[2][0], (this.firepower * 2) * 32, 0, null);
-//
-//        this.originOffset = new Vector2D(this.width / 2, this.height / 2);
     }
 
     @Override
