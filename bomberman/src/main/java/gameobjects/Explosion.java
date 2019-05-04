@@ -3,7 +3,7 @@ package gameobjects;
 import util.Vector2D;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -14,32 +14,35 @@ public abstract class Explosion extends GameObject {
         Horizontal(int firepower, Vector2D spawnLocation) {
             this.position = new Vector2D(spawnLocation);
 
-            Point2D pointL = new Point2D.Double(this.position.getX(), this.position.getY());
-            outerloop:
-            for (int i = 1; i <= firepower; i++) {
-                pointL.setLocation(pointL.getX() - (i * 32), pointL.getY());
+            float leftX = this.position.getX();
+            outer: for (int i = 1; i <= firepower; i++) {
+                leftX -= 32;
                 for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
-                    GameObject obj = GameObjectCollection.wallObjects.get(index);
-                    if (obj.collider.contains(pointL)) {
-                        pointL.setLocation(pointL.getX() + 32, pointL.getY());
-                        break outerloop;
-                    }
-                }
-            }
-            Point2D pointR = new Point2D.Double(this.position.getX(), this.position.getY());
-            outerloop:
-            for (int i = 1; i <= firepower; i++) {
-                pointR.setLocation(pointR.getX() + (i * 32), pointR.getY());
-                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
-                    GameObject obj = GameObjectCollection.wallObjects.get(index);
-                    if (obj.collider.contains(pointR)) {
-                        pointR.setLocation(pointR.getX() - 32, pointR.getY());
-                        break outerloop;
+                    Wall obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(leftX, this.position.getY())) {
+                        if (!obj.isBreakable()) {
+                            leftX += 32;
+                        }
+                        break outer;
                     }
                 }
             }
 
-            Rectangle2D.Double recH = new Rectangle2D.Double(pointL.getX(), this.position.getY(), pointR.getX() - pointL.getX() + 32, 32);
+            float rightX = this.position.getX();
+            outer: for (int i = 1; i <= firepower; i++) {
+                rightX += 32;
+                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
+                    Wall obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(rightX,  this.position.getY())) {
+                        if (!obj.isBreakable()) {
+                            rightX -= 32;
+                        }
+                        break outer;
+                    }
+                }
+            }
+
+            Rectangle2D.Double recH = new Rectangle2D.Double(leftX, this.position.getY(), rightX - leftX + 32, 32);
             this.collider = recH;
             this.width = (float) this.collider.width;
             this.height = (float) this.collider.height;
@@ -47,7 +50,7 @@ public abstract class Explosion extends GameObject {
             this.sprite = new BufferedImage((int) this.width, (int) this.height, BufferedImage.TYPE_INT_ARGB);
 
             Graphics2D g2 = this.sprite.createGraphics();
-            g2.setColor(new Color(0, 0, 0, 0));
+            g2.setColor(new Color(255, 0, 0, 50));
             g2.fillRect(0, 0, (int) this.width, (int) this.height);
         }
 
@@ -64,32 +67,35 @@ public abstract class Explosion extends GameObject {
         Vertical(int firepower, Vector2D spawnLocation) {
             this.position = new Vector2D(spawnLocation);
 
-            Point2D pointT = new Point2D.Double(this.position.getX(), this.position.getY());
-            outerloop:
-            for (int i = 1; i <= firepower; i++) {
-                pointT.setLocation(pointT.getX(), pointT.getY() - (i * 32));
+            float topY = this.position.getY();
+            outer: for (int i = 1; i <= firepower; i++) {
+                topY -= 32;
                 for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
-                    GameObject obj = GameObjectCollection.wallObjects.get(index);
-                    if (obj.collider.contains(pointT)) {
-                        pointT.setLocation(pointT.getX(), pointT.getY() + 32);
-                        break outerloop;
-                    }
-                }
-            }
-            Point2D pointB = new Point2D.Double(this.position.getX(), this.position.getY());
-            outerloop:
-            for (int i = 1; i <= firepower; i++) {
-                pointB.setLocation(pointB.getX(), pointB.getY() + (i * 32));
-                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
-                    GameObject obj = GameObjectCollection.wallObjects.get(index);
-                    if (obj.collider.contains(pointB)) {
-                        pointB.setLocation(pointB.getX(), pointB.getY() - 32);
-                        break outerloop;
+                    Wall obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(this.position.getX(), topY)) {
+                        if (!obj.isBreakable()) {
+                            topY += 32;
+                        }
+                        break outer;
                     }
                 }
             }
 
-            Rectangle2D.Double recV = new Rectangle2D.Double(this.position.getX(), pointT.getY(), 32, pointB.getY() - pointT.getY() + 32);
+            float bottomY = this.position.getY();
+            outer: for (int i = 1; i <= firepower; i++) {
+                bottomY += 32;
+                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
+                    Wall obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(this.position.getX(), bottomY)) {
+                        if (!obj.isBreakable()) {
+                            bottomY -= 32;
+                        }
+                        break outer;
+                    }
+                }
+            }
+
+            Rectangle2D.Double recV = new Rectangle2D.Double(this.position.getX(), topY, 32, bottomY - topY + 32);
             this.collider = recV;
             this.width = (float) this.collider.width;
             this.height = (float) this.collider.height;
@@ -97,7 +103,7 @@ public abstract class Explosion extends GameObject {
             this.sprite = new BufferedImage((int) this.width, (int) this.height, BufferedImage.TYPE_INT_ARGB);
 
             Graphics2D g2 = this.sprite.createGraphics();
-            g2.setColor(new Color(0, 0, 0, 0));
+            g2.setColor(new Color(0, 0, 255, 50));
             g2.fillRect(0, 0, (int) this.width, (int) this.height);
         }
 
@@ -160,6 +166,14 @@ public abstract class Explosion extends GameObject {
     @Override
     public void collides(GameObject collidingObj) {
         collidingObj.handleCollision(this);
+    }
+
+    @Override
+    public void drawImage(Graphics g) {
+        AffineTransform rotation = AffineTransform.getTranslateInstance(this.collider.x, this.collider.y);
+        rotation.rotate(Math.toRadians(this.rotation), this.collider.width / 2.0, this.collider.height / 2.0);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(this.sprite, rotation, null);
     }
 
 }

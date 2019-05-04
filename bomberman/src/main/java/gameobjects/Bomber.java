@@ -48,7 +48,7 @@ public class Bomber extends Player {
 
         this.statsCollection = new LinkedHashMap<>();
         this.moveSpeed = 1;
-        this.firePower = 1;
+        this.firePower = 2;
         this.bombAmmo = 1;
         this.bombTimer = 300;
     }

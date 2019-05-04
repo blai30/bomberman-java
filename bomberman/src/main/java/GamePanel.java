@@ -99,7 +99,7 @@ public class GamePanel extends JPanel implements Runnable {
             for (int x = 0; x < this.mapWidth; x++) {
                 switch (mapLayout.get(y).get(x)) {
                     case ("S"):
-                        if (Math.random() < 0.5) {
+                        if (Math.random() < 0.2) {
                             BufferedImage sprSoftWall = ResourceCollection.Images.SOFT_WALL.getImage();
                             Wall softWall = new Wall(x * 32, y * 32, sprSoftWall, true);
                             GameObjectCollection.wallObjects.add(softWall);
