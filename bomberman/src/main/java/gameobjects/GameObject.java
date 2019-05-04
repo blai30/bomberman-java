@@ -42,15 +42,15 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
         this.originOffset = new Vector2D(this.width / 2, this.height / 2);
     }
 
-    protected void instantiate(GameObject spawnObj, Vector2D spawnLocation, float rotation) {
-        float x = spawnLocation.getX() - spawnObj.originOffset.getX();
-        float y = spawnLocation.getY() - spawnObj.originOffset.getY();
-        Vector2D spawnPoint = new Vector2D(x, y);
-        spawnObj.position.set(spawnPoint);
-        spawnObj.rotation = rotation;
-        spawnObj.collider.setRect(x, y, spawnObj.width, spawnObj.height);
-        GameObjectCollection.spawn(spawnObj);
-    }
+//    protected void instantiate(GameObject spawnObj, Vector2D spawnLocation, float rotation) {
+//        float x = spawnLocation.getX() - spawnObj.originOffset.getX();
+//        float y = spawnLocation.getY() - spawnObj.originOffset.getY();
+//        Vector2D spawnPoint = new Vector2D(x, y);
+//        spawnObj.position.set(spawnPoint);
+//        spawnObj.rotation = rotation;
+//        spawnObj.collider.setRect(x, y, spawnObj.width, spawnObj.height);
+//        GameObjectCollection.spawn(spawnObj);
+//    }
 
     protected void instantiate(GameObject spawnObj) {
         GameObjectCollection.spawn(spawnObj);

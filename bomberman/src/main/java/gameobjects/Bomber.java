@@ -40,7 +40,7 @@ public class Bomber extends Player {
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
         this.originOffset = new Vector2D(this.width / 2, (this.height / 2) + 8);
-        this.collider = new Rectangle2D.Double(this.position.getX(), this.position.getY() + 16, this.width, this.height - 16);
+        this.collider = new Rectangle2D.Double(this.position.getX() + 2, this.position.getY() + 16 + 2, this.width - 4, this.height - 16 - 4);
 
         this.direction = 1;
         this.spriteIndex = 0;
@@ -71,10 +71,10 @@ public class Bomber extends Player {
     }
 
     private void plantBomb() {
-        this.bomb = new Bomb(this.firePower, this.bombTimer, this);
-        float x = Math.round(this.position.getX() / 32) * 32 + this.originOffset.getX();
-        float y = Math.round((this.position.getY() + 16) / 32) * 32 + this.originOffset.getY() - 16;
-        this.instantiate(this.bomb, new Vector2D(x, y), 0);
+        float x = Math.round(this.position.getX() / 32) * 32;
+        float y = Math.round((this.position.getY() + 16) / 32) * 32;
+        this.bomb = new Bomb(new Vector2D(x, y), this.firePower, this.bombTimer, this);
+        this.instantiate(this.bomb);
         this.bombAmmo--;
     }
 
@@ -98,7 +98,7 @@ public class Bomber extends Player {
 
     @Override
     public void update() {
-        this.collider.setRect(this.position.getX(), this.position.getY() + 16, this.width, this.height - 16);
+        this.collider.setRect(this.position.getX() + 2, this.position.getY() + 16 + 2, this.width - 4, this.height - 16 - 4);
 
         // Movement
         if (this.UpPressed) {

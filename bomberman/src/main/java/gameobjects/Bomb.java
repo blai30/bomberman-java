@@ -14,9 +14,9 @@ public class Bomb extends GameObject {
     private int startTime;
 
 
-    public Bomb(int firepower, int timer, Bomber bomber) {
+    public Bomb(Vector2D spawnLocation, int firepower, int timer, Bomber bomber) {
         super(ResourceCollection.Images.BOMB.getImage());
-        this.position = new Vector2D();
+        this.position = spawnLocation;
         this.collider = new Rectangle2D.Double(this.position.getX(), this.position.getY(), this.width, this.height);
         this.firepower = firepower;
         this.timer = timer;
