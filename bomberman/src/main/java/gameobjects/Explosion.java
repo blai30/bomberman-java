@@ -15,8 +15,8 @@ public abstract class Explosion extends GameObject {
         Horizontal(int firepower, Point2D.Float spawnLocation) {
             super(firepower, spawnLocation);
 
-            float leftX = this.checkHorizontal(this.position, firepower, -32);
-            float rightX = this.checkHorizontal(this.position, firepower, 32);
+            float leftX = this.checkHorizontal(this.position, firepower, 32, true);
+            float rightX = this.checkHorizontal(this.position, firepower, 32, false);
 
             Rectangle2D.Float recH = new Rectangle2D.Float(leftX, this.position.y, rightX - leftX + 32, 32);
             this.init(recH);
@@ -33,17 +33,19 @@ public abstract class Explosion extends GameObject {
          * @param blockWidth Size of each game object tile, negative for left, positive for right
          * @return Position of the explosion's maximum range in horizontal direction
          */
-        private float checkHorizontal(Point2D.Float position, int firepower, int blockWidth) {
+        private float checkHorizontal(Point2D.Float position, int firepower, int blockWidth, boolean isLeft) {
             float value = position.x;
             outer: for (int i = 1; i <= firepower; i++) {
-                value += blockWidth;
+                value = (isLeft) ? value - blockWidth : value + blockWidth;
                 for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
                     Wall obj = GameObjectCollection.wallObjects.get(index);
                     if (obj.collider.contains(value, position.y)) {
                         if (!obj.isBreakable()) {
-                            value -= blockWidth;
+                            value = (isLeft) ? value + blockWidth : value - blockWidth;
+                            if (isLeft) {
+                                this.centerOffsetH -= blockWidth;
+                            }
                         }
-                        this.centerOffsetH -= blockWidth;
                         break outer;
                     }
                 }
@@ -87,8 +89,8 @@ public abstract class Explosion extends GameObject {
         Vertical(int firepower, Point2D.Float spawnLocation) {
             super(firepower, spawnLocation);
 
-            float topY = this.checkVertical(this.position, firepower, -32);
-            float bottomY = this.checkVertical(this.position, firepower, 32);
+            float topY = this.checkVertical(this.position, firepower, 32, true);
+            float bottomY = this.checkVertical(this.position, firepower, 32, false);
 
             Rectangle2D.Float recV = new Rectangle2D.Float(this.position.x, topY, 32, bottomY - topY + 32);
             this.init(recV);
@@ -105,17 +107,19 @@ public abstract class Explosion extends GameObject {
          * @param blockHeight Size of each game object tile, negative for top, positive for bottom
          * @return Position of the explosion's maximum range in vertical direction
          */
-        private float checkVertical(Point2D.Float position, int firepower, int blockHeight) {
+        private float checkVertical(Point2D.Float position, int firepower, int blockHeight, boolean isTop) {
             float value = position.y;
             outer: for (int i = 1; i <= firepower; i++) {
-                value += blockHeight;
+                value = (isTop) ? value - blockHeight : value + blockHeight;
                 for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
                     Wall obj = GameObjectCollection.wallObjects.get(index);
                     if (obj.collider.contains(position.x, value)) {
                         if (!obj.isBreakable()) {
-                            value -= blockHeight;
+                            value = (isTop) ? value + blockHeight : value - blockHeight;
+                            if (isTop) {
+                                this.centerOffsetV -= blockHeight;
+                            }
                         }
-                        this.centerOffsetV -= blockHeight;
                         break outer;
                     }
                 }
@@ -165,8 +169,8 @@ public abstract class Explosion extends GameObject {
     Explosion(int firepower, Point2D.Float position) {
         super(position);
         this.firepower = firepower;
-        this.centerOffsetH = 0;
-        this.centerOffsetV = 0;
+        this.centerOffsetH = firepower * 32;
+        this.centerOffsetV = firepower * 32;
 
         BufferedImage spriteMap = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage();
         int rows = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getHeight() / 32;
