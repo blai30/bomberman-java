@@ -43,6 +43,7 @@ public abstract class Explosion extends GameObject {
                         if (!obj.isBreakable()) {
                             value -= blockWidth;
                         }
+                        this.centerOffsetH -= blockWidth;
                         break outer;
                     }
                 }
@@ -62,7 +63,9 @@ public abstract class Explosion extends GameObject {
                 g2.fillRect(0, 0, spriteAnimation[i].getWidth(), spriteAnimation[i].getHeight());
 
                 for (int j = 0; j < spriteAnimation[i].getWidth() / 32; j++) {
-                    if (j == 0) {
+                    if (spriteAnimation[i].getWidth() / 32 == 1 || this.centerOffsetH == (j - 1) * 32) {
+                        g2.drawImage(this.sprites[0][i], j * 32, 0, null);
+                    } else if (j == 0) {
                         g2.drawImage(this.sprites[3][i], j * 32, 0, null);
                     } else if (j == (spriteAnimation[i].getWidth() / 32) - 1) {
                         g2.drawImage(this.sprites[4][i], j * 32, 0, null);
@@ -70,6 +73,8 @@ public abstract class Explosion extends GameObject {
                         g2.drawImage(this.sprites[1][i], j * 32, 0, null);
                     }
                 }
+
+                g2.dispose();
             }
 
             return spriteAnimation;
@@ -110,6 +115,7 @@ public abstract class Explosion extends GameObject {
                         if (!obj.isBreakable()) {
                             value -= blockHeight;
                         }
+                        this.centerOffsetV -= blockHeight;
                         break outer;
                     }
                 }
@@ -129,7 +135,9 @@ public abstract class Explosion extends GameObject {
                 g2.fillRect(0, 0, spriteAnimation[i].getWidth(), spriteAnimation[i].getHeight());
 
                 for (int j = 0; j < spriteAnimation[i].getHeight() / 32; j++) {
-                    if (j == 0) {
+                    if (spriteAnimation[i].getHeight() / 32 == 1 || this.centerOffsetV == (j - 1) * 32) {
+                        g2.drawImage(this.sprites[0][i], 0, j * 32, null);
+                    } else if (j == 0) {
                         g2.drawImage(this.sprites[5][i], 0, j * 32, null);
                     } else if (j == (spriteAnimation[i].getHeight() / 32) - 1) {
                         g2.drawImage(this.sprites[6][i], 0, j * 32, null);
@@ -137,6 +145,8 @@ public abstract class Explosion extends GameObject {
                         g2.drawImage(this.sprites[2][i], 0, j * 32, null);
                     }
                 }
+
+                g2.dispose();
             }
 
             return spriteAnimation;
@@ -147,12 +157,16 @@ public abstract class Explosion extends GameObject {
     protected BufferedImage[][] sprites;
     protected BufferedImage[] animation;
     protected int firepower;
+    protected int centerOffsetH;
+    protected int centerOffsetV;
     private int spriteIndex;
     private int spriteTimer;
 
     Explosion(int firepower, Point2D.Float position) {
         super(position);
         this.firepower = firepower;
+        this.centerOffsetH = 0;
+        this.centerOffsetV = 0;
 
         BufferedImage spriteMap = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage();
         int rows = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getHeight() / 32;

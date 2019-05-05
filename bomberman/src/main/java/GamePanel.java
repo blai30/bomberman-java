@@ -191,11 +191,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.controls2.put(KeyEvent.VK_A, Key.left);
         this.controls2.put(KeyEvent.VK_D, Key.right);
         this.controls2.put(KeyEvent.VK_E, Key.action);
-        this.controls2.put(KeyEvent.VK_UP, Key.up);
-        this.controls2.put(KeyEvent.VK_DOWN, Key.down);
-        this.controls2.put(KeyEvent.VK_RIGHT, Key.left);
-        this.controls2.put(KeyEvent.VK_LEFT, Key.right);
-        this.controls2.put(KeyEvent.VK_SLASH, Key.action);
+//        this.controls2.put(KeyEvent.VK_UP, Key.up);
+//        this.controls2.put(KeyEvent.VK_DOWN, Key.down);
+//        this.controls2.put(KeyEvent.VK_RIGHT, Key.left);
+//        this.controls2.put(KeyEvent.VK_LEFT, Key.right);
+//        this.controls2.put(KeyEvent.VK_SLASH, Key.action);
 
 
         // Set Player 3 controls
@@ -204,11 +204,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.controls3.put(KeyEvent.VK_F, Key.left);
         this.controls3.put(KeyEvent.VK_H, Key.right);
         this.controls3.put(KeyEvent.VK_Y, Key.action);
-        this.controls3.put(KeyEvent.VK_DOWN, Key.up);
-        this.controls3.put(KeyEvent.VK_UP, Key.down);
-        this.controls3.put(KeyEvent.VK_LEFT, Key.left);
-        this.controls3.put(KeyEvent.VK_RIGHT, Key.right);
-        this.controls3.put(KeyEvent.VK_SLASH, Key.action);
+//        this.controls3.put(KeyEvent.VK_DOWN, Key.up);
+//        this.controls3.put(KeyEvent.VK_UP, Key.down);
+//        this.controls3.put(KeyEvent.VK_LEFT, Key.left);
+//        this.controls3.put(KeyEvent.VK_RIGHT, Key.right);
+//        this.controls3.put(KeyEvent.VK_SLASH, Key.action);
 
         // Set Player 4 controls
         this.controls4.put(KeyEvent.VK_I, Key.up);
@@ -216,11 +216,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.controls4.put(KeyEvent.VK_J, Key.left);
         this.controls4.put(KeyEvent.VK_L, Key.right);
         this.controls4.put(KeyEvent.VK_O, Key.action);
-        this.controls4.put(KeyEvent.VK_DOWN, Key.up);
-        this.controls4.put(KeyEvent.VK_UP, Key.down);
-        this.controls4.put(KeyEvent.VK_RIGHT, Key.left);
-        this.controls4.put(KeyEvent.VK_LEFT, Key.right);
-        this.controls4.put(KeyEvent.VK_SLASH, Key.action);
+//        this.controls4.put(KeyEvent.VK_DOWN, Key.up);
+//        this.controls4.put(KeyEvent.VK_UP, Key.down);
+//        this.controls4.put(KeyEvent.VK_RIGHT, Key.left);
+//        this.controls4.put(KeyEvent.VK_LEFT, Key.right);
+//        this.controls4.put(KeyEvent.VK_SLASH, Key.action);
     }
 
     /**
@@ -342,9 +342,9 @@ public class GamePanel extends JPanel implements Runnable {
             for (int j = 0; j < GameObjectCollection.gameObjects.get(i).size(); j++) {
                 GameObject obj = GameObjectCollection.gameObjects.get(i).get(j);
                 obj.drawImage(this.buffer);
-                if (obj instanceof Explosion) {
-                    obj.drawCollider(this.buffer);
-                }
+//                if (obj instanceof Explosion) {
+//                    obj.drawCollider(this.buffer);
+//                }
             }
         }
 
