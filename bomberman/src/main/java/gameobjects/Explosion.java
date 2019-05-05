@@ -1,5 +1,7 @@
 package gameobjects;
 
+import util.ResourceCollection;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -11,7 +13,7 @@ public abstract class Explosion extends GameObject {
     public static class Horizontal extends Explosion {
 
         Horizontal(int firepower, Point2D.Float spawnLocation) {
-            super(spawnLocation);
+            super(firepower, spawnLocation);
 
             float leftX = this.checkHorizontal(this.position, firepower, -32);
             float rightX = this.checkHorizontal(this.position, firepower, 32);
@@ -19,15 +21,58 @@ public abstract class Explosion extends GameObject {
             Rectangle2D.Float recH = new Rectangle2D.Float(leftX, this.position.y, rightX - leftX + 32, 32);
             this.init(recH);
 
-            Graphics2D g2 = this.sprite.createGraphics();
-            g2.setColor(new Color(255, 0, 0, 50));
-            g2.fillRect(0, 0, (int) this.width, (int) this.height);
+            this.animation = this.drawSprite((int) this.width, (int) this.height);
+
+            this.sprite = this.animation[0];
         }
 
-        @Override
-        public void update() {
-            super.update();
+        /**
+         * Check for walls to determine explosion range. Used for left and right.
+         * @param position Original position of bomb prior to explosion
+         * @param firepower Maximum range of explosion
+         * @param blockWidth Size of each game object tile, negative for left, positive for right
+         * @return Position of the explosion's maximum range in horizontal direction
+         */
+        private float checkHorizontal(Point2D.Float position, int firepower, int blockWidth) {
+            float value = position.x;
+            outer: for (int i = 1; i <= firepower; i++) {
+                value += blockWidth;
+                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
+                    Wall obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(value, position.y)) {
+                        if (!obj.isBreakable()) {
+                            value -= blockWidth;
+                        }
+                        break outer;
+                    }
+                }
+            }
 
+            return value;
+        }
+
+        private BufferedImage[] drawSprite(int width, int height) {
+            BufferedImage[] spriteAnimation = new BufferedImage[ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getWidth() / 32];
+            for (int i = 0; i < spriteAnimation.length; i++) {
+                spriteAnimation[i] = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            }
+            for (int i = 0; i < spriteAnimation.length; i++) {
+                Graphics2D g2 = spriteAnimation[i].createGraphics();
+                g2.setColor(new Color(0, 0, 0, 0));
+                g2.fillRect(0, 0, spriteAnimation[i].getWidth(), spriteAnimation[i].getHeight());
+
+                for (int j = 0; j < spriteAnimation[i].getWidth() / 32; j++) {
+                    if (j == 0) {
+                        g2.drawImage(this.sprites[3][i], j * 32, 0, null);
+                    } else if (j == (spriteAnimation[i].getWidth() / 32) - 1) {
+                        g2.drawImage(this.sprites[4][i], j * 32, 0, null);
+                    } else {
+                        g2.drawImage(this.sprites[1][i], j * 32, 0, null);
+                    }
+                }
+            }
+
+            return spriteAnimation;
         }
 
     }
@@ -35,7 +80,7 @@ public abstract class Explosion extends GameObject {
     public static class Vertical extends Explosion {
 
         Vertical(int firepower, Point2D.Float spawnLocation) {
-            super(spawnLocation);
+            super(firepower, spawnLocation);
 
             float topY = this.checkVertical(this.position, firepower, -32);
             float bottomY = this.checkVertical(this.position, firepower, 32);
@@ -43,49 +88,81 @@ public abstract class Explosion extends GameObject {
             Rectangle2D.Float recV = new Rectangle2D.Float(this.position.x, topY, 32, bottomY - topY + 32);
             this.init(recV);
 
-            Graphics2D g2 = this.sprite.createGraphics();
-            g2.setColor(new Color(0, 0, 255, 50));
-            g2.fillRect(0, 0, (int) this.width, (int) this.height);
+            this.animation = this.drawSprite((int) this.width, (int) this.height);
+
+            this.sprite = this.animation[0];
         }
 
-        @Override
-        public void update() {
-            super.update();
+        /**
+         * Check for walls to determine explosion range. Used for top and bottom.
+         * @param position Original position of bomb prior to explosion
+         * @param firepower Maximum range of explosion
+         * @param blockHeight Size of each game object tile, negative for top, positive for bottom
+         * @return Position of the explosion's maximum range in vertical direction
+         */
+        private float checkVertical(Point2D.Float position, int firepower, int blockHeight) {
+            float value = position.y;
+            outer: for (int i = 1; i <= firepower; i++) {
+                value += blockHeight;
+                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
+                    Wall obj = GameObjectCollection.wallObjects.get(index);
+                    if (obj.collider.contains(position.x, value)) {
+                        if (!obj.isBreakable()) {
+                            value -= blockHeight;
+                        }
+                        break outer;
+                    }
+                }
+            }
 
+            return value;
+        }
+
+        private BufferedImage[] drawSprite(int width, int height) {
+            BufferedImage[] spriteAnimation = new BufferedImage[ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getWidth() / 32];
+            for (int i = 0; i < spriteAnimation.length; i++) {
+                spriteAnimation[i] = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            }
+            for (int i = 0; i < spriteAnimation.length; i++) {
+                Graphics2D g2 = spriteAnimation[i].createGraphics();
+                g2.setColor(new Color(0, 0, 0, 0));
+                g2.fillRect(0, 0, spriteAnimation[i].getWidth(), spriteAnimation[i].getHeight());
+
+                for (int j = 0; j < spriteAnimation[i].getHeight() / 32; j++) {
+                    if (j == 0) {
+                        g2.drawImage(this.sprites[5][i], 0, j * 32, null);
+                    } else if (j == (spriteAnimation[i].getHeight() / 32) - 1) {
+                        g2.drawImage(this.sprites[6][i], 0, j * 32, null);
+                    } else {
+                        g2.drawImage(this.sprites[2][i], 0, j * 32, null);
+                    }
+                }
+            }
+
+            return spriteAnimation;
         }
 
     }
 
-    private BufferedImage[] sprites;
+    protected BufferedImage[][] sprites;
+    protected BufferedImage[] animation;
+    protected int firepower;
     private int spriteIndex;
     private int spriteTimer;
 
-    protected int firepower;
+    Explosion(int firepower, Point2D.Float position) {
+        super(position);
+        this.firepower = firepower;
 
-    Explosion(Point2D.Float position) {
-        this.position = new Point2D.Float(position.x, position.y);
-    }
-
-    Explosion(BufferedImage spriteMap) {
-        // power * sprite length * 2 for vertical and horizontal sprite
-        // two colliders, one for each
-        // center sprite
-
-        // Sprite map should only be one row of sprites, like an animation strip. Sliced into 32x32 sprites
-        this.sprites = new BufferedImage[spriteMap.getWidth() / 32];
-        for (int column = 0; column < sprites.length; column++) {
-            this.sprites[column] = spriteMap.getSubimage(column * 32, 0, 32, 32);
+        BufferedImage spriteMap = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage();
+        int rows = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getHeight() / 32;
+        int cols = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getWidth() / 32;
+        this.sprites = new BufferedImage[rows][cols];
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < cols; column++) {
+                this.sprites[row][column] = spriteMap.getSubimage(column * 32, row * 32, 32, 32);
+            }
         }
-
-//        this.position = new Vector2D();
-//        this.collider = new Rectangle2D.Double(this.position.getX(), this.position.getY(), this.width, this.height);
-
-        this.sprite = this.sprites[0];
-        this.width = this.sprite.getWidth();
-        this.height = this.sprite.getHeight();
-
-        this.spriteIndex = 0;
-        this.spriteTimer = 0;
     }
 
     protected void init(Rectangle2D.Float collider) {
@@ -95,56 +172,6 @@ public abstract class Explosion extends GameObject {
         this.sprite = new BufferedImage((int) this.width, (int) this.height, BufferedImage.TYPE_INT_ARGB);
     }
 
-    /**
-     * Check for walls to determine explosion range. Used for left and right.
-     * @param position Original position of bomb prior to explosion
-     * @param firepower Maximum range of explosion
-     * @param blockWidth Size of each game object tile, negative for left, positive for right
-     * @return Position of the explosion's maximum range in horizontal direction
-     */
-    protected float checkHorizontal(Point2D.Float position, int firepower, int blockWidth) {
-        float value = position.x;
-        outer: for (int i = 1; i <= firepower; i++) {
-            value += blockWidth;
-            for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
-                Wall obj = GameObjectCollection.wallObjects.get(index);
-                if (obj.collider.contains(value, this.position.getY())) {
-                    if (!obj.isBreakable()) {
-                        value -= blockWidth;
-                    }
-                    break outer;
-                }
-            }
-        }
-
-        return value;
-    }
-
-    /**
-     * Check for walls to determine explosion range. Used for top and bottom.
-     * @param position Original position of bomb prior to explosion
-     * @param firepower Maximum range of explosion
-     * @param blockHeight Size of each game object tile, negative for top, positive for bottom
-     * @return Position of the explosion's maximum range in vertical direction
-     */
-    protected float checkVertical(Point2D.Float position, int firepower, int blockHeight) {
-        float value = position.y;
-        outer: for (int i = 1; i <= firepower; i++) {
-            value += blockHeight;
-            for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
-                Wall obj = GameObjectCollection.wallObjects.get(index);
-                if (obj.collider.contains(this.position.getX(), value)) {
-                    if (!obj.isBreakable()) {
-                        value -= blockHeight;
-                    }
-                    break outer;
-                }
-            }
-        }
-
-        return value;
-    }
-
     @Override
     public void update() {
         // Animate sprite
@@ -152,12 +179,11 @@ public abstract class Explosion extends GameObject {
             this.spriteIndex++;
             this.spriteTimer = 0;
         }
-        if (this.spriteIndex >= 100) {
+        if (this.spriteIndex >= this.animation.length) {
             this.destroy();
+        } else {
+            this.sprite = this.animation[this.spriteIndex];
         }
-//        } else {
-//            this.sprite = this.sprites[this.spriteIndex];
-//        }
     }
 
     @Override
