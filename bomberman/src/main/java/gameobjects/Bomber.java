@@ -129,6 +129,11 @@ public class Bomber extends Player {
     }
 
     @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
     public void collides(GameObject collidingObj) {
         collidingObj.handleCollision(this);
     }

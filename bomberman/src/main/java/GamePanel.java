@@ -256,6 +256,7 @@ public class GamePanel extends JPanel implements Runnable {
                     obj.update();
                     if (obj.isDestroyed()) {
                         // Destroy and remove game objects that were marked for deletion
+                        obj.onDestroy();
                         GameObjectCollection.gameObjects.get(list).remove(obj);
                     } else {
                         for (int list2 = 0; list2 < GameObjectCollection.gameObjects.size(); list2++) {

@@ -27,6 +27,11 @@ public class Wall extends GameObject {
     }
 
     @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
     public void collides(GameObject collidingObj) {
         collidingObj.handleCollision(this);
     }

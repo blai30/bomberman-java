@@ -130,6 +130,7 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
     }
 
     public abstract void update();
+    public abstract void onDestroy();
 
     /**
      * Draws the game object in the game world to g.
@@ -159,6 +160,11 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
 
 }
 
+/**
+ * Visitor pattern collision handling. Blank default methods so that subclasses only need to
+ * override the ones they need to avoid overriding them in every subclass only to leave them empty.
+ * Not all game objects interact with every other game object.
+ */
 interface CollisionHandling {
 
     void collides(GameObject collidingObj);

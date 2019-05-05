@@ -205,6 +205,11 @@ public abstract class Explosion extends GameObject {
     }
 
     @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
     public void collides(GameObject collidingObj) {
         collidingObj.handleCollision(this);
     }

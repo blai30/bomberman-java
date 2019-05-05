@@ -12,7 +12,7 @@ public class Bomb extends GameObject {
     private int firepower;
     private int timer;
     private int startTime;
-
+    private boolean detonated;
 
     public Bomb(Point2D.Float spawnLocation, int firepower, int timer, Bomber bomber) {
         super(ResourceCollection.Images.BOMB.getImage());
@@ -22,6 +22,7 @@ public class Bomb extends GameObject {
         this.timer = timer;
         this.bomber = bomber;
         this.startTime = 0;
+        this.detonated = false;
     }
 
     private void explode() {
@@ -33,14 +34,23 @@ public class Bomb extends GameObject {
     @Override
     public void update() {
         if (this.startTime++ >= this.timer) {
-            this.explode();
             this.destroy();
         }
     }
 
     @Override
+    public void onDestroy() {
+        this.explode();
+    }
+
+    @Override
     public void collides(GameObject collidingObj) {
         collidingObj.collides(this);
+    }
+
+    @Override
+    public void handleCollision(Explosion collidingObj) {
+        this.destroy();
     }
 
 }
