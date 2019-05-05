@@ -10,30 +10,38 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
 
     BufferedImage sprite;
     Point2D.Float position;
+    Rectangle2D.Float collider;
     float rotation;
     float width;
     float height;
-    Rectangle2D.Float collider;
 
     private boolean destroyed;
 
     // Should not be used
-    GameObject() {}
+    GameObject() {
+        this.position = new Point2D.Float();
+        this.rotation = 0;
+    }
 
-    protected GameObject(float xPos, float yPos) {
+    GameObject(Point2D.Float position) {
+        this.position = new Point2D.Float(position.x, position.y);
+        this.rotation = 0;
+    }
+
+    GameObject(float xPos, float yPos) {
         this.position = new Point2D.Float(xPos, yPos);
         this.rotation = 0;
     }
 
     // Use super() in constructors of subclasses
-    protected GameObject(float xPos, float yPos, BufferedImage sprite) {
+    GameObject(float xPos, float yPos, BufferedImage sprite) {
         this(sprite);
         this.position = new Point2D.Float(xPos, yPos);
         this.rotation = 0;
         this.collider = new Rectangle2D.Float(xPos, yPos, this.width, this.height);
     }
 
-    protected GameObject(BufferedImage sprite) {
+    GameObject(BufferedImage sprite) {
         this.sprite = sprite;
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
@@ -144,16 +152,6 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
         g2d.draw(this.collider);
     }
 
-    // Override these in subclasses as needed
-    @Override
-    public void handleCollision(Bomber collidingObj) {}
-    @Override
-    public void handleCollision(Wall collidingObj) {}
-    @Override
-    public void handleCollision(Explosion collidingObj) {}
-    @Override
-    public void handleCollision(Bomb collidingObj) {}
-
     @Override
     public int compareTo(GameObject o) {
         return Float.compare(this.getPositionY(), o.getPositionY());
@@ -164,9 +162,21 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
 interface CollisionHandling {
 
     void collides(GameObject collidingObj);
-    void handleCollision(Bomber collidingObj);
-    void handleCollision(Wall collidingObj);
-    void handleCollision(Explosion collidingObj);
-    void handleCollision(Bomb collidingObj);
+
+    default void handleCollision(Bomber collidingObj) {
+
+    };
+
+    default void handleCollision(Wall collidingObj) {
+
+    };
+
+    default void handleCollision(Explosion collidingObj) {
+
+    };
+
+    default void handleCollision(Bomb collidingObj) {
+
+    };
 
 }
