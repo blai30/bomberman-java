@@ -24,7 +24,7 @@ public class Bomber extends Player {
     private int score;
 
     public Bomber(float xPos, float yPos, BufferedImage spriteMap) {
-        super(xPos, yPos - 16);
+        this.position = new Point2D.Float(xPos, yPos - 16);
 
         // Each individually sliced sprite is 32x48
         this.sprites = new BufferedImage[spriteMap.getHeight() / 48][spriteMap.getWidth() / 32];
@@ -38,7 +38,6 @@ public class Bomber extends Player {
         this.sprite = this.baseSprite;
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
-//        this.originOffset = new Vector2D(this.width / 2, (this.height / 2) + 8);
         this.collider = new Rectangle2D.Float(this.position.x + 2, this.position.y + 16 + 2, this.width - 4, this.height - 16 - 4);
 
         this.direction = 1;
@@ -49,7 +48,7 @@ public class Bomber extends Player {
         this.moveSpeed = 1;
         this.firePower = 2;
         this.bombAmmo = 1;
-        this.bombTimer = 300;
+        this.bombTimer = 250;
     }
 
     private void moveUp() {
