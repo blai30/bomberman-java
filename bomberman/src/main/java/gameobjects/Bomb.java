@@ -17,7 +17,6 @@ public class Bomb extends GameObject {
     private int firepower;
     private int timer;
     private int startTime;
-    private boolean detonated;
 
     public Bomb(Point2D.Float spawnLocation, int firepower, int timer, Bomber bomber) {
         BufferedImage spriteMap = ResourceCollection.Images.BOMB.getImage();
@@ -39,7 +38,6 @@ public class Bomb extends GameObject {
         this.timer = timer;
         this.bomber = bomber;
         this.startTime = 0;
-        this.detonated = false;
     }
 
     private void explode() {
