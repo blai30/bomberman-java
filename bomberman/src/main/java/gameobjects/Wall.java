@@ -16,12 +16,6 @@ public class Wall extends GameObject {
     }
 
     @Override
-    protected void destroy() {
-        // TODO: Spawn random powerups
-        super.destroy();
-    }
-
-    @Override
     public void update() {
         
     }
