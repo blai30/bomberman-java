@@ -20,10 +20,7 @@ public class ResourceCollection {
         SOFT_WALL,
         HARD_WALLS,
         BOMB,
-        EXPLOSION_SPRITEMAP,
-        EXPLOSION_CENTER,
-        EXPLOSION_BETWEEN,
-        EXPLOSION_EDGE;
+        EXPLOSION_SPRITEMAP;
 
         private BufferedImage image = null;
 
@@ -71,11 +68,6 @@ public class ResourceCollection {
                 }
             }
             loadTiles(tiles);
-
-            // Separate explosion sprite map into center, between, and edge
-            Images.EXPLOSION_CENTER.image = Images.EXPLOSION_SPRITEMAP.getImage().getSubimage(0, 0, Images.EXPLOSION_SPRITEMAP.getImage().getWidth(), 32);
-            Images.EXPLOSION_BETWEEN.image = Images.EXPLOSION_SPRITEMAP.getImage().getSubimage(0, 0, Images.EXPLOSION_SPRITEMAP.getImage().getWidth(), 32);
-            Images.EXPLOSION_EDGE.image = Images.EXPLOSION_SPRITEMAP.getImage().getSubimage(0, 0, Images.EXPLOSION_SPRITEMAP.getImage().getWidth(), 32);
         } catch (IOException e) {
             System.err.println(e + ": Cannot read image file");
             e.printStackTrace();

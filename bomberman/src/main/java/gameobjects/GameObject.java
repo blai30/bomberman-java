@@ -126,7 +126,7 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
     }
 
     public float getPositionY() {
-        return this.position.y;
+        return this.position.y + this.height;
     }
 
     public abstract void update();

@@ -47,7 +47,7 @@ public class Bomber extends Player {
         this.statsCollection = new LinkedHashMap<>();
         this.moveSpeed = 1;
         this.firePower = 1;
-        this.bombAmmo = 1;
+        this.bombAmmo = 3;
         this.bombTimer = 250;
     }
 
@@ -71,7 +71,14 @@ public class Bomber extends Player {
     private void plantBomb() {
         float x = Math.round(this.position.getX() / 32) * 32;
         float y = Math.round((this.position.getY() + 16) / 32) * 32;
-        this.bomb = new Bomb(new Point2D.Float(x, y), this.firePower, this.bombTimer, this);
+        Point2D.Float spawnLocation = new Point2D.Float(x, y);
+        for (int i = 0; i < GameObjectCollection.bombObjects.size(); i++) {
+            GameObject obj = GameObjectCollection.bombObjects.get(i);
+            if (obj.collider.contains(spawnLocation)) {
+                return; // Only one bomb allowed per tile; Cannot place a bomb on a bomb
+            }
+        }
+        this.bomb = new Bomb(spawnLocation, this.firePower, this.bombTimer, this);
         this.instantiate(this.bomb);
         this.bombAmmo--;
     }

@@ -179,8 +179,8 @@ public abstract class Explosion extends GameObject {
         this.centerOffsetV = 0;
 
         BufferedImage spriteMap = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage();
-        int rows = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getHeight() / 32;
-        int cols = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getWidth() / 32;
+        int rows = spriteMap.getHeight() / 32;
+        int cols = spriteMap.getWidth() / 32;
         this.sprites = new BufferedImage[rows][cols];
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < cols; column++) {
