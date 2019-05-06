@@ -216,7 +216,7 @@ public abstract class Explosion extends GameObject {
     }
 
     @Override
-    public void collides(GameObject collidingObj) {
+    public void onCollisionEnter(GameObject collidingObj) {
         collidingObj.handleCollision(this);
     }
 

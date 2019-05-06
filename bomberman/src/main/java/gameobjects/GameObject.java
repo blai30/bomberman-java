@@ -167,7 +167,7 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
  */
 interface CollisionHandling {
 
-    void collides(GameObject collidingObj);
+    void onCollisionEnter(GameObject collidingObj);
 
     default void handleCollision(Bomber collidingObj) {
 

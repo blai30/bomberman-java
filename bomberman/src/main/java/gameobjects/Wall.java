@@ -26,7 +26,7 @@ public class Wall extends GameObject {
     }
 
     @Override
-    public void collides(GameObject collidingObj) {
+    public void onCollisionEnter(GameObject collidingObj) {
         collidingObj.handleCollision(this);
     }
 

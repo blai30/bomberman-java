@@ -46,7 +46,7 @@ public class Bomber extends Player {
 
         this.statsCollection = new LinkedHashMap<>();
         this.moveSpeed = 1;
-        this.firePower = 3;
+        this.firePower = 1;
         this.bombAmmo = 1;
         this.bombTimer = 250;
     }
@@ -118,7 +118,7 @@ public class Bomber extends Player {
         }
 
         // Animate sprite
-        if (this.spriteTimer++ >= 10) {
+        if ((this.spriteTimer += this.moveSpeed) >= 12) {
             this.spriteIndex++;
             this.spriteTimer = 0;
         }
@@ -134,7 +134,7 @@ public class Bomber extends Player {
     }
 
     @Override
-    public void collides(GameObject collidingObj) {
+    public void onCollisionEnter(GameObject collidingObj) {
         collidingObj.handleCollision(this);
     }
 
