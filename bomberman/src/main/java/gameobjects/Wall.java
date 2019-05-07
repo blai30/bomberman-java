@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 
 public class Wall extends GameObject {
 
+    private Explosion explosion = null;    // The explosion object that will destroy this wall
+
     private boolean breakable;
 
     public Wall(float xPos, float yPos, BufferedImage sprite, boolean isBreakable) {
@@ -17,7 +19,10 @@ public class Wall extends GameObject {
 
     @Override
     public void update() {
-        
+        // Destroy wall when explosion animation finishes
+        if (this.isBreakable() && this.explosion != null && this.explosion.isDestroyed()) {
+            this.destroy();
+        }
     }
 
     @Override
@@ -33,7 +38,10 @@ public class Wall extends GameObject {
     @Override
     public void handleCollision(Explosion collidingObj) {
         if (this.isBreakable()) {
-            this.destroy();
+            // First explosion to collide wall
+            if (this.explosion == null) {
+                this.explosion = collidingObj;
+            }
         }
     }
 
