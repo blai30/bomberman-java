@@ -29,10 +29,9 @@ public class Wall extends GameObject {
     @Override
     public void onDestroy() {
         double random = Math.random();
-        if (random < 0.2) {
-            // Random powerup at 20% chance excluding power max
-            Powerup powerup = new Powerup();
-//            this.instantiate(powerup);
+        if (random < 0.5) {
+            Powerup powerup = new Powerup(this.position, Powerup.Type.randomType());
+            this.instantiate(powerup);
         }
     }
 

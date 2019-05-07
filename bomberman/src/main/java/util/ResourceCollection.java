@@ -108,7 +108,6 @@ public class ResourceCollection {
         BufferedImage[][] sprites = new BufferedImage[rows][cols];
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                assert SpriteMaps.PLAYER_4.image != null;
                 sprites[row][col] = spriteMap.getSubimage(col * spriteWidth, row * spriteHeight, spriteWidth, spriteHeight);
             }
         }

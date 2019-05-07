@@ -8,6 +8,7 @@ public class GameObjectCollection {
     public static List<List<? extends GameObject>> gameObjects;
 
     public static ArrayList<Wall> wallObjects;
+    public static ArrayList<Powerup> powerupObjects;
     public static ArrayList<Bomb> bombObjects;
     public static ArrayList<Explosion> explosionObjects;
     public static ArrayList<Bomber> bomberObjects;
@@ -16,11 +17,13 @@ public class GameObjectCollection {
         gameObjects = new ArrayList<>();
 
         wallObjects = new ArrayList<>();
+        powerupObjects = new ArrayList<>();
         bombObjects = new ArrayList<>();
         explosionObjects = new ArrayList<>();
         bomberObjects = new ArrayList<>();
 
         gameObjects.add(wallObjects);
+        gameObjects.add(powerupObjects);
         gameObjects.add(bombObjects);
         gameObjects.add(explosionObjects);
         gameObjects.add(bomberObjects);
@@ -31,6 +34,8 @@ public class GameObjectCollection {
             bombObjects.add((Bomb) spawnObj);
         } else if (spawnObj instanceof Explosion) {
             explosionObjects.add((Explosion) spawnObj);
+        } else if (spawnObj instanceof Powerup) {
+            powerupObjects.add((Powerup) spawnObj);
         }
     }
 

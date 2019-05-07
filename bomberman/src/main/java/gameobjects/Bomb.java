@@ -44,7 +44,7 @@ public class Bomb extends GameObject {
             this.spriteIndex++;
             this.spriteTimer = 0;
         }
-        if (this.spriteIndex >= this.sprites.length) {
+        if (this.spriteIndex >= this.sprites[0].length) {
             this.spriteIndex = 0;
         }
         this.sprite = this.sprites[0][this.spriteIndex];
