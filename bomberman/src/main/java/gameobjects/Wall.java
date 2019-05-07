@@ -1,5 +1,6 @@
 package gameobjects;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class Wall extends GameObject {
@@ -8,8 +9,8 @@ public class Wall extends GameObject {
 
     private boolean breakable;
 
-    public Wall(float xPos, float yPos, BufferedImage sprite, boolean isBreakable) {
-        super(xPos, yPos, sprite);
+    public Wall(Point2D.Float position, BufferedImage sprite, boolean isBreakable) {
+        super(position, sprite);
         this.breakable = isBreakable;
     }
 
@@ -27,7 +28,12 @@ public class Wall extends GameObject {
 
     @Override
     public void onDestroy() {
-
+        double random = Math.random();
+        if (random < 0.2) {
+            // Random powerup at 20% chance excluding power max
+            Powerup powerup = new Powerup();
+//            this.instantiate(powerup);
+        }
     }
 
     @Override

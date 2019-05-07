@@ -1,5 +1,8 @@
 package gameobjects;
 
+import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+
 public abstract class Player extends GameObject {
 
     protected boolean UpPressed = false;
@@ -7,6 +10,10 @@ public abstract class Player extends GameObject {
     protected boolean LeftPressed = false;
     protected boolean RightPressed = false;
     protected boolean ActionPressed = false;
+
+    Player(Point2D.Float position, BufferedImage sprite) {
+        super(position, sprite);
+    }
 
     public void toggleUpPressed() {
         this.UpPressed = true;

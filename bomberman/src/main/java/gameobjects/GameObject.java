@@ -17,14 +17,11 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
 
     private boolean destroyed;
 
-    // Should not be used
+    /**
+     * Spawns object at (0, 0) with 0 rotation and nothing else. Usually should not be used.
+     */
     GameObject() {
         this.position = new Point2D.Float();
-        this.rotation = 0;
-    }
-
-    GameObject(Point2D.Float position) {
-        this.position = new Point2D.Float(position.x, position.y);
         this.rotation = 0;
     }
 
@@ -33,12 +30,24 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
         this.rotation = 0;
     }
 
-    // Use super() in constructors of subclasses
+    GameObject(Point2D.Float position) {
+        this.position = new Point2D.Float(position.x, position.y);
+        this.rotation = 0;
+    }
+
+    // Use super(xPos, yPos, sprite) in constructors of subclasses
     GameObject(float xPos, float yPos, BufferedImage sprite) {
         this(sprite);
         this.position = new Point2D.Float(xPos, yPos);
         this.rotation = 0;
         this.collider = new Rectangle2D.Float(xPos, yPos, this.width, this.height);
+    }
+
+    GameObject(Point2D.Float position, BufferedImage sprite) {
+        this(sprite);
+        this.position = new Point2D.Float(position.x, position.y);
+        this.rotation = 0;
+        this.collider = new Rectangle2D.Float(position.x, position.y, this.width, this.height);
     }
 
     GameObject(BufferedImage sprite) {

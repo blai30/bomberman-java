@@ -8,6 +8,7 @@ public class GameLauncher {
     protected static GameWindow window;
 
     public static void main(String[] args) {
+        ResourceCollection.readFiles();
         ResourceCollection.init();
         GamePanel game;
         try {

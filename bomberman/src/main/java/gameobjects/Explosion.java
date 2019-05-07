@@ -12,8 +12,8 @@ public abstract class Explosion extends GameObject {
 
     public static class Horizontal extends Explosion {
 
-        Horizontal(int firepower, Point2D.Float spawnLocation) {
-            super(firepower, spawnLocation);
+        Horizontal(Point2D.Float position, int firepower) {
+            super(position);
 
             float leftX = this.checkHorizontal(this.position, firepower, 32, true);
             float rightX = this.checkHorizontal(this.position, firepower, 32, false);
@@ -38,7 +38,7 @@ public abstract class Explosion extends GameObject {
             outer: for (int i = 1; i <= firepower; i++) {
                 value = (isLeft) ? value - blockWidth : value + blockWidth;
                 if (isLeft) {
-                    this.centerOffsetH += blockWidth;
+                    this.centerOffset += blockWidth;
                 }
                 for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
                     Wall obj = GameObjectCollection.wallObjects.get(index);
@@ -46,7 +46,7 @@ public abstract class Explosion extends GameObject {
                         if (!obj.isBreakable()) {
                             value = (isLeft) ? value + blockWidth : value - blockWidth;
                             if (isLeft) {
-                                this.centerOffsetH -= blockWidth;
+                                this.centerOffset -= blockWidth;
                             }
                         }
                         break outer;
@@ -58,7 +58,7 @@ public abstract class Explosion extends GameObject {
         }
 
         private BufferedImage[] drawSprite(int width, int height) {
-            BufferedImage[] spriteAnimation = new BufferedImage[ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getWidth() / 32];
+            BufferedImage[] spriteAnimation = new BufferedImage[ResourceCollection.SpriteMaps.EXPLOSION_SPRITEMAP.getImage().getWidth() / 32];
             for (int i = 0; i < spriteAnimation.length; i++) {
                 spriteAnimation[i] = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             }
@@ -68,7 +68,7 @@ public abstract class Explosion extends GameObject {
                 g2.fillRect(0, 0, spriteAnimation[i].getWidth(), spriteAnimation[i].getHeight());
 
                 for (int j = 0; j < spriteAnimation[i].getWidth() / 32; j++) {
-                    if (spriteAnimation[i].getWidth() / 32 == 1 || this.centerOffsetH == j * 32) {
+                    if (spriteAnimation[i].getWidth() / 32 == 1 || this.centerOffset == j * 32) {
                         g2.drawImage(this.sprites[0][i], j * 32, 0, null);
                     } else if (j == 0) {
                         g2.drawImage(this.sprites[3][i], j * 32, 0, null);
@@ -89,8 +89,8 @@ public abstract class Explosion extends GameObject {
 
     public static class Vertical extends Explosion {
 
-        Vertical(int firepower, Point2D.Float spawnLocation) {
-            super(firepower, spawnLocation);
+        Vertical(Point2D.Float position, int firepower) {
+            super(position);
 
             float topY = this.checkVertical(this.position, firepower, 32, true);
             float bottomY = this.checkVertical(this.position, firepower, 32, false);
@@ -115,7 +115,7 @@ public abstract class Explosion extends GameObject {
             outer: for (int i = 1; i <= firepower; i++) {
                 value = (isTop) ? value - blockHeight : value + blockHeight;
                 if (isTop) {
-                    this.centerOffsetV += blockHeight;
+                    this.centerOffset += blockHeight;
                 }
                 for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
                     Wall obj = GameObjectCollection.wallObjects.get(index);
@@ -123,7 +123,7 @@ public abstract class Explosion extends GameObject {
                         if (!obj.isBreakable()) {
                             value = (isTop) ? value + blockHeight : value - blockHeight;
                             if (isTop) {
-                                this.centerOffsetV -= blockHeight;
+                                this.centerOffset -= blockHeight;
                             }
                         }
                         break outer;
@@ -135,7 +135,7 @@ public abstract class Explosion extends GameObject {
         }
 
         private BufferedImage[] drawSprite(int width, int height) {
-            BufferedImage[] spriteAnimation = new BufferedImage[ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage().getWidth() / 32];
+            BufferedImage[] spriteAnimation = new BufferedImage[ResourceCollection.SpriteMaps.EXPLOSION_SPRITEMAP.getImage().getWidth() / 32];
             for (int i = 0; i < spriteAnimation.length; i++) {
                 spriteAnimation[i] = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             }
@@ -145,7 +145,7 @@ public abstract class Explosion extends GameObject {
                 g2.fillRect(0, 0, spriteAnimation[i].getWidth(), spriteAnimation[i].getHeight());
 
                 for (int j = 0; j < spriteAnimation[i].getHeight() / 32; j++) {
-                    if (spriteAnimation[i].getHeight() / 32 == 1 || this.centerOffsetV == j * 32) {
+                    if (spriteAnimation[i].getHeight() / 32 == 1 || this.centerOffset == j * 32) {
                         g2.drawImage(this.sprites[0][i], 0, j * 32, null);
                     } else if (j == 0) {
                         g2.drawImage(this.sprites[5][i], 0, j * 32, null);
@@ -166,27 +166,17 @@ public abstract class Explosion extends GameObject {
 
     protected BufferedImage[][] sprites;
     protected BufferedImage[] animation;
-    protected int firepower;
-    protected int centerOffsetH;
-    protected int centerOffsetV;
+    protected int centerOffset;
     private int spriteIndex;
     private int spriteTimer;
 
-    Explosion(int firepower, Point2D.Float position) {
+    Explosion(Point2D.Float position) {
         super(position);
-        this.firepower = firepower;
-        this.centerOffsetH = 0;
-        this.centerOffsetV = 0;
+        this.sprites = ResourceCollection.SpriteMaps.EXPLOSION_SPRITEMAP.getSprites();
 
-        BufferedImage spriteMap = ResourceCollection.Images.EXPLOSION_SPRITEMAP.getImage();
-        int rows = spriteMap.getHeight() / 32;
-        int cols = spriteMap.getWidth() / 32;
-        this.sprites = new BufferedImage[rows][cols];
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < cols; column++) {
-                this.sprites[row][column] = spriteMap.getSubimage(column * 32, row * 32, 32, 32);
-            }
-        }
+        this.centerOffset = 0;
+        this.spriteIndex = 0;
+        this.spriteTimer = 0;
     }
 
     protected void init(Rectangle2D.Float collider) {

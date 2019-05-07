@@ -63,6 +63,15 @@ public class Powerup extends GameObject {
 
     private Type type;
 
+    public Powerup() {
+//        super();
+//        this(this.randomPower());
+    }
+
+    public Powerup(Type type) {
+        this.type = type;
+    }
+
     // Random powerups
     private Powerup.Type[] powerups = Powerup.Type.values();
     private Random random = new Random();

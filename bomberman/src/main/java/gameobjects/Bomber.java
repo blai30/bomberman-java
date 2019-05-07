@@ -1,7 +1,6 @@
 package gameobjects;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 
@@ -23,22 +22,12 @@ public class Bomber extends Player {
     private int bombTimer;
     private int score;
 
-    public Bomber(float xPos, float yPos, BufferedImage spriteMap) {
-        this.position = new Point2D.Float(xPos, yPos - 16);
+    public Bomber(Point2D.Float position, BufferedImage[][] spriteMap) {
+        super(position, spriteMap[1][0]);
+        this.collider.setRect(this.position.x + 2, this.position.y + 16 + 2, this.width - 4, this.height - 16 - 4);
 
-        // Each individually sliced sprite is 32x48
-        this.sprites = new BufferedImage[spriteMap.getHeight() / 48][spriteMap.getWidth() / 32];
-        for (int row = 0; row < spriteMap.getHeight() / 48; row++) {
-            for (int column = 0; column < spriteMap.getWidth() / 32; column++) {
-                this.sprites[row][column] = spriteMap.getSubimage(column * 32, row * 48, 32, 48);
-            }
-        }
-
-        this.baseSprite = this.sprites[1][0];
-        this.sprite = this.baseSprite;
-        this.width = this.sprite.getWidth();
-        this.height = this.sprite.getHeight();
-        this.collider = new Rectangle2D.Float(this.position.x + 2, this.position.y + 16 + 2, this.width - 4, this.height - 16 - 4);
+        this.sprites = spriteMap;
+        this.baseSprite = sprite;
 
         this.direction = 1;
         this.spriteIndex = 0;

@@ -7,6 +7,7 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -103,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable {
                     case ("S"):
                         if (Math.random() < SOFTWALL_RATE) {
                             BufferedImage sprSoftWall = ResourceCollection.Images.SOFT_WALL.getImage();
-                            Wall softWall = new Wall(x * 32, y * 32, sprSoftWall, true);
+                            Wall softWall = new Wall(new Point2D.Float(x * 32, y * 32), sprSoftWall, true);
                             GameObjectCollection.wallObjects.add(softWall);
                         }
                         break;
@@ -124,13 +125,13 @@ public class GamePanel extends JPanel implements Runnable {
                             code += 2;  // East
                         }
                         BufferedImage sprHardWall = ResourceCollection.getHardWallTile(code);
-                        Wall hardWall = new Wall(x * 32, y * 32, sprHardWall, false);
+                        Wall hardWall = new Wall(new Point2D.Float(x * 32, y * 32), sprHardWall, false);
                         GameObjectCollection.wallObjects.add(hardWall);
                         break;
 
                     case ("1"):
-                        BufferedImage sprMapP1 = ResourceCollection.Images.PLAYER_1.getImage();
-                        Bomber player1 = new Bomber(x * 32, y * 32, sprMapP1);
+                        BufferedImage[][] sprMapP1 = ResourceCollection.SpriteMaps.PLAYER_1.getSprites();
+                        Bomber player1 = new Bomber(new Point2D.Float(x * 32, y * 32 - 16), sprMapP1);
                         PlayerController playerController1 = new PlayerController(player1, this.controls1);
                         this.addKeyListener(playerController1);
                         this.gameHUD.assignPlayer(player1, 0);
@@ -138,8 +139,8 @@ public class GamePanel extends JPanel implements Runnable {
                         break;
 
                     case ("2"):
-                        BufferedImage sprMapP2 = ResourceCollection.Images.PLAYER_2.getImage();
-                        Bomber player2 = new Bomber(x * 32, y * 32, sprMapP2);
+                        BufferedImage[][] sprMapP2 = ResourceCollection.SpriteMaps.PLAYER_2.getSprites();
+                        Bomber player2 = new Bomber(new Point2D.Float(x * 32, y * 32 - 16), sprMapP2);
                         PlayerController playerController2 = new PlayerController(player2, this.controls2);
                         this.addKeyListener(playerController2);
                         this.gameHUD.assignPlayer(player2, 1);
@@ -147,8 +148,8 @@ public class GamePanel extends JPanel implements Runnable {
                         break;
 
                     case ("3"):
-                        BufferedImage sprMapP3 = ResourceCollection.Images.PLAYER_3.getImage();
-                        Bomber player3 = new Bomber(x * 32, y * 32, sprMapP3);
+                        BufferedImage[][] sprMapP3 = ResourceCollection.SpriteMaps.PLAYER_3.getSprites();
+                        Bomber player3 = new Bomber(new Point2D.Float(x * 32, y * 32 - 16), sprMapP3);
                         PlayerController playerController3 = new PlayerController(player3, this.controls3);
                         this.addKeyListener(playerController3);
                         this.gameHUD.assignPlayer(player3, 2);
@@ -156,8 +157,8 @@ public class GamePanel extends JPanel implements Runnable {
                         break;
 
                     case ("4"):
-                        BufferedImage sprMapP4 = ResourceCollection.Images.PLAYER_4.getImage();
-                        Bomber player4 = new Bomber(x * 32, y * 32, sprMapP4);
+                        BufferedImage[][] sprMapP4 = ResourceCollection.SpriteMaps.PLAYER_4.getSprites();
+                        Bomber player4 = new Bomber(new Point2D.Float(x * 32, y * 32 - 16), sprMapP4);
                         PlayerController playerController4 = new PlayerController(player4, this.controls4);
                         this.addKeyListener(playerController4);
                         this.gameHUD.assignPlayer(player4, 3);
@@ -346,7 +347,7 @@ public class GamePanel extends JPanel implements Runnable {
                 GameObject obj = GameObjectCollection.gameObjects.get(i).get(j);
                 obj.drawImage(this.buffer);
 //                if (obj instanceof Explosion) {
-//                    obj.drawCollider(this.buffer);
+                    obj.drawCollider(this.buffer);
 //                }
             }
         }
