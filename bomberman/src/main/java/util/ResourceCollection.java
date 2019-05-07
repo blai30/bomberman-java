@@ -20,7 +20,13 @@ public class ResourceCollection {
         SOFT_WALL,
         HARD_WALLS,
         BOMB,
-        EXPLOSION_SPRITEMAP;
+        EXPLOSION_SPRITEMAP,
+        POWER_BOMB,
+        POWER_FIREUP,
+        POWER_FIREMAX,
+        POWER_SPEED,
+        POWER_PIERCE,
+        POWER_KICK;
 
         private BufferedImage image = null;
 
@@ -56,6 +62,12 @@ public class ResourceCollection {
             Images.HARD_WALLS.image = ImageIO.read(ResourceCollection.class.getResource("/resources/hardWalls.png"));
             Images.BOMB.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomb.png"));
             Images.EXPLOSION_SPRITEMAP.image = ImageIO.read(ResourceCollection.class.getResource("/resources/explosion.png"));
+            Images.POWER_BOMB.image = ImageIO.read(ResourceCollection.class.getResource("/resources/power_bomb.png"));
+            Images.POWER_FIREUP.image = ImageIO.read(ResourceCollection.class.getResource("/resources/power_fireup.png"));
+            Images.POWER_FIREMAX.image = ImageIO.read(ResourceCollection.class.getResource("/resources/power_firemax.png"));
+            Images.POWER_SPEED.image = ImageIO.read(ResourceCollection.class.getResource("/resources/power_speed.png"));
+            Images.POWER_PIERCE.image = ImageIO.read(ResourceCollection.class.getResource("/resources/power_pierce.png"));
+            Images.POWER_KICK.image = ImageIO.read(ResourceCollection.class.getResource("/resources/power_kick.png"));
 
             Files.DEFAULT_MAP.file = new InputStreamReader(ResourceCollection.class.getResourceAsStream("/resources/default.csv"));
 
