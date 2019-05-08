@@ -13,6 +13,7 @@ public class Bomb extends GameObject {
 
     // Original bomber that placed this bomb
     private Bomber bomber;
+    private boolean solidToBomber;
 
     // Animation
     private BufferedImage[][] sprites;
@@ -48,6 +49,7 @@ public class Bomb extends GameObject {
         this.timeToDetonate = timer;
         this.bomber = bomber;
         this.startTime = 0;
+        this.solidToBomber = false;
     }
 
     /**
@@ -57,6 +59,22 @@ public class Bomb extends GameObject {
         GameObjectCollection.spawn(new Explosion.Horizontal(this.position, this.firepower, this.pierce));
         GameObjectCollection.spawn(new Explosion.Vertical(this.position, this.firepower, this.pierce));
         this.bomber.addAmmo(1);
+    }
+
+    /**
+     * Retrieve original bomber object.
+     * @return Original bomber that placed this bomb
+     */
+    public Bomber getBomber() {
+        return this.bomber;
+    }
+
+    /**
+     * Check if original bomber has stepped out of the bomb.
+     * @return true = bomber has stepped out, false = bomber has not stepped out
+     */
+    public boolean getSolidToBomber() {
+        return this.solidToBomber;
     }
 
     /**
@@ -87,7 +105,7 @@ public class Bomb extends GameObject {
 
     @Override
     public void onCollisionEnter(GameObject collidingObj) {
-        collidingObj.onCollisionEnter(this);
+        collidingObj.handleCollision(this);
     }
 
     @Override

@@ -347,7 +347,7 @@ public class GamePanel extends JPanel implements Runnable {
                 GameObject obj = GameObjectCollection.gameObjects.get(i).get(j);
                 obj.drawImage(this.buffer);
 //                if (obj instanceof Explosion) {
-                    obj.drawCollider(this.buffer);
+//                    obj.drawCollider(this.buffer);
 //                }
             }
         }

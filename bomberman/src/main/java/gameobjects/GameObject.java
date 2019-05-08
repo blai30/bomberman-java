@@ -71,7 +71,7 @@ public abstract class GameObject implements Observable, CollisionHandling, Compa
     /**
      * Mark this game object for deletion.
      */
-    protected void destroy() {
+    void destroy() {
         this.destroyed = true;
     }
 
@@ -83,7 +83,7 @@ public abstract class GameObject implements Observable, CollisionHandling, Compa
         return destroyed;
     }
 
-    protected void solidCollision(GameObject obj) {
+    void solidCollision(GameObject obj) {
         Rectangle2D intersection = this.collider.createIntersection(obj.collider);
         // Vertical collision
         if (intersection.getWidth() >= intersection.getHeight()) {
@@ -136,6 +136,14 @@ public abstract class GameObject implements Observable, CollisionHandling, Compa
      */
     public Rectangle2D.Float getCollider() {
         return this.collider;
+    }
+
+    /**
+     * Get the center of the collider of this game object.
+     * @return A Point2D at the center of the collider
+     */
+    public Point2D.Float getColliderCenter() {
+        return new Point2D.Float((float) this.collider.getCenterX(), (float) this.collider.getCenterY());
     }
 
     /**

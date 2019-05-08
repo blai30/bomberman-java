@@ -44,10 +44,10 @@ public class Bomber extends Player {
 
         // Default stats
         this.moveSpeed = 1;
-        this.firepower = 1;
-        this.bombAmmo = 1;
+        this.firepower = 10;
+        this.bombAmmo = 10;
         this.bombTimer = 250;
-        this.pierce = false;
+        this.pierce = true;
         this.kick = false;
         this.statsCollection = new LinkedHashMap<>();
     }
@@ -175,6 +175,18 @@ public class Bomber extends Player {
     @Override
     public void handleCollision(Wall collidingObj) {
         this.solidCollision(collidingObj);
+    }
+
+    /**
+     * Bombs act as walls if the bomber is not already within the a certain distance as the bomb.
+     * (ie. if the bomber is not standing on the bomb)
+     * @param collidingObj Solid bomb
+     */
+    @Override
+    public void handleCollision(Bomb collidingObj) {
+        if (collidingObj.getColliderCenter().distance(this.getColliderCenter()) >= 26) {
+            this.solidCollision(collidingObj);
+        }
     }
 
     @Override
