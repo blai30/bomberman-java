@@ -30,7 +30,7 @@ public class Wall extends GameObject {
     public void onDestroy() {
         double random = Math.random();
         if (random < 0.5) {
-            Powerup powerup = new Powerup(this.position, Powerup.Type.randomType());
+            Powerup powerup = new Powerup(this.position, Powerup.randomPower());
             this.instantiate(powerup);
         }
     }

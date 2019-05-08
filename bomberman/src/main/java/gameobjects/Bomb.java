@@ -14,10 +14,11 @@ public class Bomb extends GameObject {
     private int spriteTimer;
 
     private int firepower;
+    private boolean pierce;
     private int timer;
     private int startTime;
 
-    public Bomb(Point2D.Float position, int firepower, int timer, Bomber bomber) {
+    public Bomb(Point2D.Float position, int firepower, boolean pierce, int timer, Bomber bomber) {
         super(position, ResourceCollection.SpriteMaps.BOMB.getSprites()[0][0]);
         this.collider.setRect(this.position.x, this.position.y, this.width, this.height);
 
@@ -26,15 +27,16 @@ public class Bomb extends GameObject {
         this.spriteTimer = 0;
 
         this.firepower = firepower;
+        this.pierce = pierce;
         this.timer = timer;
         this.bomber = bomber;
         this.startTime = 0;
     }
 
     private void explode() {
-        this.instantiate(new Explosion.Horizontal(this.position, this.firepower));
-        this.instantiate(new Explosion.Vertical(this.position, this.firepower));
-        this.bomber.restoreAmmo();
+        this.instantiate(new Explosion.Horizontal(this.position, this.firepower, this.pierce));
+        this.instantiate(new Explosion.Vertical(this.position, this.firepower, this.pierce));
+        this.bomber.addAmmo(1);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class Bomb extends GameObject {
 
     @Override
     public void onCollisionEnter(GameObject collidingObj) {
-//        collidingObj.onCollisionEnter(this);
+        collidingObj.onCollisionEnter(this);
     }
 
     @Override

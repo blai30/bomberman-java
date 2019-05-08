@@ -17,9 +17,11 @@ public class Bomber extends Player {
 
     private LinkedHashMap<String, Integer> statsCollection;
     private int moveSpeed;
-    private int firePower;
+    private int firepower;
     private int bombAmmo;
     private int bombTimer;
+    private boolean pierce;
+    private boolean kick;
     private int score;
 
     public Bomber(Point2D.Float position, BufferedImage[][] spriteMap) {
@@ -35,9 +37,11 @@ public class Bomber extends Player {
 
         this.statsCollection = new LinkedHashMap<>();
         this.moveSpeed = 1;
-        this.firePower = 1;
-        this.bombAmmo = 3;
+        this.firepower = 1;
+        this.bombAmmo = 1;
         this.bombTimer = 250;
+        this.pierce = false;
+        this.kick = false;
     }
 
     private void moveUp() {
@@ -67,13 +71,25 @@ public class Bomber extends Player {
                 return; // Only one bomb allowed per tile; Cannot place a bomb on a bomb
             }
         }
-        this.bomb = new Bomb(spawnLocation, this.firePower, this.bombTimer, this);
+        this.bomb = new Bomb(spawnLocation, this.firepower, this.pierce, this.bombTimer, this);
         this.instantiate(this.bomb);
         this.bombAmmo--;
     }
 
-    public void restoreAmmo() {
-        this.bombAmmo++;
+    public void addAmmo(int value) {
+        this.bombAmmo = Math.min(6, this.bombAmmo + value);
+    }
+    public void addFirepower(int value) {
+        this.firepower = Math.min(6, this.firepower + value);
+    }
+    public void addSpeed(int value) {
+        this.moveSpeed = Math.min(6, this.moveSpeed + value);
+    }
+    public void setPierce(boolean value) {
+        this.pierce = value;
+    }
+    public void setKick(boolean value) {
+        this.kick = value;
     }
 
     public BufferedImage getBaseSprite() {
@@ -82,7 +98,7 @@ public class Bomber extends Player {
 
     public LinkedHashMap<String, Integer> getStats() {
         this.statsCollection.put("Speed", this.moveSpeed);
-        this.statsCollection.put("Power", this.firePower);
+        this.statsCollection.put("Power", this.firepower);
         this.statsCollection.put("Bombs", this.bombAmmo);
         this.statsCollection.put("Timer", this.bombTimer);
         this.statsCollection.put("Score", this.score);
@@ -125,11 +141,6 @@ public class Bomber extends Player {
     }
 
     @Override
-    public void onDestroy() {
-
-    }
-
-    @Override
     public void onCollisionEnter(GameObject collidingObj) {
         collidingObj.handleCollision(this);
     }
@@ -137,6 +148,12 @@ public class Bomber extends Player {
     @Override
     public void handleCollision(Wall collidingObj) {
         this.solidCollision(collidingObj);
+    }
+
+    @Override
+    public void handleCollision(Powerup collidingObj) {
+        collidingObj.grantBonus(this);
+        collidingObj.destroy();
     }
 
 }

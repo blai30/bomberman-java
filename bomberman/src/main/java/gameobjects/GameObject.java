@@ -6,7 +6,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-public abstract class GameObject implements CollisionHandling, Comparable<GameObject> {
+public abstract class GameObject implements Observable, CollisionHandling, Comparable<GameObject> {
 
     BufferedImage sprite;
     Point2D.Float position;
@@ -138,9 +138,6 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
         return this.position.y + this.height;
     }
 
-    public abstract void update();
-    public abstract void onDestroy();
-
     /**
      * Draws the game object in the game world to g.
      * (ie. the buffer which will be drawn to the screen)
@@ -165,6 +162,18 @@ public abstract class GameObject implements CollisionHandling, Comparable<GameOb
     @Override
     public int compareTo(GameObject o) {
         return Float.compare(this.getPositionY(), o.getPositionY());
+    }
+
+}
+
+interface Observable {
+
+    default void update() {
+
+    }
+
+    default void onDestroy() {
+
     }
 
 }

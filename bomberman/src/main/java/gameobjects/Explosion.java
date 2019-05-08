@@ -12,11 +12,11 @@ public abstract class Explosion extends GameObject {
 
     public static class Horizontal extends Explosion {
 
-        Horizontal(Point2D.Float position, int firepower) {
+        Horizontal(Point2D.Float position, int firepower, boolean pierce) {
             super(position);
 
-            float leftX = this.checkHorizontal(this.position, firepower, 32, true);
-            float rightX = this.checkHorizontal(this.position, firepower, 32, false);
+            float leftX = this.checkHorizontal(this.position, firepower, pierce, 32, true);
+            float rightX = this.checkHorizontal(this.position, firepower, pierce, 32, false);
 
             Rectangle2D.Float recH = new Rectangle2D.Float(leftX, this.position.y, rightX - leftX + 32, 32);
             this.init(recH);
@@ -33,7 +33,7 @@ public abstract class Explosion extends GameObject {
          * @param blockWidth Size of each game object tile, negative for left, positive for right
          * @return Position of the explosion's maximum range in horizontal direction
          */
-        private float checkHorizontal(Point2D.Float position, int firepower, int blockWidth, boolean isLeft) {
+        private float checkHorizontal(Point2D.Float position, int firepower, boolean pierce, int blockWidth, boolean isLeft) {
             float value = position.x;
             outer: for (int i = 1; i <= firepower; i++) {
                 value = (isLeft) ? value - blockWidth : value + blockWidth;
@@ -49,7 +49,9 @@ public abstract class Explosion extends GameObject {
                                 this.centerOffset -= blockWidth;
                             }
                         }
-                        break outer;
+                        if (!pierce) {
+                            break outer;
+                        }
                     }
                 }
             }
@@ -89,11 +91,11 @@ public abstract class Explosion extends GameObject {
 
     public static class Vertical extends Explosion {
 
-        Vertical(Point2D.Float position, int firepower) {
+        Vertical(Point2D.Float position, int firepower, boolean pierce) {
             super(position);
 
-            float topY = this.checkVertical(this.position, firepower, 32, true);
-            float bottomY = this.checkVertical(this.position, firepower, 32, false);
+            float topY = this.checkVertical(this.position, firepower, pierce, 32, true);
+            float bottomY = this.checkVertical(this.position, firepower, pierce, 32, false);
 
             Rectangle2D.Float recV = new Rectangle2D.Float(this.position.x, topY, 32, bottomY - topY + 32);
             this.init(recV);
@@ -110,7 +112,7 @@ public abstract class Explosion extends GameObject {
          * @param blockHeight Size of each game object tile, negative for top, positive for bottom
          * @return Position of the explosion's maximum range in vertical direction
          */
-        private float checkVertical(Point2D.Float position, int firepower, int blockHeight, boolean isTop) {
+        private float checkVertical(Point2D.Float position, int firepower, boolean pierce, int blockHeight, boolean isTop) {
             float value = position.y;
             outer: for (int i = 1; i <= firepower; i++) {
                 value = (isTop) ? value - blockHeight : value + blockHeight;
@@ -126,7 +128,9 @@ public abstract class Explosion extends GameObject {
                                 this.centerOffset -= blockHeight;
                             }
                         }
-                        break outer;
+                        if (!pierce) {
+                            break outer;
+                        }
                     }
                 }
             }
