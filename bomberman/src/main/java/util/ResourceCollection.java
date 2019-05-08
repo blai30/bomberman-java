@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 
+/**
+ * Collection of all files loaded into the program.
+ */
 public class ResourceCollection {
 
     private static HashMap<Integer, BufferedImage> hardWallTiles;
@@ -59,10 +62,18 @@ public class ResourceCollection {
         }
     }
 
+    /**
+     * Retrieve correct tile for hard walls specified by bit mask key.
+     * @param key Bit mask key
+     * @return A single individual hard wall sprite
+     */
     public static BufferedImage getHardWallTile(Integer key) {
         return hardWallTiles.get(key);
     }
 
+    /**
+     * Read files into the program.
+     */
     public static void readFiles() {
         try {
             System.out.println(System.getProperty("user.dir"));
@@ -91,18 +102,28 @@ public class ResourceCollection {
         }
     }
 
+    /**
+     * Slice and load sprite maps.
+     */
     public static void init() {
-        SpriteMaps.PLAYER_1.sprites = loadSpriteMap(SpriteMaps.PLAYER_1.image, 32, 48);
-        SpriteMaps.PLAYER_2.sprites = loadSpriteMap(SpriteMaps.PLAYER_2.image, 32, 48);
-        SpriteMaps.PLAYER_3.sprites = loadSpriteMap(SpriteMaps.PLAYER_3.image, 32, 48);
-        SpriteMaps.PLAYER_4.sprites = loadSpriteMap(SpriteMaps.PLAYER_4.image, 32, 48);
-        SpriteMaps.HARD_WALLS.sprites = loadSpriteMap(SpriteMaps.HARD_WALLS.image, 32, 32);
-        SpriteMaps.BOMB.sprites = loadSpriteMap(SpriteMaps.BOMB.image, 32, 32);
-        SpriteMaps.EXPLOSION_SPRITEMAP.sprites = loadSpriteMap(SpriteMaps.EXPLOSION_SPRITEMAP.image, 32, 32);
+        SpriteMaps.PLAYER_1.sprites = sliceSpriteMap(SpriteMaps.PLAYER_1.image, 32, 48);
+        SpriteMaps.PLAYER_2.sprites = sliceSpriteMap(SpriteMaps.PLAYER_2.image, 32, 48);
+        SpriteMaps.PLAYER_3.sprites = sliceSpriteMap(SpriteMaps.PLAYER_3.image, 32, 48);
+        SpriteMaps.PLAYER_4.sprites = sliceSpriteMap(SpriteMaps.PLAYER_4.image, 32, 48);
+        SpriteMaps.HARD_WALLS.sprites = sliceSpriteMap(SpriteMaps.HARD_WALLS.image, 32, 32);
+        SpriteMaps.BOMB.sprites = sliceSpriteMap(SpriteMaps.BOMB.image, 32, 32);
+        SpriteMaps.EXPLOSION_SPRITEMAP.sprites = sliceSpriteMap(SpriteMaps.EXPLOSION_SPRITEMAP.image, 32, 32);
         loadTiles(SpriteMaps.HARD_WALLS.sprites);   // Load hard wall tiles into hashmap for bit masking
     }
 
-    private static BufferedImage[][] loadSpriteMap(BufferedImage spriteMap, int spriteWidth, int spriteHeight) {
+    /**
+     * Slice sprite sheet into individual sprites stored in a two-dimensional array.
+     * @param spriteMap Sprite sheet to be sliced
+     * @param spriteWidth Width of each individual sprite
+     * @param spriteHeight Height of each individual sprite
+     * @return Two-dimensional array of sprites
+     */
+    private static BufferedImage[][] sliceSpriteMap(BufferedImage spriteMap, int spriteWidth, int spriteHeight) {
         int rows = spriteMap.getHeight() / spriteHeight;
         int cols = spriteMap.getWidth() / spriteWidth;
         BufferedImage[][] sprites = new BufferedImage[rows][cols];

@@ -25,7 +25,7 @@ public class PlayerController implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-
+        // Unneeded method; ignored
     }
 
     /**
@@ -40,14 +40,12 @@ public class PlayerController implements KeyListener {
         if (this.controls.get(e.getKeyCode()) == Key.down) {
             this.player.toggleDownPressed();
         }
-
         if (this.controls.get(e.getKeyCode()) == Key.left) {
             this.player.toggleLeftPressed();
         }
         if (this.controls.get(e.getKeyCode()) == Key.right) {
             this.player.toggleRightPressed();
         }
-
         if (this.controls.get(e.getKeyCode()) == Key.action) {
             this.player.toggleActionPressed();
         }
@@ -65,14 +63,12 @@ public class PlayerController implements KeyListener {
         if (this.controls.get(e.getKeyCode()) == Key.down) {
             this.player.unToggleDownPressed();
         }
-
         if (this.controls.get(e.getKeyCode()) == Key.left) {
             this.player.unToggleLeftPressed();
         }
         if (this.controls.get(e.getKeyCode()) == Key.right) {
             this.player.unToggleRightPressed();
         }
-
         if (this.controls.get(e.getKeyCode()) == Key.action) {
             this.player.unToggleActionPressed();
         }

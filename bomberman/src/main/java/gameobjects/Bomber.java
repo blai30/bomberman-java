@@ -1,21 +1,23 @@
 package gameobjects;
 
+import util.GameObjectCollection;
+
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.LinkedHashMap;
 
+/**
+ * Bomberman player object to be controlled by a user.
+ */
 public class Bomber extends Player {
 
+    // Animation
     private BufferedImage[][] sprites;
-    private BufferedImage baseSprite;
-
-    private Bomb bomb;
-
     private int direction;  // 0: up, 1: down, 2: left, 3: right
     private int spriteIndex;
     private int spriteTimer;
 
-    private LinkedHashMap<String, Integer> statsCollection;
+    // Stats
     private int moveSpeed;
     private int firepower;
     private int bombAmmo;
@@ -23,59 +25,73 @@ public class Bomber extends Player {
     private boolean pierce;
     private boolean kick;
     private int score;
+    private LinkedHashMap<String, Integer> statsCollection;
 
+    /**
+     * Constructs a bomber at position with a two-dimensional array of sprites.
+     * @param position Coordinates of this object in the game world
+     * @param spriteMap 2D array of sprites used for animation
+     */
     public Bomber(Point2D.Float position, BufferedImage[][] spriteMap) {
         super(position, spriteMap[1][0]);
         this.collider.setRect(this.position.x + 2, this.position.y + 16 + 2, this.width - 4, this.height - 16 - 4);
 
+        // Animation
         this.sprites = spriteMap;
-        this.baseSprite = sprite;
-
-        this.direction = 1;
+        this.direction = 1;     // Facing down
         this.spriteIndex = 0;
         this.spriteTimer = 0;
 
-        this.statsCollection = new LinkedHashMap<>();
+        // Default stats
         this.moveSpeed = 1;
         this.firepower = 1;
         this.bombAmmo = 1;
         this.bombTimer = 250;
         this.pierce = false;
         this.kick = false;
+        this.statsCollection = new LinkedHashMap<>();
     }
 
+    // --- MOVEMENT ---
     private void moveUp() {
-        this.direction = 0;
+        this.direction = 0;     // Using sprites that face up
         this.position.setLocation(this.position.x, this.position.y - this.moveSpeed);
     }
     private void moveDown() {
-        this.direction = 1;
+        this.direction = 1;     // Using sprites that face down
         this.position.setLocation(this.position.x, this.position.y + this.moveSpeed);
     }
     private void moveLeft() {
-        this.direction = 2;
+        this.direction = 2;     // Using sprites that face left
         this.position.setLocation(this.position.x - this.moveSpeed, this.position.y);
     }
     private void moveRight() {
-        this.direction = 3;
+        this.direction = 3;     // Using sprites that face right
         this.position.setLocation(this.position.x + this.moveSpeed, this.position.y);
     }
 
+    // --- ACTION ---
     private void plantBomb() {
+        // Snap bombs to the grid on the map
         float x = Math.round(this.position.getX() / 32) * 32;
         float y = Math.round((this.position.getY() + 16) / 32) * 32;
         Point2D.Float spawnLocation = new Point2D.Float(x, y);
+
+        // Only one bomb allowed per tile; Cannot place a bomb on a bomb
         for (int i = 0; i < GameObjectCollection.bombObjects.size(); i++) {
             GameObject obj = GameObjectCollection.bombObjects.get(i);
             if (obj.collider.contains(spawnLocation)) {
-                return; // Only one bomb allowed per tile; Cannot place a bomb on a bomb
+                return;
             }
         }
-        this.bomb = new Bomb(spawnLocation, this.firepower, this.pierce, this.bombTimer, this);
-        this.instantiate(this.bomb);
+
+        // Spawn the bomb
+        Bomb bomb = new Bomb(spawnLocation, this.firepower, this.pierce, this.bombTimer, this);
+        GameObjectCollection.spawn(bomb);
         this.bombAmmo--;
     }
 
+    // --- POWERUPS ---
     public void addAmmo(int value) {
         this.bombAmmo = Math.min(6, this.bombAmmo + value);
     }
@@ -92,10 +108,18 @@ public class Bomber extends Player {
         this.kick = value;
     }
 
+    /**
+     * Used in game HUD to draw the base sprite to the info box.
+     * @return The sprite of the bomber facing down
+     */
     public BufferedImage getBaseSprite() {
-        return this.baseSprite;
+        return this.sprites[1][0];
     }
 
+    /**
+     * Get the collection of all stats for this game object.
+     * @return Collection of stats
+     */
     public LinkedHashMap<String, Integer> getStats() {
         this.statsCollection.put("Speed", this.moveSpeed);
         this.statsCollection.put("Power", this.firepower);
@@ -106,6 +130,9 @@ public class Bomber extends Player {
         return this.statsCollection;
     }
 
+    /**
+     * Controls movement, action, and animation.
+     */
     @Override
     public void update() {
         this.collider.setRect(this.position.x + 2, this.position.y + 16 + 2, this.width - 4, this.height - 16 - 4);

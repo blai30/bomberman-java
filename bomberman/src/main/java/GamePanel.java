@@ -1,4 +1,5 @@
 import gameobjects.*;
+import util.GameObjectCollection;
 import util.Key;
 import util.ResourceCollection;
 
@@ -276,8 +277,7 @@ public class GamePanel extends JPanel implements Runnable {
             // Update FPS and Ticks counter every second
             if (System.currentTimeMillis() - timer > 1000) {
                 timer = System.currentTimeMillis();
-                System.out.println("FPS: " + fps + ", Ticks: " + ticks);
-                GameLauncher.window.setTitle(GameWindow.TITLE + " | " + "FPS: " + fps + ", Ticks: " + ticks);
+                GameLauncher.window.update(fps, ticks);
                 fps = 0;
                 ticks = 0;
             }

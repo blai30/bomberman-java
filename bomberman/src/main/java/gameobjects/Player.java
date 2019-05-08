@@ -3,6 +3,9 @@ package gameobjects;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
+/**
+ * Player class for game objects that will be controlled by the user.
+ */
 public abstract class Player extends GameObject {
 
     protected boolean UpPressed = false;
@@ -11,6 +14,11 @@ public abstract class Player extends GameObject {
     protected boolean RightPressed = false;
     protected boolean ActionPressed = false;
 
+    /**
+     * Passing parameters to GameObject constructor.
+     * @param position
+     * @param sprite
+     */
     Player(Point2D.Float position, BufferedImage sprite) {
         super(position, sprite);
     }
@@ -34,6 +42,7 @@ public abstract class Player extends GameObject {
     public void toggleActionPressed() {
         this.ActionPressed = true;
     }
+
 
     public void unToggleUpPressed() {
         this.UpPressed = false;

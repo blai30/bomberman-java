@@ -3,50 +3,57 @@ import gameobjects.Bomber;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Displays various game information on the screen such as each player's score.
+ */
 public class GameHUD {
 
     private Bomber[] players;
     private BufferedImage[] playerInfo;
 
-    private int height;
-    private int infoWidth;
-
-    public GameHUD() {
+    GameHUD() {
         this.players = new Bomber[4];
         this.playerInfo = new BufferedImage[4];
     }
 
-    public void init() {
-        this.height = GameWindow.HUD_HEIGHT;
-        this.infoWidth = GamePanel.panelWidth / 4;   // 4 players, 4 info boxes
+    void init() {
+        // Height of the HUD
+        int height = GameWindow.HUD_HEIGHT;
+        // Width of each player's information in the HUD, 4 players, 4 info boxes
+        int infoWidth = GamePanel.panelWidth / 4;
 
-        this.playerInfo[0] = new BufferedImage(this.infoWidth, this.height, BufferedImage.TYPE_INT_RGB);
-        this.playerInfo[1] = new BufferedImage(this.infoWidth, this.height, BufferedImage.TYPE_INT_RGB);
-        this.playerInfo[2] = new BufferedImage(this.infoWidth, this.height, BufferedImage.TYPE_INT_RGB);
-        this.playerInfo[3] = new BufferedImage(this.infoWidth, this.height, BufferedImage.TYPE_INT_RGB);
+        this.playerInfo[0] = new BufferedImage(infoWidth, height, BufferedImage.TYPE_INT_RGB);
+        this.playerInfo[1] = new BufferedImage(infoWidth, height, BufferedImage.TYPE_INT_RGB);
+        this.playerInfo[2] = new BufferedImage(infoWidth, height, BufferedImage.TYPE_INT_RGB);
+        this.playerInfo[3] = new BufferedImage(infoWidth, height, BufferedImage.TYPE_INT_RGB);
     }
 
-    public BufferedImage getP1info() {
+    BufferedImage getP1info() {
         return this.playerInfo[0];
     }
-
-    public BufferedImage getP2info() {
+    BufferedImage getP2info() {
         return this.playerInfo[1];
     }
-
-    public BufferedImage getP3info() {
+    BufferedImage getP3info() {
         return this.playerInfo[2];
     }
-
-    public BufferedImage getP4info() {
+    BufferedImage getP4info() {
         return this.playerInfo[3];
     }
 
-    public void assignPlayer(Bomber player, int playerID) {
+    /**
+     * Assign an info box to a player that shows the information on this player.
+     * @param player The player to be assigned
+     * @param playerID Used as an index for the array
+     */
+    void assignPlayer(Bomber player, int playerID) {
         this.players[playerID] = player;
     }
 
-    public void drawHUD() {
+    /**
+     * Continuously redraw player information such as score.
+     */
+    void drawHUD() {
         Graphics[] playerGraphics = {
                 this.playerInfo[0].createGraphics(),
                 this.playerInfo[1].createGraphics(),

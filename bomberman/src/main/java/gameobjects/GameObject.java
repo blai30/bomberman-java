@@ -6,8 +6,13 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+/**
+ * Abstract game object class. All game objects extend this class.
+ * The base class for all game objects with properties that allow it to exist in the game world.
+ */
 public abstract class GameObject implements Observable, CollisionHandling, Comparable<GameObject> {
 
+    // Common data fields for game objects
     BufferedImage sprite;
     Point2D.Float position;
     Rectangle2D.Float collider;
@@ -18,31 +23,19 @@ public abstract class GameObject implements Observable, CollisionHandling, Compa
     private boolean destroyed;
 
     /**
-     * Spawns object at (0, 0) with 0 rotation and nothing else. Usually should not be used.
+     * Creates a new position for this game object at position. Used for objects with no predefined sprite such as explosion.
+     * @param position Position of this game object
      */
-    GameObject() {
-        this.position = new Point2D.Float();
-        this.rotation = 0;
-    }
-
-    GameObject(float xPos, float yPos) {
-        this.position = new Point2D.Float(xPos, yPos);
-        this.rotation = 0;
-    }
-
     GameObject(Point2D.Float position) {
         this.position = new Point2D.Float(position.x, position.y);
         this.rotation = 0;
     }
 
-    // Use super(xPos, yPos, sprite) in constructors of subclasses
-    GameObject(float xPos, float yPos, BufferedImage sprite) {
-        this(sprite);
-        this.position = new Point2D.Float(xPos, yPos);
-        this.rotation = 0;
-        this.collider = new Rectangle2D.Float(xPos, yPos, this.width, this.height);
-    }
-
+    /**
+     * Creates a new position for this game object at position. Sets the sprite of this game object using constructor.
+     * @param position Position of this game object
+     * @param sprite Sprite of this game object
+     */
     GameObject(Point2D.Float position, BufferedImage sprite) {
         this(sprite);
         this.position = new Point2D.Float(position.x, position.y);
@@ -50,7 +43,11 @@ public abstract class GameObject implements Observable, CollisionHandling, Compa
         this.collider = new Rectangle2D.Float(position.x, position.y, this.width, this.height);
     }
 
-    GameObject(BufferedImage sprite) {
+    /**
+     * To be called by other constructors. Set the sprite of the game object and its width and height depending on the sprite.
+     * @param sprite
+     */
+    private GameObject(BufferedImage sprite) {
         this.sprite = sprite;
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
@@ -71,14 +68,17 @@ public abstract class GameObject implements Observable, CollisionHandling, Compa
 //        GameObjectCollection.spawn(spawnObj);
 //    }
 
-    protected void instantiate(GameObject spawnObj) {
-        GameObjectCollection.spawn(spawnObj);
-    }
-
+    /**
+     * Mark this game object for deletion.
+     */
     protected void destroy() {
         this.destroyed = true;
     }
 
+    /**
+     * Check if this game object is destroyed.
+     * @return If this game object is destroyed or not
+     */
     public boolean isDestroyed() {
         return destroyed;
     }
@@ -130,10 +130,18 @@ public abstract class GameObject implements Observable, CollisionHandling, Compa
         }
     }
 
-    public Rectangle2D getCollider() {
+    /**
+     * Get the rectangle collider of this game object.
+     * @return A Rectangle2D collider
+     */
+    public Rectangle2D.Float getCollider() {
         return this.collider;
     }
 
+    /**
+     * Get the maximum y position of this game object.
+     * @return y position + height
+     */
     public float getPositionY() {
         return this.position.y + this.height;
     }
@@ -159,19 +167,35 @@ public abstract class GameObject implements Observable, CollisionHandling, Compa
         g2d.draw(this.collider);
     }
 
+    /**
+     * Compares the y position of two game objects.
+     * Used to sort game object collection so that drawing game objects will draw in the order of y positions.
+     * This adds a kind of depth to the game world.
+     * @param o Game object to be compared to
+     * @return -1 = less than, 1 = greater than, 0 = equal
+     */
     @Override
     public int compareTo(GameObject o) {
-        return Float.compare(this.getPositionY(), o.getPositionY());
+        return Float.compare(this.position.y, o.position.y);
     }
 
 }
 
+/**
+ * Observer pattern game state updating. Game objects perform certain actions based on the state of the game.
+ */
 interface Observable {
 
+    /**
+     * Repeatedly called during the game loop.
+     */
     default void update() {
 
     }
 
+    /**
+     * Called when the game object gets destroyed.
+     */
     default void onDestroy() {
 
     }
@@ -185,6 +209,11 @@ interface Observable {
  */
 interface CollisionHandling {
 
+    /**
+     * Called when two objects collide. Override this in GameObject subclasses.
+     * Usage: collidingObj.handleCollision(this);   // Put this inside the method body
+     * @param collidingObj The object that this is colliding with
+     */
     void onCollisionEnter(GameObject collidingObj);
 
     default void handleCollision(Bomber collidingObj) {
