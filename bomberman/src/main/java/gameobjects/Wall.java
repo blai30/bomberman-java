@@ -8,13 +8,7 @@ import java.awt.image.BufferedImage;
 /**
  * The base class for various types of walls. Namely hard wall and soft wall.
  */
-public class Wall extends GameObject {
-
-    // The explosion object that will destroy this wall
-    private Explosion explosion = null;
-
-    // Determines if this is a hard wall or soft wall
-    private boolean breakable;
+public class Wall extends TileObject {
 
     /**
      * Constructs a wall object that is either breakable or not.
@@ -28,19 +22,11 @@ public class Wall extends GameObject {
     }
 
     /**
-     * Checks if this is a hard wall or soft wall
-     * @return true = soft wall, false = hard wall
-     */
-    public boolean isBreakable() {
-        return this.breakable;
-    }
-
-    /**
      * Destroy wall when explosion animation finishes.
      */
     @Override
     public void update() {
-        if (this.isBreakable() && this.explosion != null && this.explosion.isDestroyed()) {
+        if (this.checkExplosion()) {
             this.destroy();
         }
     }
@@ -63,16 +49,12 @@ public class Wall extends GameObject {
     }
 
     /**
-     * First explosion to collide this wall
-     * @param collidingObj First explosion to collide this wall
+     * Checks if this is a hard wall or soft wall
+     * @return true = soft wall, false = hard wall
      */
     @Override
-    public void handleCollision(Explosion collidingObj) {
-        if (this.isBreakable()) {
-            if (this.explosion == null) {
-                this.explosion = collidingObj;
-            }
-        }
+    public boolean isBreakable() {
+        return this.breakable;
     }
 
 }

@@ -10,7 +10,7 @@ import java.util.Random;
  * Powerups with predefined types that spawn from breakable walls at random.
  * These powerups grant bombers various bonuses when collided with.
  */
-public class Powerup extends GameObject {
+public class Powerup extends TileObject {
 
     enum Type {
         // Additional bomb ammo
@@ -41,7 +41,7 @@ public class Powerup extends GameObject {
         Speed(ResourceCollection.Images.POWER_SPEED.getImage()) {
             @Override
             protected void grantBonus(Bomber bomber) {
-                bomber.addSpeed(1);
+                bomber.addSpeed(0.5f);
             }
         },
 
@@ -89,6 +89,7 @@ public class Powerup extends GameObject {
     public Powerup(Point2D.Float position, Type type) {
         super(position, type.sprite);
         this.type = type;
+        this.breakable = true;
     }
 
     // Random powerups
@@ -106,9 +107,24 @@ public class Powerup extends GameObject {
         this.type.grantBonus(bomber);
     }
 
+    /**
+     * Destroy powerup when explosion animation finishes.
+     */
+    @Override
+    public void update() {
+        if (this.checkExplosion()) {
+            this.destroy();
+        }
+    }
+
     @Override
     public void onCollisionEnter(GameObject collidingObj) {
         collidingObj.handleCollision(this);
+    }
+
+    @Override
+    public boolean isBreakable() {
+        return this.breakable;
     }
 
 }

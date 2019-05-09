@@ -59,8 +59,8 @@ public abstract class Explosion extends GameObject {
                 }
 
                 // Check this tile for wall collision
-                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
-                    Wall obj = GameObjectCollection.wallObjects.get(index);
+                for (int index = 0; index < GameObjectCollection.tileObjects.size(); index++) {
+                    TileObject obj = GameObjectCollection.tileObjects.get(index);
                     if (obj.collider.contains(value, position.y)) {
                         if (!obj.isBreakable()) {
                             // Hard wall found, move value back to the tile before
@@ -72,7 +72,7 @@ public abstract class Explosion extends GameObject {
                             }
                         }
 
-                        // Stop checking for walls after the first soft wall is found
+                        // Stop checking for tile objects after the first breakable is found
                         if (!pierce) {
                             break outer;
                         }
@@ -171,8 +171,8 @@ public abstract class Explosion extends GameObject {
                 }
 
                 // Check this tile for wall collision
-                for (int index = 0; index < GameObjectCollection.wallObjects.size(); index++) {
-                    Wall obj = GameObjectCollection.wallObjects.get(index);
+                for (int index = 0; index < GameObjectCollection.tileObjects.size(); index++) {
+                    TileObject obj = GameObjectCollection.tileObjects.get(index);
                     if (obj.collider.contains(position.x, value)) {
                         if (!obj.isBreakable()) {
                             // Hard wall found, move value back to the tile before
@@ -184,7 +184,7 @@ public abstract class Explosion extends GameObject {
                             }
                         }
 
-                        // Stop checking for walls after the first soft wall is found
+                        // Stop checking for tile objects after the first breakable is found
                         if (!pierce) {
                             break outer;
                         }

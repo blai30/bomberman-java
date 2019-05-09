@@ -4,7 +4,6 @@ import util.GameObjectCollection;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.util.LinkedHashMap;
 
 /**
  * Bomberman player object to be controlled by a user.
@@ -18,14 +17,14 @@ public class Bomber extends Player {
     private int spriteTimer;
 
     // Stats
-    private int moveSpeed;
+    private float moveSpeed;
     private int firepower;
     private int bombAmmo;
     private int bombTimer;
+    private int maxBombs;
     private boolean pierce;
     private boolean kick;
     private int score;
-    private LinkedHashMap<String, Integer> statsCollection;
 
     /**
      * Constructs a bomber at position with a two-dimensional array of sprites.
@@ -47,9 +46,9 @@ public class Bomber extends Player {
         this.firepower = 10;
         this.bombAmmo = 10;
         this.bombTimer = 250;
-        this.pierce = true;
+        this.maxBombs = this.bombAmmo;
+        this.pierce = false;
         this.kick = false;
-        this.statsCollection = new LinkedHashMap<>();
     }
 
     // --- MOVEMENT ---
@@ -77,9 +76,9 @@ public class Bomber extends Player {
         float y = Math.round((this.position.getY() + 16) / 32) * 32;
         Point2D.Float spawnLocation = new Point2D.Float(x, y);
 
-        // Only one bomb allowed per tile; Cannot place a bomb on a bomb
-        for (int i = 0; i < GameObjectCollection.bombObjects.size(); i++) {
-            GameObject obj = GameObjectCollection.bombObjects.get(i);
+        // Only one tile object allowed per tile; Cannot place a bomb on another object
+        for (int i = 0; i < GameObjectCollection.tileObjects.size(); i++) {
+            GameObject obj = GameObjectCollection.tileObjects.get(i);
             if (obj.collider.contains(spawnLocation)) {
                 return;
             }
@@ -91,15 +90,19 @@ public class Bomber extends Player {
         this.bombAmmo--;
     }
 
+    public void restoreAmmo() {
+        this.bombAmmo = Math.min(this.maxBombs, this.bombAmmo + 1);
+    }
+
     // --- POWERUPS ---
     public void addAmmo(int value) {
-        this.bombAmmo = Math.min(6, this.bombAmmo + value);
+        this.maxBombs = Math.min(6, this.maxBombs + value);
     }
     public void addFirepower(int value) {
         this.firepower = Math.min(6, this.firepower + value);
     }
-    public void addSpeed(int value) {
-        this.moveSpeed = Math.min(6, this.moveSpeed + value);
+    public void addSpeed(float value) {
+        this.moveSpeed = Math.min(4, this.moveSpeed + value);
     }
     public void setPierce(boolean value) {
         this.pierce = value;
@@ -114,20 +117,6 @@ public class Bomber extends Player {
      */
     public BufferedImage getBaseSprite() {
         return this.sprites[1][0];
-    }
-
-    /**
-     * Get the collection of all stats for this game object.
-     * @return Collection of stats
-     */
-    public LinkedHashMap<String, Integer> getStats() {
-        this.statsCollection.put("Speed", this.moveSpeed);
-        this.statsCollection.put("Power", this.firepower);
-        this.statsCollection.put("Bombs", this.bombAmmo);
-        this.statsCollection.put("Timer", this.bombTimer);
-        this.statsCollection.put("Score", this.score);
-
-        return this.statsCollection;
     }
 
     /**

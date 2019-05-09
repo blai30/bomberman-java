@@ -13,9 +13,7 @@ public class GameObjectCollection {
 
     public static List<List<? extends GameObject>> gameObjects;
 
-    public static ArrayList<Wall> wallObjects;
-    public static ArrayList<Powerup> powerupObjects;
-    public static ArrayList<Bomb> bombObjects;
+    public static ArrayList<TileObject> tileObjects;
     public static ArrayList<Explosion> explosionObjects;
     public static ArrayList<Bomber> bomberObjects;
 
@@ -25,15 +23,11 @@ public class GameObjectCollection {
     public static void init() {
         gameObjects = new ArrayList<>();
 
-        wallObjects = new ArrayList<>();
-        powerupObjects = new ArrayList<>();
-        bombObjects = new ArrayList<>();
+        tileObjects = new ArrayList<>();
         explosionObjects = new ArrayList<>();
         bomberObjects = new ArrayList<>();
 
-        gameObjects.add(wallObjects);
-        gameObjects.add(powerupObjects);
-        gameObjects.add(bombObjects);
+        gameObjects.add(tileObjects);
         gameObjects.add(explosionObjects);
         gameObjects.add(bomberObjects);
     }
@@ -42,14 +36,8 @@ public class GameObjectCollection {
      * Add a game object to the collection to be observed and painted.
      * @param spawnObj Game object to be added
      */
-    public static void spawn(Wall spawnObj) {
-        wallObjects.add(spawnObj);
-    }
-    public static void spawn(Powerup spawnObj) {
-        powerupObjects.add(spawnObj);
-    }
-    public static void spawn(Bomb spawnObj) {
-        bombObjects.add(spawnObj);
+    public static void spawn(TileObject spawnObj) {
+        tileObjects.add(spawnObj);
     }
     public static void spawn(Explosion spawnObj) {
         explosionObjects.add(spawnObj);

@@ -9,11 +9,10 @@ import java.awt.image.BufferedImage;
 /**
  * Bomb objects that are created by bombers.
  */
-public class Bomb extends GameObject {
+public class Bomb extends TileObject {
 
     // Original bomber that placed this bomb
     private Bomber bomber;
-    private boolean solidToBomber;
 
     // Animation
     private BufferedImage[][] sprites;
@@ -49,7 +48,7 @@ public class Bomb extends GameObject {
         this.timeToDetonate = timer;
         this.bomber = bomber;
         this.startTime = 0;
-        this.solidToBomber = false;
+        this.breakable = true;
     }
 
     /**
@@ -58,7 +57,7 @@ public class Bomb extends GameObject {
     private void explode() {
         GameObjectCollection.spawn(new Explosion.Horizontal(this.position, this.firepower, this.pierce));
         GameObjectCollection.spawn(new Explosion.Vertical(this.position, this.firepower, this.pierce));
-        this.bomber.addAmmo(1);
+        this.bomber.restoreAmmo();
     }
 
     /**
@@ -67,14 +66,6 @@ public class Bomb extends GameObject {
      */
     public Bomber getBomber() {
         return this.bomber;
-    }
-
-    /**
-     * Check if original bomber has stepped out of the bomb.
-     * @return true = bomber has stepped out, false = bomber has not stepped out
-     */
-    public boolean getSolidToBomber() {
-        return this.solidToBomber;
     }
 
     /**
@@ -108,9 +99,19 @@ public class Bomb extends GameObject {
         collidingObj.handleCollision(this);
     }
 
+    /**
+     * Bombs are immediately destroyed when colliding with explosion.
+     * This is a different behavior than powerups and walls since they are not destroyed until the explosion animation finishes.
+     * @param collidingObj Explosion that will detonate this bomb
+     */
     @Override
     public void handleCollision(Explosion collidingObj) {
         this.destroy();
+    }
+
+    @Override
+    public boolean isBreakable() {
+        return this.breakable;
     }
 
 }

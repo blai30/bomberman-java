@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
  * Abstract game object class. All game objects extend this class.
  * The base class for all game objects with properties that allow it to exist in the game world.
  */
-public abstract class GameObject implements Observable, CollisionHandling, Comparable<GameObject> {
+public abstract class GameObject implements Observable, Collidable, Comparable<GameObject> {
 
     // Common data fields for game objects
     BufferedImage sprite;
@@ -215,7 +215,7 @@ interface Observable {
  * override the ones they need to avoid overriding them in every subclass only to leave them empty.
  * Not all game objects interact with every other game object.
  */
-interface CollisionHandling {
+interface Collidable {
 
     /**
      * Called when two objects collide. Override this in GameObject subclasses.

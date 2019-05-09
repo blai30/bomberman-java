@@ -106,7 +106,7 @@ public class GamePanel extends JPanel implements Runnable {
                         if (Math.random() < SOFTWALL_RATE) {
                             BufferedImage sprSoftWall = ResourceCollection.Images.SOFT_WALL.getImage();
                             Wall softWall = new Wall(new Point2D.Float(x * 32, y * 32), sprSoftWall, true);
-                            GameObjectCollection.wallObjects.add(softWall);
+                            GameObjectCollection.tileObjects.add(softWall);
                         }
                         break;
 
@@ -127,7 +127,7 @@ public class GamePanel extends JPanel implements Runnable {
                         }
                         BufferedImage sprHardWall = ResourceCollection.getHardWallTile(code);
                         Wall hardWall = new Wall(new Point2D.Float(x * 32, y * 32), sprHardWall, false);
-                        GameObjectCollection.wallObjects.add(hardWall);
+                        GameObjectCollection.tileObjects.add(hardWall);
                         break;
 
                     case ("1"):
