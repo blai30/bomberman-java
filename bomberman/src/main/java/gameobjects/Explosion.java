@@ -28,8 +28,9 @@ public abstract class Explosion extends GameObject {
         Horizontal(Point2D.Float position, int firepower, boolean pierce) {
             super(position);
 
-            float leftX = this.checkHorizontal(this.position, firepower, pierce, 32, true);
-            float rightX = this.checkHorizontal(this.position, firepower, pierce, 32, false);
+            float leftX = this.checkHorizontal(this.position, firepower, pierce, -32);
+            float rightX = this.checkHorizontal(this.position, firepower, pierce, 32);
+            this.centerOffset = position.x - leftX; // The offset is used to draw the center explosionContact sprite
 
             Rectangle2D.Float recH = new Rectangle2D.Float(leftX, this.position.y, rightX - leftX + 32, 32);
             this.init(recH);
@@ -46,17 +47,12 @@ public abstract class Explosion extends GameObject {
          * @param blockWidth Size of each game object tile, negative for left, positive for right
          * @return Position of the explosionContact's maximum range in horizontal direction
          */
-        private float checkHorizontal(Point2D.Float position, int firepower, boolean pierce, int blockWidth, boolean isLeft) {
+        private float checkHorizontal(Point2D.Float position, int firepower, boolean pierce, int blockWidth) {
             float value = position.x;   // Start at the origin tile
 
             outer: for (int i = 1; i <= firepower; i++) {
                 // Expand one tile at a time
-                value = (isLeft) ? value - blockWidth : value + blockWidth;
-
-                // Move offset; The offset is used to draw the center explosionContact sprite
-                if (isLeft) {
-                    this.centerOffset += blockWidth;
-                }
+                value += blockWidth;
 
                 // Check this tile for wall collision
                 for (int index = 0; index < GameObjectCollection.tileObjects.size(); index++) {
@@ -64,12 +60,7 @@ public abstract class Explosion extends GameObject {
                     if (obj.collider.contains(value, position.y)) {
                         if (!obj.isBreakable()) {
                             // Hard wall found, move value back to the tile before
-                            value = (isLeft) ? value + blockWidth : value - blockWidth;
-
-                            // Move offset back too
-                            if (isLeft) {
-                                this.centerOffset -= blockWidth;
-                            }
+                            value -= blockWidth;
                         }
 
                         // Stop checking for tile objects after the first breakable is found
@@ -140,8 +131,9 @@ public abstract class Explosion extends GameObject {
         Vertical(Point2D.Float position, int firepower, boolean pierce) {
             super(position);
 
-            float topY = this.checkVertical(this.position, firepower, pierce, 32, true);
-            float bottomY = this.checkVertical(this.position, firepower, pierce, 32, false);
+            float topY = this.checkVertical(this.position, firepower, pierce, -32);
+            float bottomY = this.checkVertical(this.position, firepower, pierce, 32);
+            this.centerOffset = position.y - topY;  // The offset is used to draw the center explosionContact sprite
 
             Rectangle2D.Float recV = new Rectangle2D.Float(this.position.x, topY, 32, bottomY - topY + 32);
             this.init(recV);
@@ -158,17 +150,12 @@ public abstract class Explosion extends GameObject {
          * @param blockHeight Size of each game object tile, negative for top, positive for bottom
          * @return Position of the explosionContact's maximum range in vertical direction
          */
-        private float checkVertical(Point2D.Float position, int firepower, boolean pierce, int blockHeight, boolean isTop) {
+        private float checkVertical(Point2D.Float position, int firepower, boolean pierce, int blockHeight) {
             float value = position.y;   // Start at the origin tile
 
             outer: for (int i = 1; i <= firepower; i++) {
                 // Expand one tile at a time
-                value = (isTop) ? value - blockHeight : value + blockHeight;
-
-                // Move offset; The offset is used to draw the center explosionContact sprite
-                if (isTop) {
-                    this.centerOffset += blockHeight;
-                }
+                value += blockHeight;
 
                 // Check this tile for wall collision
                 for (int index = 0; index < GameObjectCollection.tileObjects.size(); index++) {
@@ -176,12 +163,7 @@ public abstract class Explosion extends GameObject {
                     if (obj.collider.contains(position.x, value)) {
                         if (!obj.isBreakable()) {
                             // Hard wall found, move value back to the tile before
-                            value = (isTop) ? value + blockHeight : value - blockHeight;
-
-                            // Move offset back too
-                            if (isTop) {
-                                this.centerOffset -= blockHeight;
-                            }
+                            value -= blockHeight;
                         }
 
                         // Stop checking for tile objects after the first breakable is found
@@ -243,7 +225,7 @@ public abstract class Explosion extends GameObject {
 
     protected BufferedImage[][] sprites;
     protected BufferedImage[] animation;
-    protected int centerOffset;
+    protected float centerOffset;
     private int spriteIndex;
     private int spriteTimer;
 
