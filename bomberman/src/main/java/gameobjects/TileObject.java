@@ -8,9 +8,9 @@ import java.awt.image.BufferedImage;
  */
 public abstract class TileObject extends GameObject {
 
-    // The explosion object that will destroy this object after the explosion animation finishes
+    // The explosionContact object that will destroy this object after the explosionContact animation finishes
     // and if this object is breakable
-    protected Explosion explosion;
+    protected Explosion explosionContact;
     protected boolean breakable;
 
     TileObject(Point2D.Float position, BufferedImage sprite) {
@@ -20,18 +20,18 @@ public abstract class TileObject extends GameObject {
     public abstract boolean isBreakable();
 
     protected boolean checkExplosion() {
-        return this.isBreakable() && this.explosion != null && this.explosion.isDestroyed();
+        return this.isBreakable() && this.explosionContact != null && this.explosionContact.isDestroyed();
     }
 
     /**
-     * First explosion to collide this wall will destroy this object once its animation finishes
-     * @param collidingObj First explosion to collide this wall
+     * First explosionContact to collide this wall will destroy this object once its animation finishes
+     * @param collidingObj First explosionContact to collide this wall
      */
     @Override
     public void handleCollision(Explosion collidingObj) {
         if (this.isBreakable()) {
-            if (this.explosion == null) {
-                this.explosion = collidingObj;
+            if (this.explosionContact == null) {
+                this.explosionContact = collidingObj;
             }
         }
     }

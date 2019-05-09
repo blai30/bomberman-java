@@ -22,7 +22,7 @@ public class Wall extends TileObject {
     }
 
     /**
-     * Destroy wall when explosion animation finishes.
+     * Destroy wall when explosionContact animation finishes.
      */
     @Override
     public void update() {

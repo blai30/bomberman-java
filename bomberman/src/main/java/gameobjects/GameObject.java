@@ -23,7 +23,7 @@ public abstract class GameObject implements Observable, Collidable, Comparable<G
     private boolean destroyed;
 
     /**
-     * Creates a new position for this game object at position. Used for objects with no predefined sprite such as explosion.
+     * Creates a new position for this game object at position. Used for objects with no predefined sprite such as explosionContact.
      * @param position Position of this game object
      */
     GameObject(Point2D.Float position) {

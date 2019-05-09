@@ -15,15 +15,15 @@ import java.awt.image.BufferedImage;
 public abstract class Explosion extends GameObject {
 
     /**
-     * Horizontal explosion class.
+     * Horizontal explosionContact class.
      */
     public static class Horizontal extends Explosion {
 
         /**
-         * Constructs a horizontal explosion that varies in length depending on firepower and pierce.
+         * Constructs a horizontal explosionContact that varies in length depending on firepower and pierce.
          * @param position Coordinates of this object in the game world
-         * @param firepower Strength of this explosion
-         * @param pierce Whether or not this explosion will pierce soft walls
+         * @param firepower Strength of this explosionContact
+         * @param pierce Whether or not this explosionContact will pierce soft walls
          */
         Horizontal(Point2D.Float position, int firepower, boolean pierce) {
             super(position);
@@ -40,11 +40,11 @@ public abstract class Explosion extends GameObject {
         }
 
         /**
-         * Check for walls to determine explosion range. Used for left and right.
-         * @param position Original position of bomb prior to explosion
-         * @param firepower Maximum range of explosion
+         * Check for walls to determine explosionContact range. Used for left and right.
+         * @param position Original position of bomb prior to explosionContact
+         * @param firepower Maximum range of explosionContact
          * @param blockWidth Size of each game object tile, negative for left, positive for right
-         * @return Position of the explosion's maximum range in horizontal direction
+         * @return Position of the explosionContact's maximum range in horizontal direction
          */
         private float checkHorizontal(Point2D.Float position, int firepower, boolean pierce, int blockWidth, boolean isLeft) {
             float value = position.x;   // Start at the origin tile
@@ -53,7 +53,7 @@ public abstract class Explosion extends GameObject {
                 // Expand one tile at a time
                 value = (isLeft) ? value - blockWidth : value + blockWidth;
 
-                // Move offset; The offset is used to draw the center explosion sprite
+                // Move offset; The offset is used to draw the center explosionContact sprite
                 if (isLeft) {
                     this.centerOffset += blockWidth;
                 }
@@ -84,7 +84,7 @@ public abstract class Explosion extends GameObject {
         }
 
         /**
-         * Draws the explosion sprite after determining its length and center.
+         * Draws the explosionContact sprite after determining its length and center.
          * @param width Explosion width
          * @param height Explosion height
          * @return Array of sprites for animation
@@ -127,15 +127,15 @@ public abstract class Explosion extends GameObject {
     }
 
     /**
-     * Vertical explosion class.
+     * Vertical explosionContact class.
      */
     public static class Vertical extends Explosion {
 
         /**
-         * Constructs a horizontal explosion that varies in length depending on firepower and pierce.
+         * Constructs a horizontal explosionContact that varies in length depending on firepower and pierce.
          * @param position Coordinates of this object in the game world
-         * @param firepower Strength of this explosion
-         * @param pierce Whether or not this explosion will pierce soft walls
+         * @param firepower Strength of this explosionContact
+         * @param pierce Whether or not this explosionContact will pierce soft walls
          */
         Vertical(Point2D.Float position, int firepower, boolean pierce) {
             super(position);
@@ -152,11 +152,11 @@ public abstract class Explosion extends GameObject {
         }
 
         /**
-         * Check for walls to determine explosion range. Used for top and bottom.
-         * @param position Original position of bomb prior to explosion
-         * @param firepower Maximum range of explosion
+         * Check for walls to determine explosionContact range. Used for top and bottom.
+         * @param position Original position of bomb prior to explosionContact
+         * @param firepower Maximum range of explosionContact
          * @param blockHeight Size of each game object tile, negative for top, positive for bottom
-         * @return Position of the explosion's maximum range in vertical direction
+         * @return Position of the explosionContact's maximum range in vertical direction
          */
         private float checkVertical(Point2D.Float position, int firepower, boolean pierce, int blockHeight, boolean isTop) {
             float value = position.y;   // Start at the origin tile
@@ -165,7 +165,7 @@ public abstract class Explosion extends GameObject {
                 // Expand one tile at a time
                 value = (isTop) ? value - blockHeight : value + blockHeight;
 
-                // Move offset; The offset is used to draw the center explosion sprite
+                // Move offset; The offset is used to draw the center explosionContact sprite
                 if (isTop) {
                     this.centerOffset += blockHeight;
                 }
@@ -196,7 +196,7 @@ public abstract class Explosion extends GameObject {
         }
 
         /**
-         * Draws the explosion sprite after determining its length and center.
+         * Draws the explosionContact sprite after determining its length and center.
          * @param width Explosion width
          * @param height Explosion height
          * @return Array of sprites for animation

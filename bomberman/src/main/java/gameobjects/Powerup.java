@@ -108,7 +108,7 @@ public class Powerup extends TileObject {
     }
 
     /**
-     * Destroy powerup when explosion animation finishes.
+     * Destroy powerup when explosionContact animation finishes.
      */
     @Override
     public void update() {

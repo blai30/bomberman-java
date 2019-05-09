@@ -28,7 +28,7 @@ public class Bomb extends TileObject {
     /**
      * Constructs a bomb object with values passed in by a bomber object.
      * @param position Coordinates of this object in the game world
-     * @param firepower Strength of the bomb explosion
+     * @param firepower Strength of the bomb explosionContact
      * @param pierce Whether or not the explosions will pierce soft walls
      * @param timer How long before the bomb detonates
      * @param bomber Original bomber that placed this bomb
@@ -100,8 +100,8 @@ public class Bomb extends TileObject {
     }
 
     /**
-     * Bombs are immediately destroyed when colliding with explosion.
-     * This is a different behavior than powerups and walls since they are not destroyed until the explosion animation finishes.
+     * Bombs are immediately destroyed when colliding with explosionContact.
+     * This is a different behavior than powerups and walls since they are not destroyed until the explosionContact animation finishes.
      * @param collidingObj Explosion that will detonate this bomb
      */
     @Override
