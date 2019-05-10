@@ -59,6 +59,14 @@ public class Powerup extends TileObject {
             protected void grantBonus(Bomber bomber) {
                 bomber.setKick(true);
             }
+        },
+
+        // Reduces time for bomb to detonate
+        Timer(ResourceCollection.Images.POWER_TIMER.getImage()) {
+            @Override
+            protected void grantBonus(Bomber bomber) {
+                bomber.reduceTimer(15);
+            }
         };
 
         private BufferedImage sprite;

@@ -4,7 +4,6 @@ import util.GameObjectCollection;
 import util.ResourceCollection;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -24,7 +23,7 @@ public class Bomb extends TileObject {
     private int firepower;
     private boolean pierce;
     private int timeToDetonate;
-    private int startTime;
+    private int timeElapsed;
 
     // Kicking bomb
     private boolean kicked;
@@ -52,7 +51,7 @@ public class Bomb extends TileObject {
         this.pierce = pierce;
         this.timeToDetonate = timer;
         this.bomber = bomber;
-        this.startTime = 0;
+        this.timeElapsed = 0;
         this.breakable = true;
 
         // Kicking bomb
@@ -65,9 +64,7 @@ public class Bomb extends TileObject {
      */
     private void explode() {
         // Snap bombs to the grid on the map before exploding
-        float x = Math.round(this.position.getX() / 32) * 32;
-        float y = Math.round(this.position.getY() / 32) * 32;
-        this.position.setLocation(x, y);
+        this.snapToGrid();
         GameObjectCollection.spawn(new Explosion.Horizontal(this.position, this.firepower, this.pierce));
         GameObjectCollection.spawn(new Explosion.Vertical(this.position, this.firepower, this.pierce));
         this.bomber.restoreAmmo();
@@ -80,6 +77,12 @@ public class Bomb extends TileObject {
 
     public boolean isKicked() {
         return this.kicked;
+    }
+
+    public void stopKick() {
+        this.kicked = false;
+        this.kickDirection = null;
+        this.snapToGrid();
     }
 
     /**
@@ -108,7 +111,7 @@ public class Bomb extends TileObject {
         this.sprite = this.sprites[0][this.spriteIndex];
 
         // Detonate after timeToDetonate
-        if (this.startTime++ >= this.timeToDetonate) {
+        if (this.timeElapsed++ >= this.timeToDetonate) {
             this.destroy();
         }
 
@@ -131,25 +134,22 @@ public class Bomb extends TileObject {
 
     @Override
     public void handleCollision(Bomber collidingObj) {
-        if (collidingObj != this.bomber) {
-            this.kicked = false;
+        if (collidingObj.getColliderCenter().distance(this.getColliderCenter()) >= 28) {
+            this.solidCollision(collidingObj);
+            this.stopKick();
         }
-//        // Snap bombs to the grid on the map before exploding
-//        float x = Math.round(this.position.getX() / 32) * 32;
-//        float y = Math.round(this.position.getY() / 32) * 32;
-//        this.position.setLocation(x, y);
     }
 
     @Override
     public void handleCollision(Wall collidingObj) {
-        this.kicked = false;
         this.solidCollision(collidingObj);
+        this.stopKick();
     }
 
     @Override
     public void handleCollision(Bomb collidingObj) {
-        this.kicked = false;
         this.solidCollision(collidingObj);
+        this.stopKick();
     }
 
     /**

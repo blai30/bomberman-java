@@ -15,12 +15,20 @@ public abstract class TileObject extends GameObject {
 
     TileObject(Point2D.Float position, BufferedImage sprite) {
         super(position, sprite);
+        this.snapToGrid();
     }
 
     public abstract boolean isBreakable();
 
     protected boolean checkExplosion() {
         return this.isBreakable() && this.explosionContact != null && this.explosionContact.isDestroyed();
+    }
+
+    protected void snapToGrid() {
+        // Snap bombs to the grid on the map
+        float x = Math.round(this.position.getX() / 32) * 32;
+        float y = Math.round(this.position.getY() / 32) * 32;
+        this.position.setLocation(x, y);
     }
 
     /**

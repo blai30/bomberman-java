@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
  */
 public class Bomber extends Player {
 
+    private Bomb bomb;
+
     // Animation
     private BufferedImage[][] sprites;
     private int direction;  // 0: up, 1: down, 2: left, 3: right
@@ -34,7 +36,7 @@ public class Bomber extends Player {
      */
     public Bomber(Point2D.Float position, BufferedImage[][] spriteMap) {
         super(position, spriteMap[1][0]);
-        this.collider.setRect(this.position.x + 2, this.position.y + 16 + 2, this.width - 4, this.height - 16 - 4);
+        this.collider.setRect(this.position.x + 1, this.position.y + 16 + 1, this.width - 2, this.height - 16 - 2);
 
         // Animation
         this.sprites = spriteMap;
@@ -48,7 +50,7 @@ public class Bomber extends Player {
         this.bombAmmo = 10;
         this.bombTimer = 250;
         this.maxBombs = this.bombAmmo;
-        this.pierce = false;
+        this.pierce = true;
         this.kick = true;
     }
 
@@ -86,7 +88,7 @@ public class Bomber extends Player {
         }
 
         // Spawn the bomb
-        Bomb bomb = new Bomb(spawnLocation, this.firepower, this.pierce, this.bombTimer, this);
+        this.bomb = new Bomb(spawnLocation, this.firepower, this.pierce, this.bombTimer, this);
         GameObjectCollection.spawn(bomb);
         this.bombAmmo--;
     }
@@ -111,6 +113,9 @@ public class Bomber extends Player {
     public void setKick(boolean value) {
         this.kick = value;
     }
+    public void reduceTimer(int value) {
+        this.bombTimer = Math.max(160, this.bombTimer - value);
+    }
 
     /**
      * Used in game HUD to draw the base sprite to the info box.
@@ -121,19 +126,11 @@ public class Bomber extends Player {
     }
 
     /**
-     * Check if this bomber has kick. Used by bomb class to push bomb.
-     * @return Has ability to kick
-     */
-    public boolean getKick() {
-        return this.kick;
-    }
-
-    /**
      * Controls movement, action, and animation.
      */
     @Override
     public void update() {
-        this.collider.setRect(this.position.x + 2, this.position.y + 16 + 2, this.width - 4, this.height - 16 - 4);
+        this.collider.setRect(this.position.x + 1, this.position.y + 16 + 1, this.width - 2, this.height - 16 - 2);
 
         // Movement
         if (this.UpPressed) {
@@ -182,7 +179,7 @@ public class Bomber extends Player {
      */
     @Override
     public void handleCollision(Bomb collidingObj) {
-        if (collidingObj.getColliderCenter().distance(this.getColliderCenter()) >= 26) {
+        if (collidingObj.getColliderCenter().distance(this.getColliderCenter()) >= 22) {
             this.solidCollision(collidingObj);
             if (this.kick && !collidingObj.isKicked()) {
                 Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
