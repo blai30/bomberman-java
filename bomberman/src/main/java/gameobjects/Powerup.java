@@ -123,6 +123,11 @@ public class Powerup extends TileObject {
     }
 
     @Override
+    public void handleCollision(Bomb collidingObj) {
+        this.destroy();
+    }
+
+    @Override
     public boolean isBreakable() {
         return this.breakable;
     }
