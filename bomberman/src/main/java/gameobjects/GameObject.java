@@ -96,15 +96,15 @@ public abstract class GameObject implements Observable, Collidable, Comparable<G
                 this.position.setLocation(this.position.x, this.position.y + intersection.getHeight());
             }
 
-//            // Smoothing around corners
-//            if (intersection.getWidth() < 16) {
-//                if (intersection.getMaxX() >= this.collider.getMaxX()) {
-//                    this.position.setLocation(this.position.x - 0.5, this.position.y);
-//                }
-//                if (intersection.getMaxX() >= obj.collider.getMaxX()) {
-//                    this.position.setLocation(this.position.x + 0.5, this.position.y);
-//                }
-//            }
+            // Smoothing around corners
+            if (intersection.getWidth() < 16) {
+                if (intersection.getMaxX() >= this.collider.getMaxX()) {
+                    this.position.setLocation(this.position.x - 0.5, this.position.y);
+                }
+                if (intersection.getMaxX() >= obj.collider.getMaxX()) {
+                    this.position.setLocation(this.position.x + 0.5, this.position.y);
+                }
+            }
         }
 
         // Horizontal collision
@@ -118,15 +118,15 @@ public abstract class GameObject implements Observable, Collidable, Comparable<G
                 this.position.setLocation(this.position.x + intersection.getWidth(), this.position.y);
             }
 
-//            // Smoothing around corners
-//            if (intersection.getHeight() < 16) {
-//                if (intersection.getMaxY() >= this.collider.getMaxY()) {
-//                    this.position.setLocation(this.position.x, this.position.y - 0.5);
-//                }
-//                if (intersection.getMaxY() >= obj.collider.getMaxY()) {
-//                    this.position.setLocation(this.position.x, this.position.y + 0.5);
-//                }
-//            }
+            // Smoothing around corners
+            if (intersection.getHeight() < 16) {
+                if (intersection.getMaxY() >= this.collider.getMaxY()) {
+                    this.position.setLocation(this.position.x, this.position.y - 0.5);
+                }
+                if (intersection.getMaxY() >= obj.collider.getMaxY()) {
+                    this.position.setLocation(this.position.x, this.position.y + 0.5);
+                }
+            }
         }
     }
 

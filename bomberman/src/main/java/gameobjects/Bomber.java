@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 public class Bomber extends Player {
 
     private Bomb bomb;
+    private boolean dead;
 
     // Animation
     private BufferedImage[][] sprites;
@@ -132,34 +133,45 @@ public class Bomber extends Player {
     public void update() {
         this.collider.setRect(this.position.x + 1, this.position.y + 16 + 1, this.width - 2, this.height - 16 - 2);
 
-        // Movement
-        if (this.UpPressed) {
-            this.moveUp();
-        }
-        if (this.DownPressed) {
-            this.moveDown();
-        }
-        if (this.LeftPressed) {
-            this.moveLeft();
-        }
-        if (this.RightPressed) {
-            this.moveRight();
-        }
+        if (!this.dead) {
+            // Animate sprite
+            if ((this.spriteTimer += this.moveSpeed) >= 12) {
+                this.spriteIndex++;
+                this.spriteTimer = 0;
+            }
+            if ((!this.UpPressed && !this.DownPressed && !this.LeftPressed && !this.RightPressed) || (this.spriteIndex >= this.sprites[0].length)) {
+                this.spriteIndex = 0;
+            }
+            this.sprite = this.sprites[this.direction][this.spriteIndex];
 
-        // Action
-        if (this.ActionPressed && this.bombAmmo > 0) {
-            this.plantBomb();
-        }
+            // Movement
+            if (this.UpPressed) {
+                this.moveUp();
+            }
+            if (this.DownPressed) {
+                this.moveDown();
+            }
+            if (this.LeftPressed) {
+                this.moveLeft();
+            }
+            if (this.RightPressed) {
+                this.moveRight();
+            }
 
-        // Animate sprite
-        if ((this.spriteTimer += this.moveSpeed) >= 12) {
-            this.spriteIndex++;
-            this.spriteTimer = 0;
+            // Action
+            if (this.ActionPressed && this.bombAmmo > 0) {
+                this.plantBomb();
+            }
+        } else {
+            // Animate dying animation
+            if (this.spriteTimer++ >= 12) {
+                this.spriteIndex++;
+                this.spriteTimer = 0;
+            }
+            if (this.spriteIndex < this.sprites[4].length) {
+                this.sprite = this.sprites[4][this.spriteIndex];
+            }
         }
-        if ((!this.UpPressed && !this.DownPressed && !this.LeftPressed && !this.RightPressed) || (this.spriteIndex >= this.sprites[0].length)) {
-            this.spriteIndex = 0;
-        }
-        this.sprite = this.sprites[this.direction][this.spriteIndex];
     }
 
     @Override
@@ -170,6 +182,11 @@ public class Bomber extends Player {
     @Override
     public void handleCollision(Wall collidingObj) {
         this.solidCollision(collidingObj);
+    }
+
+    @Override
+    public void handleCollision(Explosion collidingObj) {
+        this.dead = true;
     }
 
     /**
