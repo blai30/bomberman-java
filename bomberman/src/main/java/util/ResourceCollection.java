@@ -39,6 +39,7 @@ public class ResourceCollection {
         PLAYER_4,
         HARD_WALLS,
         BOMB,
+        BOMB_PIERCE,
         EXPLOSION_SPRITEMAP;
 
         private BufferedImage image = null;
@@ -95,6 +96,7 @@ public class ResourceCollection {
             SpriteMaps.PLAYER_4.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomber4.png"));
             SpriteMaps.HARD_WALLS.image = ImageIO.read(ResourceCollection.class.getResource("/resources/hardWalls.png"));
             SpriteMaps.BOMB.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomb.png"));
+            SpriteMaps.BOMB_PIERCE.image = ImageIO.read(ResourceCollection.class.getResource("/resources/bomb_pierce.png"));
             SpriteMaps.EXPLOSION_SPRITEMAP.image = ImageIO.read(ResourceCollection.class.getResource("/resources/explosion.png"));
 
             Files.DEFAULT_MAP.file = new InputStreamReader(ResourceCollection.class.getResourceAsStream("/resources/default.csv"));
@@ -114,8 +116,9 @@ public class ResourceCollection {
         SpriteMaps.PLAYER_4.sprites = sliceSpriteMap(SpriteMaps.PLAYER_4.image, 32, 48);
         SpriteMaps.HARD_WALLS.sprites = sliceSpriteMap(SpriteMaps.HARD_WALLS.image, 32, 32);
         SpriteMaps.BOMB.sprites = sliceSpriteMap(SpriteMaps.BOMB.image, 32, 32);
+        SpriteMaps.BOMB_PIERCE.sprites = sliceSpriteMap(SpriteMaps.BOMB_PIERCE.image, 32, 32);
         SpriteMaps.EXPLOSION_SPRITEMAP.sprites = sliceSpriteMap(SpriteMaps.EXPLOSION_SPRITEMAP.image, 32, 32);
-        loadTiles(SpriteMaps.HARD_WALLS.sprites);   // Load hard wall tiles into hashmap for bit masking
+        loadHardWallTiles(SpriteMaps.HARD_WALLS.sprites);   // Load hard wall tiles into hashmap for bit masking
     }
 
     /**
@@ -140,10 +143,10 @@ public class ResourceCollection {
 
     /**
      * Called in loadMap to load tile map for hard wall sprites.
-     * The correct sprite is chosen for hard wall based on adjacent hard walls. (NOT THE DIRECTION THE WALL IS FACING)
+     * The correct sprite is chosen for hard wall based on adjacent hard walls.
      * @param tiles Double array of sliced tile map
      */
-    private static void loadTiles(BufferedImage[][] tiles) {
+    private static void loadHardWallTiles(BufferedImage[][] tiles) {
         hardWallTiles = new HashMap<>();
         /*
             [ ][1][ ]
@@ -154,6 +157,7 @@ public class ResourceCollection {
             3rd bit = south
             4th bit = west
             These bits indicate if there is an adjacent hard wall in that direction
+            (NOT THE DIRECTION THE WALL IS FACING)
          */
         hardWallTiles.put(0b0000, tiles[0][0]);  // 0
 

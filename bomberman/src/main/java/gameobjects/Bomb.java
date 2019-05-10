@@ -38,11 +38,11 @@ public class Bomb extends TileObject {
      * @param bomber Original bomber that placed this bomb
      */
     public Bomb(Point2D.Float position, int firepower, boolean pierce, int timer, Bomber bomber) {
-        super(position, ResourceCollection.SpriteMaps.BOMB.getSprites()[0][0]);
+        super(position, pierce ? ResourceCollection.SpriteMaps.BOMB_PIERCE.getSprites()[0][0] : ResourceCollection.SpriteMaps.BOMB.getSprites()[0][0]);
         this.collider.setRect(this.position.x, this.position.y, this.width, this.height);
 
         // Animation
-        this.sprites = ResourceCollection.SpriteMaps.BOMB.getSprites();
+        this.sprites = pierce ? ResourceCollection.SpriteMaps.BOMB_PIERCE.getSprites() : ResourceCollection.SpriteMaps.BOMB.getSprites();
         this.spriteIndex = 0;
         this.spriteTimer = 0;
 
