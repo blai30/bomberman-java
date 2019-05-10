@@ -138,7 +138,7 @@ public class ResourceCollection {
 
     /**
      * Called in loadMap to load tile map for hard wall sprites.
-     * The correct sprite is chosen for hard wall based on adjacent hard walls.
+     * The correct sprite is chosen for hard wall based on adjacent hard walls. (NOT THE DIRECTION THE WALL IS FACING)
      * @param tiles Double array of sliced tile map
      */
     private static void loadTiles(BufferedImage[][] tiles) {

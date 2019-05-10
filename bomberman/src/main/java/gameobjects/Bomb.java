@@ -4,6 +4,7 @@ import util.GameObjectCollection;
 import util.ResourceCollection;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -24,6 +25,10 @@ public class Bomb extends TileObject {
     private boolean pierce;
     private int timeToDetonate;
     private int startTime;
+
+    // Kicking bomb
+    private boolean kicked;
+    private KickDirection kickDirection;
 
     /**
      * Constructs a bomb object with values passed in by a bomber object.
@@ -49,15 +54,32 @@ public class Bomb extends TileObject {
         this.bomber = bomber;
         this.startTime = 0;
         this.breakable = true;
+
+        // Kicking bomb
+        this.kicked = false;
+        this.kickDirection = null;
     }
 
     /**
      * Bomb detonates upon destroy and creates explosions. Also replenishes ammo for original bomber.
      */
     private void explode() {
+        // Snap bombs to the grid on the map before exploding
+        float x = Math.round(this.position.getX() / 32) * 32;
+        float y = Math.round(this.position.getY() / 32) * 32;
+        this.position.setLocation(x, y);
         GameObjectCollection.spawn(new Explosion.Horizontal(this.position, this.firepower, this.pierce));
         GameObjectCollection.spawn(new Explosion.Vertical(this.position, this.firepower, this.pierce));
         this.bomber.restoreAmmo();
+    }
+
+    public void setKicked(boolean kicked, KickDirection kickDirection) {
+        this.kicked = kicked;
+        this.kickDirection = kickDirection;
+    }
+
+    public boolean isKicked() {
+        return this.kicked;
     }
 
     /**
@@ -73,6 +95,8 @@ public class Bomb extends TileObject {
      */
     @Override
     public void update() {
+        this.collider.setRect(this.position.x, this.position.y, this.width, this.height);
+
         // Animate sprite
         if (this.spriteTimer++ >= 4) {
             this.spriteIndex++;
@@ -87,6 +111,12 @@ public class Bomb extends TileObject {
         if (this.startTime++ >= this.timeToDetonate) {
             this.destroy();
         }
+
+        // Continue traveling when kicked
+        if (this.kicked) {
+            this.position.setLocation(this.position.x + this.kickDirection.getVelocity().x,
+                    this.position.y + this.kickDirection.getVelocity().y);
+        }
     }
 
     @Override
@@ -97,6 +127,29 @@ public class Bomb extends TileObject {
     @Override
     public void onCollisionEnter(GameObject collidingObj) {
         collidingObj.handleCollision(this);
+    }
+
+    @Override
+    public void handleCollision(Bomber collidingObj) {
+        if (collidingObj != this.bomber) {
+            this.kicked = false;
+        }
+//        // Snap bombs to the grid on the map before exploding
+//        float x = Math.round(this.position.getX() / 32) * 32;
+//        float y = Math.round(this.position.getY() / 32) * 32;
+//        this.position.setLocation(x, y);
+    }
+
+    @Override
+    public void handleCollision(Wall collidingObj) {
+        this.kicked = false;
+        this.solidCollision(collidingObj);
+    }
+
+    @Override
+    public void handleCollision(Bomb collidingObj) {
+        this.kicked = false;
+        this.solidCollision(collidingObj);
     }
 
     /**
@@ -112,6 +165,25 @@ public class Bomb extends TileObject {
     @Override
     public boolean isBreakable() {
         return this.breakable;
+    }
+
+}
+
+enum KickDirection {
+
+    FromTop(new Point2D.Float(0, 2)),
+    FromBottom(new Point2D.Float(0, -2)),
+    FromLeft(new Point2D.Float(2, 0)),
+    FromRight(new Point2D.Float(-2, 0));
+
+    private Point2D.Float velocity;
+
+    KickDirection(Point2D.Float velocity) {
+        this.velocity = velocity;
+    }
+
+    public Point2D.Float getVelocity() {
+        return this.velocity;
     }
 
 }

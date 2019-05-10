@@ -3,6 +3,7 @@ package gameobjects;
 import util.GameObjectCollection;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -42,13 +43,13 @@ public class Bomber extends Player {
         this.spriteTimer = 0;
 
         // Default stats
-        this.moveSpeed = 1;
+        this.moveSpeed = 4;
         this.firepower = 10;
         this.bombAmmo = 10;
         this.bombTimer = 250;
         this.maxBombs = this.bombAmmo;
         this.pierce = false;
-        this.kick = false;
+        this.kick = true;
     }
 
     // --- MOVEMENT ---
@@ -120,6 +121,14 @@ public class Bomber extends Player {
     }
 
     /**
+     * Check if this bomber has kick. Used by bomb class to push bomb.
+     * @return Has ability to kick
+     */
+    public boolean getKick() {
+        return this.kick;
+    }
+
+    /**
      * Controls movement, action, and animation.
      */
     @Override
@@ -175,6 +184,31 @@ public class Bomber extends Player {
     public void handleCollision(Bomb collidingObj) {
         if (collidingObj.getColliderCenter().distance(this.getColliderCenter()) >= 26) {
             this.solidCollision(collidingObj);
+            if (this.kick && !collidingObj.isKicked()) {
+                Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
+                // Vertical collision
+                if (intersection.getWidth() >= intersection.getHeight()) {
+                    // From the top
+                    if (intersection.getMaxY() >= this.collider.getMaxY() && this.DownPressed) {
+                        collidingObj.setKicked(true, KickDirection.FromTop);
+                    }
+                    // From the bottom
+                    if (intersection.getMaxY() >= collidingObj.collider.getMaxY() && this.UpPressed) {
+                        collidingObj.setKicked(true, KickDirection.FromBottom);
+                    }
+                }
+                // Horizontal collision
+                if (intersection.getHeight() >= intersection.getWidth()) {
+                    // From the left
+                    if (intersection.getMaxX() >= this.collider.getMaxX() && this.RightPressed) {
+                        collidingObj.setKicked(true, KickDirection.FromLeft);
+                    }
+                    // From the right
+                    if (intersection.getMaxX() >= collidingObj.collider.getMaxX() && this.LeftPressed) {
+                        collidingObj.setKicked(true, KickDirection.FromRight);
+                    }
+                }
+            }
         }
     }
 
