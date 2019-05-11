@@ -219,9 +219,9 @@ public class Bomber extends Player {
     @Override
     public void handleCollision(Bomb collidingObj) {
         Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
-        if (this.kick && !collidingObj.isKicked()) {
-            // Vertical collision
-            if (intersection.getWidth() >= intersection.getHeight() && intersection.getHeight() <= 6 && Math.abs(this.collider.getCenterX() - collidingObj.collider.getCenterX()) <= 8) {
+        // Vertical collision
+        if (intersection.getWidth() >= intersection.getHeight() && intersection.getHeight() <= 6 && Math.abs(this.collider.getCenterX() - collidingObj.collider.getCenterX()) <= 8) {
+            if (this.kick && !collidingObj.isKicked()) {
                 // From the top
                 if (intersection.getMaxY() >= this.collider.getMaxY() && this.DownPressed) {
                     collidingObj.setKicked(true, KickDirection.FromTop);
@@ -230,10 +230,12 @@ public class Bomber extends Player {
                 if (intersection.getMaxY() >= collidingObj.collider.getMaxY() && this.UpPressed) {
                     collidingObj.setKicked(true, KickDirection.FromBottom);
                 }
-                this.solidCollision(collidingObj);
             }
-            // Horizontal collision
-            if (intersection.getHeight() >= intersection.getWidth() && intersection.getWidth() <= 6 && Math.abs(this.collider.getCenterY() - collidingObj.collider.getCenterY()) <= 8) {
+            this.solidCollision(collidingObj);
+        }
+        // Horizontal collision
+        if (intersection.getHeight() >= intersection.getWidth() && intersection.getWidth() <= 6 && Math.abs(this.collider.getCenterY() - collidingObj.collider.getCenterY()) <= 8) {
+            if (this.kick && !collidingObj.isKicked()) {
                 // From the left
                 if (intersection.getMaxX() >= this.collider.getMaxX() && this.RightPressed) {
                     collidingObj.setKicked(true, KickDirection.FromLeft);
@@ -242,9 +244,7 @@ public class Bomber extends Player {
                 if (intersection.getMaxX() >= collidingObj.collider.getMaxX() && this.LeftPressed) {
                     collidingObj.setKicked(true, KickDirection.FromRight);
                 }
-                this.solidCollision(collidingObj);
             }
-        } else if (Math.abs(this.collider.getCenterX() - collidingObj.collider.getCenterX()) >= 8 || Math.abs(this.collider.getCenterY() - collidingObj.collider.getCenterY()) >= 8) {
             this.solidCollision(collidingObj);
         }
     }
