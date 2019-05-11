@@ -46,13 +46,13 @@ public class Bomber extends Player {
         this.spriteTimer = 0;
 
         // Default stats
-        this.moveSpeed = 1;
+        this.moveSpeed = 4;
         this.firepower = 9;
         this.maxBombs = 10;
         this.bombAmmo = this.maxBombs;
         this.bombTimer = 250;
         this.pierce = true;
-        this.kick = true;
+        this.kick = false;
     }
 
     // --- MOVEMENT ---
@@ -137,6 +137,10 @@ public class Bomber extends Player {
      */
     public BufferedImage getBaseSprite() {
         return this.sprites[1][0];
+    }
+
+    public boolean getKick() {
+        return this.kick;
     }
 
     /**
@@ -240,6 +244,8 @@ public class Bomber extends Player {
                 }
                 this.solidCollision(collidingObj);
             }
+        } else if (Math.abs(this.collider.getCenterX() - collidingObj.collider.getCenterX()) >= 8 || Math.abs(this.collider.getCenterY() - collidingObj.collider.getCenterY()) >= 8) {
+            this.solidCollision(collidingObj);
         }
     }
 

@@ -143,7 +143,7 @@ public class Bomb extends TileObject {
 //        }
 
         Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
-        if (this.kicked && (Math.abs(temp.x - collidingObj.collider.getCenterX()) < intersection.getWidth() || Math.abs(temp.y - collidingObj.collider.getCenterY()) < intersection.getHeight())) {
+        if (this.kicked && intersection.contains(temp) && (Math.abs(this.collider.getCenterX() - collidingObj.collider.getCenterX()) >= 4 || Math.abs(this.collider.getCenterY() - collidingObj.collider.getCenterY()) >= 4)) {
             System.out.println("Stop kick called");
             this.solidCollision(collidingObj);
             this.stopKick();
