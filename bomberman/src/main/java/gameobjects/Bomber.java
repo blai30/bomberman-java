@@ -164,12 +164,14 @@ public class Bomber extends Player {
             }
         } else {
             // Animate dying animation
-            if (this.spriteTimer++ >= 12) {
+            if (this.spriteTimer++ >= 30) {
                 this.spriteIndex++;
-                this.spriteTimer = 0;
-            }
-            if (this.spriteIndex < this.sprites[4].length) {
-                this.sprite = this.sprites[4][this.spriteIndex];
+                if (this.spriteIndex < this.sprites[4].length) {
+                    this.sprite = this.sprites[4][this.spriteIndex];
+                    this.spriteTimer = 0;
+                } else if (this.spriteTimer >= 300) {
+                    this.destroy();
+                }
             }
         }
     }
@@ -186,7 +188,10 @@ public class Bomber extends Player {
 
     @Override
     public void handleCollision(Explosion collidingObj) {
-        this.dead = true;
+        if (!this.dead) {
+            this.dead = true;
+            this.spriteIndex = 0;
+        }
     }
 
     /**
