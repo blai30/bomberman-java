@@ -23,9 +23,9 @@ public class Bomber extends Player {
     // Stats
     private float moveSpeed;
     private int firepower;
+    private int maxBombs;
     private int bombAmmo;
     private int bombTimer;
-    private int maxBombs;
     private boolean pierce;
     private boolean kick;
     private int score;
@@ -37,7 +37,7 @@ public class Bomber extends Player {
      */
     public Bomber(Point2D.Float position, BufferedImage[][] spriteMap) {
         super(position, spriteMap[1][0]);
-        this.collider.setRect(this.position.x + 1, this.position.y + 16 + 1, this.width - 2, this.height - 16 - 2);
+        this.collider.setRect(this.position.x + 3, this.position.y + 16 + 3, this.width - 6, this.height - 16 - 6);
 
         // Animation
         this.sprites = spriteMap;
@@ -46,11 +46,11 @@ public class Bomber extends Player {
         this.spriteTimer = 0;
 
         // Default stats
-        this.moveSpeed = 4;
-        this.firepower = 10;
-        this.bombAmmo = 10;
+        this.moveSpeed = 1;
+        this.firepower = 6;
+        this.maxBombs = 10;
+        this.bombAmmo = this.maxBombs;
         this.bombTimer = 250;
-        this.maxBombs = this.bombAmmo;
         this.pierce = true;
         this.kick = true;
     }
@@ -100,22 +100,35 @@ public class Bomber extends Player {
 
     // --- POWERUPS ---
     public void addAmmo(int value) {
+        System.out.print("Bombs set from " + this.maxBombs);
         this.maxBombs = Math.min(6, this.maxBombs + value);
+        this.restoreAmmo();
+        System.out.println(" to " + this.maxBombs);
     }
     public void addFirepower(int value) {
+        System.out.print("Firepower set from " + this.firepower);
         this.firepower = Math.min(6, this.firepower + value);
+        System.out.println(" to " + this.firepower);
     }
     public void addSpeed(float value) {
+        System.out.print("Move Speed set from " + this.moveSpeed);
         this.moveSpeed = Math.min(4, this.moveSpeed + value);
+        System.out.println(" to " + this.moveSpeed);
     }
     public void setPierce(boolean value) {
+        System.out.print("Pierce set from " + this.pierce);
         this.pierce = value;
+        System.out.println(" to " + this.pierce);
     }
     public void setKick(boolean value) {
+        System.out.print("Kick set from " + this.kick);
         this.kick = value;
+        System.out.println(" to " + this.kick);
     }
     public void reduceTimer(int value) {
+        System.out.print("Bomb Timer set from " + this.bombTimer);
         this.bombTimer = Math.max(160, this.bombTimer - value);
+        System.out.println(" to " + this.bombTimer);
     }
 
     /**
@@ -131,7 +144,7 @@ public class Bomber extends Player {
      */
     @Override
     public void update() {
-        this.collider.setRect(this.position.x + 1, this.position.y + 16 + 1, this.width - 2, this.height - 16 - 2);
+        this.collider.setRect(this.position.x + 3, this.position.y + 16 + 3, this.width - 6, this.height - 16 - 6);
 
         if (!this.dead) {
             // Animate sprite
@@ -201,32 +214,31 @@ public class Bomber extends Player {
      */
     @Override
     public void handleCollision(Bomb collidingObj) {
-        if (collidingObj.getColliderCenter().distance(this.getColliderCenter()) >= 22) {
-            this.solidCollision(collidingObj);
-            if (this.kick && !collidingObj.isKicked()) {
-                Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
-                // Vertical collision
-                if (intersection.getWidth() >= intersection.getHeight()) {
-                    // From the top
-                    if (intersection.getMaxY() >= this.collider.getMaxY() && this.DownPressed) {
-                        collidingObj.setKicked(true, KickDirection.FromTop);
-                    }
-                    // From the bottom
-                    if (intersection.getMaxY() >= collidingObj.collider.getMaxY() && this.UpPressed) {
-                        collidingObj.setKicked(true, KickDirection.FromBottom);
-                    }
+        Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
+        if (this.kick && !collidingObj.isKicked()) {
+            // Vertical collision
+            if (intersection.getWidth() >= intersection.getHeight() && intersection.getHeight() <= 6 && Math.abs(this.collider.getCenterX() - collidingObj.collider.getCenterX()) <= 8) {
+                // From the top
+                if (intersection.getMaxY() >= this.collider.getMaxY() && this.DownPressed) {
+                    collidingObj.setKicked(true, KickDirection.FromTop);
                 }
-                // Horizontal collision
-                if (intersection.getHeight() >= intersection.getWidth()) {
-                    // From the left
-                    if (intersection.getMaxX() >= this.collider.getMaxX() && this.RightPressed) {
-                        collidingObj.setKicked(true, KickDirection.FromLeft);
-                    }
-                    // From the right
-                    if (intersection.getMaxX() >= collidingObj.collider.getMaxX() && this.LeftPressed) {
-                        collidingObj.setKicked(true, KickDirection.FromRight);
-                    }
+                // From the bottom
+                if (intersection.getMaxY() >= collidingObj.collider.getMaxY() && this.UpPressed) {
+                    collidingObj.setKicked(true, KickDirection.FromBottom);
                 }
+                this.solidCollision(collidingObj);
+            }
+            // Horizontal collision
+            if (intersection.getHeight() >= intersection.getWidth() && intersection.getWidth() <= 6 && Math.abs(this.collider.getCenterY() - collidingObj.collider.getCenterY()) <= 8) {
+                // From the left
+                if (intersection.getMaxX() >= this.collider.getMaxX() && this.RightPressed) {
+                    collidingObj.setKicked(true, KickDirection.FromLeft);
+                }
+                // From the right
+                if (intersection.getMaxX() >= collidingObj.collider.getMaxX() && this.LeftPressed) {
+                    collidingObj.setKicked(true, KickDirection.FromRight);
+                }
+                this.solidCollision(collidingObj);
             }
         }
     }
