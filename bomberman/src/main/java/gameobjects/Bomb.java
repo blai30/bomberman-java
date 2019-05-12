@@ -136,17 +136,12 @@ public class Bomb extends TileObject {
     @Override
     public void handleCollision(Bomber collidingObj) {
         Point2D.Float temp = new Point2D.Float((float) this.collider.getCenterX() + this.kickDirection.getVelocity().x, (float) this.collider.getCenterY() + this.kickDirection.getVelocity().y);
-//        if (this.kicked && (Math.abs(temp.x - collidingObj.collider.getCenterX()) >= 2 || Math.abs(temp.y - collidingObj.collider.getCenterY()) >= 2)) {
-//            System.out.println("Stop kick called");
-//            this.solidCollision(collidingObj);
-//            this.stopKick();
-//        }
-
         Rectangle2D intersection = this.collider.createIntersection(collidingObj.collider);
-        if (this.kicked && intersection.contains(temp) && (Math.abs(this.collider.getCenterX() - collidingObj.collider.getCenterX()) >= 2 || Math.abs(this.collider.getCenterY() - collidingObj.collider.getCenterY()) >= 2)) {
+        if (this.kicked && intersection.contains(temp)) {
             System.out.println("Stop kick called");
-            this.solidCollision(collidingObj);
             this.stopKick();
+            this.solidCollision(collidingObj);
+            this.snapToGrid();
         }
     }
 
@@ -181,10 +176,10 @@ public class Bomb extends TileObject {
 
 enum KickDirection {
 
-    FromTop(new Point2D.Float(0, 2)),
-    FromBottom(new Point2D.Float(0, -2)),
-    FromLeft(new Point2D.Float(2, 0)),
-    FromRight(new Point2D.Float(-2, 0)),
+    FromTop(new Point2D.Float(0, 6)),
+    FromBottom(new Point2D.Float(0, -6)),
+    FromLeft(new Point2D.Float(6, 0)),
+    FromRight(new Point2D.Float(-6, 0)),
     Nothing(new Point2D.Float(0, 0));
 
     private Point2D.Float velocity;
