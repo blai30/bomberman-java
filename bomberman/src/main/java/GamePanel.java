@@ -15,7 +15,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -106,7 +105,7 @@ public class GamePanel extends JPanel implements Runnable {
                         if (Math.random() < SOFTWALL_RATE) {
                             BufferedImage sprSoftWall = ResourceCollection.Images.SOFT_WALL.getImage();
                             Wall softWall = new Wall(new Point2D.Float(x * 32, y * 32), sprSoftWall, true);
-                            GameObjectCollection.tileObjects.add(softWall);
+                            GameObjectCollection.spawn(softWall);
                         }
                         break;
 
@@ -127,7 +126,7 @@ public class GamePanel extends JPanel implements Runnable {
                         }
                         BufferedImage sprHardWall = ResourceCollection.getHardWallTile(code);
                         Wall hardWall = new Wall(new Point2D.Float(x * 32, y * 32), sprHardWall, false);
-                        GameObjectCollection.tileObjects.add(hardWall);
+                        GameObjectCollection.spawn(hardWall);
                         break;
 
                     case ("1"):
@@ -136,7 +135,7 @@ public class GamePanel extends JPanel implements Runnable {
                         PlayerController playerController1 = new PlayerController(player1, this.controls1);
                         this.addKeyListener(playerController1);
                         this.gameHUD.assignPlayer(player1, 0);
-                        GameObjectCollection.bomberObjects.add(player1);
+                        GameObjectCollection.spawn(player1);
                         break;
 
                     case ("2"):
@@ -145,7 +144,7 @@ public class GamePanel extends JPanel implements Runnable {
                         PlayerController playerController2 = new PlayerController(player2, this.controls2);
                         this.addKeyListener(playerController2);
                         this.gameHUD.assignPlayer(player2, 1);
-                        GameObjectCollection.bomberObjects.add(player2);
+                        GameObjectCollection.spawn(player2);
                         break;
 
                     case ("3"):
@@ -154,7 +153,7 @@ public class GamePanel extends JPanel implements Runnable {
                         PlayerController playerController3 = new PlayerController(player3, this.controls3);
                         this.addKeyListener(playerController3);
                         this.gameHUD.assignPlayer(player3, 2);
-                        GameObjectCollection.bomberObjects.add(player3);
+                        GameObjectCollection.spawn(player3);
                         break;
 
                     case ("4"):
@@ -163,7 +162,7 @@ public class GamePanel extends JPanel implements Runnable {
                         PlayerController playerController4 = new PlayerController(player4, this.controls4);
                         this.addKeyListener(playerController4);
                         this.gameHUD.assignPlayer(player4, 3);
-                        GameObjectCollection.bomberObjects.add(player4);
+                        GameObjectCollection.spawn(player4);
                         break;
 
                     default:
@@ -271,7 +270,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void update() {
-        GameObjectCollection.bomberObjects.sort(Comparator.comparing(GameObject::getPositionY));
+        GameObjectCollection.sortBomberObjects();
         try {
             // Loop through every game object arraylist
             for (int list = 0; list < GameObjectCollection.gameObjects.size(); list++) {

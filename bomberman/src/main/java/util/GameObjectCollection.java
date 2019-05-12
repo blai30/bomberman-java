@@ -3,6 +3,7 @@ package util;
 import gameobjects.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -45,6 +46,16 @@ public class GameObjectCollection {
     }
     public static void spawn(Bomber spawnObj) {
         bomberObjects.add(spawnObj);
+    }
+
+    public static void sortTileObjects() {
+        tileObjects.sort(Comparator.comparing(GameObject::getPositionY));
+    }
+    public static void sortExplosionObjects() {
+        explosionObjects.sort(Comparator.comparing(GameObject::getPositionY));
+    }
+    public static void sortBomberObjects() {
+        bomberObjects.sort(Comparator.comparing(GameObject::getPositionY));
     }
 
 }
