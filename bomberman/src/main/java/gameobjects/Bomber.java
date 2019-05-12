@@ -46,7 +46,7 @@ public class Bomber extends Player {
         this.spriteTimer = 0;
 
         // Default stats
-        this.moveSpeed = 4;
+        this.moveSpeed = 1;
         this.firepower = 9;
         this.maxBombs = 10;
         this.bombAmmo = this.maxBombs;
@@ -213,6 +213,8 @@ public class Bomber extends Player {
 
     /**
      * Bombs act as walls if the bomber is not already within the a certain distance as the bomb.
+     * This is also the big and ugly kicking logic. Touching this code is very dangerous and can introduce
+     * bugs to the kicking logic including stopping the bomb from moving.
      * (ie. if the bomber is not standing on the bomb)
      * @param collidingObj Solid bomb
      */

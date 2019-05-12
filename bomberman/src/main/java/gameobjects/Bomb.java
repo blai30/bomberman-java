@@ -133,6 +133,11 @@ public class Bomb extends TileObject {
         collidingObj.handleCollision(this);
     }
 
+    /**
+     * Stops the bomb from moving when it encounters a bomber. Very ugly calculation to get this working so touching
+     * this code is very dangerous and can introduce bugs to the kicking logic.
+     * @param collidingObj Bomber object in the way
+     */
     @Override
     public void handleCollision(Bomber collidingObj) {
         Point2D.Float temp = new Point2D.Float((float) this.collider.getCenterX() + this.kickDirection.getVelocity().x, (float) this.collider.getCenterY() + this.kickDirection.getVelocity().y);
@@ -174,6 +179,10 @@ public class Bomb extends TileObject {
 
 }
 
+/**
+ * Provides the speed for bomb moving from kick. Speed should be 6 to ensure the kicking logic is as smooth
+ * as possible. Changing the value is dangerous and can introduce bugs to the kicking logic.
+ */
 enum KickDirection {
 
     FromTop(new Point2D.Float(0, 6)),
