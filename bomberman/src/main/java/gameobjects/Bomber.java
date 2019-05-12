@@ -47,11 +47,11 @@ public class Bomber extends Player {
 
         // Default stats
         this.moveSpeed = 1;
-        this.firepower = 9;
-        this.maxBombs = 10;
+        this.firepower = 1;
+        this.maxBombs = 1;
         this.bombAmmo = this.maxBombs;
         this.bombTimer = 250;
-        this.pierce = true;
+        this.pierce = false;
         this.kick = false;
     }
 
