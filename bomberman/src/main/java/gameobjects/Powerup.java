@@ -3,6 +3,7 @@ package gameobjects;
 import util.ResourceCollection;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -96,6 +97,7 @@ public class Powerup extends TileObject {
      */
     public Powerup(Point2D.Float position, Type type) {
         super(position, type.sprite);
+        this.collider = new Rectangle2D.Float(position.x + 8, position.y + 8, this.width - 16, this.height - 16);
         this.type = type;
         this.breakable = true;
     }
