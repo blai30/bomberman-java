@@ -28,7 +28,6 @@ public class Bomber extends Player {
     private int bombTimer;
     private boolean pierce;
     private boolean kick;
-    private int score;
 
     /**
      * Constructs a bomber at position with a two-dimensional array of sprites.
@@ -139,8 +138,12 @@ public class Bomber extends Player {
         return this.sprites[1][0];
     }
 
-    public boolean getKick() {
-        return this.kick;
+    /**
+     * Checks if this bomber is dead.
+     * @return true = dead, false = not dead
+     */
+    public boolean isDead() {
+        return this.dead;
     }
 
     /**

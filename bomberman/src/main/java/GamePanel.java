@@ -53,11 +53,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void init() {
         GameObjectCollection.init();
-        System.gc();
         this.gameHUD = new GameHUD();
         this.generateMap();
         this.gameHUD.init();
         this.setPreferredSize(new Dimension(this.mapWidth * 32, (this.mapHeight * 32) + GameWindow.HUD_HEIGHT));
+        System.gc();
         this.running = true;
     }
 
@@ -224,6 +224,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.init();
     }
 
+    void resetMap() {
+        GameObjectCollection.init();
+        this.generateMap();
+        System.gc();
+    }
+
     public void addNotify() {
         super.addNotify();
 
@@ -271,37 +277,42 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void update() {
         GameObjectCollection.sortBomberObjects();
-        try {
-            // Loop through every game object arraylist
-            for (int list = 0; list < GameObjectCollection.gameObjects.size(); list++) {
-                for (int objIndex = 0; objIndex < GameObjectCollection.gameObjects.get(list).size(); ) {
-                    GameObject obj = GameObjectCollection.gameObjects.get(list).get(objIndex);
-                    obj.update();
-                    if (obj.isDestroyed()) {
-                        // Destroy and remove game objects that were marked for deletion
-                        obj.onDestroy();
-                        GameObjectCollection.gameObjects.get(list).remove(obj);
-                    } else {
-                        for (int list2 = 0; list2 < GameObjectCollection.gameObjects.size(); list2++) {
-                            for (int objIndex2 = 0; objIndex2 < GameObjectCollection.gameObjects.get(list2).size(); objIndex2++) {
-                                GameObject collidingObj = GameObjectCollection.gameObjects.get(list2).get(objIndex2);
-                                // Skip detecting collision on the same object as itself
-                                if (obj == collidingObj) {
-                                    continue;
-                                }
+        // Loop through every game object arraylist
+        for (int list = 0; list < GameObjectCollection.gameObjects.size(); list++) {
+            for (int objIndex = 0; objIndex < GameObjectCollection.gameObjects.get(list).size(); ) {
+                GameObject obj = GameObjectCollection.gameObjects.get(list).get(objIndex);
+                obj.update();
+                if (obj.isDestroyed()) {
+                    // Destroy and remove game objects that were marked for deletion
+                    obj.onDestroy();
+                    GameObjectCollection.gameObjects.get(list).remove(obj);
+                } else {
+                    for (int list2 = 0; list2 < GameObjectCollection.gameObjects.size(); list2++) {
+                        for (int objIndex2 = 0; objIndex2 < GameObjectCollection.gameObjects.get(list2).size(); objIndex2++) {
+                            GameObject collidingObj = GameObjectCollection.gameObjects.get(list2).get(objIndex2);
+                            // Skip detecting collision on the same object as itself
+                            if (obj == collidingObj) {
+                                continue;
+                            }
 
-                                // Visitor pattern collision handling
-                                if (obj.getCollider().intersects(collidingObj.getCollider())) {
-                                    // Use one of these
-                                    collidingObj.onCollisionEnter(obj);
+                            // Visitor pattern collision handling
+                            if (obj.getCollider().intersects(collidingObj.getCollider())) {
+                                // Use one of these
+                                collidingObj.onCollisionEnter(obj);
 //                                    obj.onCollisionEnter(collidingObj);
-                                }
                             }
                         }
-                        objIndex++;
                     }
+                    objIndex++;
                 }
             }
+        }
+
+        if (GameObjectCollection.bomberObjects.size() == 1) {
+            Bomber bomber = GameObjectCollection.bomberObjects.get(0);
+        }
+
+        try {
             Thread.sleep(1000 / 144);
         } catch (InterruptedException ignored) {
 

@@ -10,10 +10,12 @@ public class GameHUD {
 
     private Bomber[] players;
     private BufferedImage[] playerInfo;
+    private int[] playerScore;
 
     GameHUD() {
         this.players = new Bomber[4];
         this.playerInfo = new BufferedImage[4];
+        this.playerScore = new int[4];
     }
 
     void init() {
@@ -72,8 +74,12 @@ public class GameHUD {
 
         // Iterate loop for each player
         for (int i = 0; i < playerGraphics.length; i++) {
+            Font font = new Font("Courier New", Font.BOLD, 24);
             playerGraphics[i].drawRect(1, 1, this.playerInfo[i].getWidth() - 2, this.playerInfo[i].getHeight() - 2);
             playerGraphics[i].drawImage(this.players[i].getBaseSprite(), 0, 0, null);
+            playerGraphics[i].setFont(font);
+            playerGraphics[i].setColor(Color.WHITE);
+            playerGraphics[i].drawString("" + this.playerScore[i], this.playerInfo[i].getWidth() / 2, 32);
         }
     }
 
