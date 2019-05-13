@@ -11,11 +11,13 @@ public class GameHUD {
     private Bomber[] players;
     private BufferedImage[] playerInfo;
     private int[] playerScore;
+    boolean matchSet;
 
     GameHUD() {
         this.players = new Bomber[4];
         this.playerInfo = new BufferedImage[4];
         this.playerScore = new int[4];
+        this.matchSet = false;
     }
 
     void init() {
@@ -50,6 +52,32 @@ public class GameHUD {
      */
     void assignPlayer(Bomber player, int playerID) {
         this.players[playerID] = player;
+    }
+
+    /**
+     * Checks if there is only one player alive left and increases their score.
+     * The match set boolean is used to check if a point is already added so that the winner can freely
+     * move around for a while before resetting the map. This also allows the winner to kill themselves without
+     * affecting their score since the score was already updated.
+     */
+    public void updateScore() {
+        int deadPlayers = 0;
+        for (int i = 0; i < this.players.length; i++) {
+            if (this.players[i].isDead()) {
+                deadPlayers++;
+            }
+        }
+
+        if (deadPlayers == this.players.length - 1) {
+            for (int i = 0; i < this.players.length; i++) {
+                if (!this.players[i].isDead()) {
+                    this.playerScore[i]++;
+                    this.matchSet = true;
+                }
+            }
+        } else if (deadPlayers >= this.players.length) {
+            this.matchSet = true;
+        }
     }
 
     /**

@@ -308,14 +308,23 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
-        if (GameObjectCollection.bomberObjects.size() == 1) {
-            Bomber bomber = GameObjectCollection.bomberObjects.get(0);
+        // Check for the last bomber to survive longer than the others and increase score
+        // Score is added immediately so there is no harm of dying when you are the last one
+        // Reset map when there are 1 or less bombers left
+        if (!this.gameHUD.matchSet) {
+            this.gameHUD.updateScore();
+        } else {
+            // Checking size of array list because when a bomber dies, they do not immediately get deleted
+            // This makes it so that the next round doesn't start until the winner is the only bomber object on the map
+            if (GameObjectCollection.bomberObjects.size() <= 1) {
+                this.resetMap();
+                this.gameHUD.matchSet = false;
+            }
         }
 
         try {
             Thread.sleep(1000 / 144);
         } catch (InterruptedException ignored) {
-
         }
     }
 

@@ -45,12 +45,12 @@ public class Bomber extends Player {
         this.spriteTimer = 0;
 
         // Default stats
-        this.moveSpeed = 1;
-        this.firepower = 1;
-        this.maxBombs = 1;
+        this.moveSpeed = 4;
+        this.firepower = 10;
+        this.maxBombs = 10;
         this.bombAmmo = this.maxBombs;
         this.bombTimer = 250;
-        this.pierce = false;
+        this.pierce = true;
         this.kick = false;
     }
 
@@ -189,7 +189,7 @@ public class Bomber extends Player {
                 if (this.spriteIndex < this.sprites[4].length) {
                     this.sprite = this.sprites[4][this.spriteIndex];
                     this.spriteTimer = 0;
-                } else if (this.spriteTimer >= 300) {
+                } else if (this.spriteTimer >= 250) {
                     this.destroy();
                 }
             }
