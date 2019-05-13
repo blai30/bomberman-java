@@ -42,6 +42,10 @@ public class GamePanel extends JPanel implements Runnable {
 
     static final double SOFTWALL_RATE = 0.825;
 
+    /**
+     * Construct game panel and load in a map file.
+     * @param filename Name of the map file
+     */
     GamePanel(String filename) {
         this.setFocusable(true);
         this.requestFocus();
@@ -51,6 +55,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(new GameController(this));
     }
 
+    /**
+     * Initialize the game panel with a HUD, window size, collection of game objects, and start the game loop.
+     */
     void init() {
         GameObjectCollection.init();
         this.gameHUD = new GameHUD();
@@ -61,6 +68,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.running = true;
     }
 
+    /**
+     * Loads the map file into buffered reader or load default map when no file is given.
+     * The file should be a file with strings separated by commas ",". Preferred .csv file.
+     * @param mapFile Name of the map file
+     */
     private void loadMapFile(String mapFile) {
         // Loading map file
         try {
@@ -88,6 +100,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Generate the map given the map file. The map is grid based and each tile is 32x32.
+     * Create game objects depending on the string.
+     */
     private void generateMap() {
         // Map dimensions
         this.mapWidth = mapLayout.get(0).size();
@@ -277,6 +293,11 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * The game loop.
+     * The loop repeatedly calls update and repaints the panel.
+     * Also reports the frames drawn per second and updates called per second (ticks).
+     */
     @Override
     public void run() {
         long timer = System.currentTimeMillis();
@@ -290,14 +311,15 @@ public class GamePanel extends JPanel implements Runnable {
         // Count FPS, Ticks, and execute updates
         while (this.running) {
             long currentTime = System.nanoTime();
-
             delta += (currentTime - lastTime) / NS;
             lastTime = currentTime;
+
             if (delta >= 1) {
                 this.update();
                 ticks++;
                 delta--;
             }
+
             this.repaint();
             fps++;
 
@@ -313,6 +335,12 @@ public class GamePanel extends JPanel implements Runnable {
         System.exit(0);
     }
 
+    /**
+     * The update method that loops through every game object and calls update.
+     * Checks collisions between every two game objects.
+     * Deletes game objects that are marked for deletion.
+     * Checks if a player is a winner and updates score, then reset the map.
+     */
     private void update() {
         GameObjectCollection.sortBomberObjects();
         // Loop through every game object arraylist
@@ -391,11 +419,14 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        // Draw HUD
         int infoBoxWidth = panelWidth / 4;
         g2.drawImage(this.gameHUD.getP1info(), infoBoxWidth * 0, 0, null);
         g2.drawImage(this.gameHUD.getP2info(), infoBoxWidth * 1, 0, null);
         g2.drawImage(this.gameHUD.getP3info(), infoBoxWidth * 2, 0, null);
         g2.drawImage(this.gameHUD.getP4info(), infoBoxWidth * 3, 0, null);
+
+        // Draw game world offset by the HUD
         g2.drawImage(this.world, 0, GameWindow.HUD_HEIGHT, null);
 
         g2.dispose();
@@ -411,13 +442,16 @@ class GameController implements KeyListener {
 
     private GamePanel gamePanel;
 
+    /**
+     * Construct a universal game controller key listener for the game.
+     * @param gamePanel Attach game controller to this game panel
+     */
     GameController(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     /**
@@ -469,7 +503,6 @@ class GameController implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
     }
 
 }
