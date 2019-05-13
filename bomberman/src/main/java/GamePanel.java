@@ -24,6 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     private Thread thread;
     private boolean running;
+    int resetDelay;
 
     private BufferedImage world;
     private Graphics2D buffer;
@@ -59,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
      * Initialize the game panel with a HUD, window size, collection of game objects, and start the game loop.
      */
     void init() {
+        this.resetDelay = 0;
         GameObjectCollection.init();
         this.gameHUD = new GameHUD();
         this.generateMap();
@@ -388,6 +390,9 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        // Used to prevent resetting the game really fast
+        this.resetDelay++;
+
         try {
             Thread.sleep(1000 / 144);
         } catch (InterruptedException ignored) {
@@ -495,9 +500,12 @@ class GameController implements KeyListener {
         }
 
         // Reset game
+        // Delay prevents resetting too fast which causes the game to crash
         if (e.getKeyCode() == KeyEvent.VK_F5) {
-            System.out.println("F5 key pressed: Resetting game");
-            this.gamePanel.resetGame();
+            if (this.gamePanel.resetDelay >= 20) {
+                System.out.println("F5 key pressed: Resetting game");
+                this.gamePanel.resetGame();
+            }
         }
     }
 
