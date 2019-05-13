@@ -32,6 +32,10 @@ public class GameHUD {
         this.playerInfo[3] = new BufferedImage(infoWidth, height, BufferedImage.TYPE_INT_RGB);
     }
 
+    /**
+     * Used by game panel to draw player info to the screen
+     * @return Player info box
+     */
     BufferedImage getP1info() {
         return this.playerInfo[0];
     }
@@ -61,6 +65,7 @@ public class GameHUD {
      * affecting their score since the score was already updated.
      */
     public void updateScore() {
+        // Count dead players
         int deadPlayers = 0;
         for (int i = 0; i < this.players.length; i++) {
             if (this.players[i].isDead()) {
@@ -68,6 +73,7 @@ public class GameHUD {
             }
         }
 
+        // Check for the last player standing and conclude the match
         if (deadPlayers == this.players.length - 1) {
             for (int i = 0; i < this.players.length; i++) {
                 if (!this.players[i].isDead()) {
@@ -76,6 +82,7 @@ public class GameHUD {
                 }
             }
         } else if (deadPlayers >= this.players.length) {
+            // This should only be reached two or more of the last players die at the same time
             this.matchSet = true;
         }
     }
@@ -90,11 +97,13 @@ public class GameHUD {
                 this.playerInfo[2].createGraphics(),
                 this.playerInfo[3].createGraphics()};
 
+        // Clean info boxes
         playerGraphics[0].clearRect(0, 0, playerInfo[0].getWidth(), playerInfo[0].getHeight());
         playerGraphics[1].clearRect(0, 0, playerInfo[1].getWidth(), playerInfo[1].getHeight());
         playerGraphics[2].clearRect(0, 0, playerInfo[1].getWidth(), playerInfo[1].getHeight());
         playerGraphics[3].clearRect(0, 0, playerInfo[1].getWidth(), playerInfo[1].getHeight());
 
+        // Set border color per player
         playerGraphics[0].setColor(Color.WHITE);    // Player 1 info box border color
         playerGraphics[1].setColor(Color.GRAY);     // Player 2 info box border color
         playerGraphics[2].setColor(Color.RED);      // Player 3 info box border color
@@ -103,11 +112,17 @@ public class GameHUD {
         // Iterate loop for each player
         for (int i = 0; i < playerGraphics.length; i++) {
             Font font = new Font("Courier New", Font.BOLD, 24);
+            // Draw border and sprite
             playerGraphics[i].drawRect(1, 1, this.playerInfo[i].getWidth() - 2, this.playerInfo[i].getHeight() - 2);
             playerGraphics[i].drawImage(this.players[i].getBaseSprite(), 0, 0, null);
+
+            // Draw score
             playerGraphics[i].setFont(font);
             playerGraphics[i].setColor(Color.WHITE);
             playerGraphics[i].drawString("" + this.playerScore[i], this.playerInfo[i].getWidth() / 2, 32);
+
+            // Dispose
+            playerGraphics[i].dispose();
         }
     }
 

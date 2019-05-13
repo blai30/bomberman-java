@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class Powerup extends TileObject {
 
-    enum Type {
+    public enum Type {
         // Additional bomb ammo
         Bomb(ResourceCollection.Images.POWER_BOMB.getImage()) {
             @Override

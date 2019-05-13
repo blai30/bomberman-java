@@ -206,6 +206,10 @@ public class Bomber extends Player {
         this.solidCollision(collidingObj);
     }
 
+    /**
+     * Die immediately if not dead. This bomber is also killed.
+     * @param collidingObj The explosion that kills this bomber
+     */
     @Override
     public void handleCollision(Explosion collidingObj) {
         if (!this.dead) {
@@ -254,6 +258,10 @@ public class Bomber extends Player {
         }
     }
 
+    /**
+     * Get powerup bonus depending on the type.
+     * @param collidingObj Powerup that provides the bonus
+     */
     @Override
     public void handleCollision(Powerup collidingObj) {
         collidingObj.grantBonus(this);
