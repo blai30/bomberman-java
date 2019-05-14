@@ -87,14 +87,6 @@ public class Bomb extends TileObject {
     }
 
     /**
-     * Retrieve original bomber object.
-     * @return Original bomber that placed this bomb
-     */
-    public Bomber getBomber() {
-        return this.bomber;
-    }
-
-    /**
      * Controls animation and detonation timer.
      */
     @Override

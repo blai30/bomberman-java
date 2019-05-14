@@ -17,8 +17,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * JPanel that contains the entire game and game loop logic.
+ */
 public class GamePanel extends JPanel implements Runnable {
 
+    // Screen size is determined by the map size
     static int panelWidth;
     static int panelHeight;
 
@@ -41,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
     private HashMap<Integer, Key> controls3;
     private HashMap<Integer, Key> controls4;
 
-    static final double SOFTWALL_RATE = 0.825;
+    private static final double SOFTWALL_RATE = 0.825;
 
     /**
      * Construct game panel and load in a map file.
@@ -367,7 +371,7 @@ public class GamePanel extends JPanel implements Runnable {
                             if (obj.getCollider().intersects(collidingObj.getCollider())) {
                                 // Use one of these
                                 collidingObj.onCollisionEnter(obj);
-//                                    obj.onCollisionEnter(collidingObj);
+//                                obj.onCollisionEnter(collidingObj);
                             }
                         }
                     }

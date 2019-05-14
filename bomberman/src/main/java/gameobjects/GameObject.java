@@ -55,21 +55,6 @@ public abstract class GameObject implements Observable, Collidable, Comparable<G
     }
 
     /**
-     * This instantiation method is not needed for the bomberman game.
-     * It was useful in the tank game because the tanks spawned bullets from the center of the tank.
-     * In the bomberman game, I am initializing positions and colliders in the game objects' respective constructors.
-     */
-//    protected void instantiate(GameObject spawnObj, Vector2D spawnLocation, float rotation) {
-//        float x = spawnLocation.getX() - spawnObj.originOffset.getX();
-//        float y = spawnLocation.getY() - spawnObj.originOffset.getY();
-//        Vector2D spawnPoint = new Vector2D(x, y);
-//        spawnObj.position.set(spawnPoint);
-//        spawnObj.rotation = rotation;
-//        spawnObj.collider.setRect(x, y, spawnObj.width, spawnObj.height);
-//        GameObjectCollection.spawn(spawnObj);
-//    }
-
-    /**
      * Mark this game object for deletion.
      */
     void destroy() {
@@ -84,6 +69,10 @@ public abstract class GameObject implements Observable, Collidable, Comparable<G
         return destroyed;
     }
 
+    /**
+     * Handle collision with solid objects such as walls.
+     * @param obj A solid object such as a wall
+     */
     void solidCollision(GameObject obj) {
         Rectangle2D intersection = this.collider.createIntersection(obj.collider);
         // Vertical collision

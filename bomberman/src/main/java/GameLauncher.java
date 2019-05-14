@@ -16,6 +16,7 @@ public class GameLauncher {
     public static void main(String[] args) {
         ResourceCollection.readFiles();
         ResourceCollection.init();
+
         GamePanel game;
         try {
             game = new GamePanel(args[0]);
@@ -23,6 +24,7 @@ public class GameLauncher {
             System.err.println(e + ": Program args not given");
             game = new GamePanel(null);
         }
+
         game.init();
         window = new GameWindow(game);
 
