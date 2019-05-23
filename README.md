@@ -58,17 +58,17 @@ bomberman/src/main/java
 
 ## To load .csv map file
 ```
-java -jar csc413-secondgame-blai30.jar [map filename]
+java -jar bomberman.jar [map filename]
 ```
 
 Example:
 ```
-java -jar csc413-secondgame-blai30.jar maps/big_map.csv
+java -jar bomberman.jar maps/big_map.csv
 ```
 
 Alternatively, place a .csv map file in the same directory as .jar and run:
 ```
-java -jar csc413-secondgame-blai30.jar *.csv
+java -jar bomberman.jar *.csv
 ```
 
 ## Creating your own map
