@@ -72,7 +72,7 @@ java -jar csc413-secondgame-blai30.jar *.csv
 ```
 
 ## Creating your own map
-Format is .csv (Comma-separated values). Width and height of the map should be at least 32x32 tiles (1024x1024 pixels). Recommended to surround map with hard wall tiles to prevent tanks from leaving the map.
+Format is .csv (Comma-separated values). Width and height of the map should be at least 32x32 tiles (1024x1024 pixels). Recommended to surround map with hard wall tiles to prevent players from leaving the map.
 
 ### Possible tiles:
 * Player1 initial spawn: `1`
