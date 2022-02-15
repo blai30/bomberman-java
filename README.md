@@ -1,7 +1,6 @@
 # csc413-SecondGame
 
-## Student Name : Brian Lai
-## Student ID : 916818167
+## SFSU CSC 413
 
 ## IDE
 IntelliJ IDEA Ultimate 2019.1
